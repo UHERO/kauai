@@ -1,0 +1,132 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+@charset "utf-8";
+
+
+
+// Our variables
+$base-font-family: Helvetica, Arial, sans-serif;
+$base-font-size:   16px;
+$small-font-size:  $base-font-size * 0.875;
+$base-line-height: 1.5;
+
+$spacing-unit:     30px;
+
+$text-color:       #111;
+$background-color: #fdfdfd;
+$brand-color:      #2a7ae2;
+
+$grey-color:       #828282;
+$grey-color-light: lighten($grey-color, 40%);
+$grey-color-dark:  darken($grey-color, 25%);
+
+$on-palm:          600px;
+$on-laptop:        800px;
+
+
+
+// Using media queries with like this:
+// @include media-query($palm) {
+//     .wrapper {
+//         padding-right: $spacing-unit / 2;
+//         padding-left: $spacing-unit / 2;
+//     }
+// }
+@mixin media-query($device) {
+    @media screen and (max-width: $device) {
+        @content;
+    }
+}
+
+
+
+// Import partials from `sass_dir` (defaults to `_sass`)
+@import
+        "base",
+        "layout",
+        "syntax-highlighting"
+;
+
+#county_revenue.nav_link { margin:0 }
+
+.nav_link { text-align:center; margin: 0 5px 0 0; padding: 5px 0; background-color:#AAA; color: black; text-transform:uppercase; float:left; font-size:11px}
+
+.nav_link:hover {
+	background-color: black;
+	color: #AAA;
+	cursor: pointer;
+}
+#dashboard { clear:both; }
+#line_chart, #supplemental_chart, #pie_chart,
+.dashboard_element 
+{ border: 1px solid #FFF; float:left;  }
+
+#line_chart {  }
+#supplemental_chart { }
+#pie_chart { }
+
+#data { clear:both }
+#source_links { clear: both; }
+
+h2#headline { padding: 10px 0 0 0; }
+
+/*********** Line Chart *****************/
+path.domain { fill:none; stroke: #777; stroke-width:1 }
+g.tick text { font-size: 10px; fill: #777}
+g.tick line {stroke: #777; stroke-width:1 }
+path.line_chart_path { fill:none; stroke-width:2}
+
+
+
+/*********** Pie Chart Stuff *****************/
+g#pie_chart_area text { pointer-events: none; }
+
+
+/*********** General Div Alignment *****************/
+#controls {clear:both; }
+#series_display {clear:both;}
+#series_history {clear:both}
+
+
+/*********** Slider Stuff *****************/
+.ui-widget-header { background:none;}
+#sparkline_slider_div { height:10px}
+.ui-slider .ui-slider-handle{
+    width:10px; 
+    height:20px;
+}
+/*********** Flextable Stuff *****************/
+
+.category { clear:both;}
+.cat_label {float:left; background-color:#CCC; clear:both; margin-bottom:5px; text-align:center; cursor:pointer}
+.cat_label, #category_header { width:150px; }
+
+.series_label, .sparkline, .selected_value, .selected_perc,
+#category_header, #series_header, #sparkline_header, #level_header, #yoy_header,
+#line_left_header, #line_right_header, #pie_header,
+.left_toggle, .right_toggle {float:left}
+
+
+.series {float:left; width:450px; text-align:center; font-size:10px; overflow:hidden;}
+.series_label, #series_header { width: 180px; padding: 0 5px;}
+.series_label span { display: inline-block; vertical-align:middle; line-height:normal;}
+.sparkline, #sparkline_header { width:150px; }
+.selected_value, #level_header { width:70px; }
+.selected_perc, #yoy_header { width: 40px; }
+
+#line_left_header { width: 40px }
+#line_right_header { width: 40px }
+#pie_header { width: 40px }
+.left_toggle, .right_toggle { width: 40px; text_align:center; cursor:pointer }
+
+#sparkline_header {font-weight:bold; font-size:11px;}
+#table_header { height: 20px; text-align:center; font-size:11px;}
+
+
+#buttons a { text-decoration:none;}
+#geo, #freq { float:left; margin-top:10px;}
+#geo { width :300px; }
+#freq {width :100px; }
+
+
