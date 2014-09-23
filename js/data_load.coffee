@@ -1,7 +1,6 @@
 ---
 ---
 
-freq = "a"
 dates = { a: [], q:[] , m:[] }
 
 #should delete all of these eventually
@@ -96,8 +95,8 @@ prep_group_data = (series_group, data) ->
 
 window.prepare_all_data = (meta, data) ->
   dates[f] = data[f].map((d)->d.date) for f in d3.keys(data)
-  console.log(dates)
   prep_group_data group, data for group in meta.series_groups
+  meta.dates = dates
   meta
   
 window.load_page_data = (page_slug, callback) ->

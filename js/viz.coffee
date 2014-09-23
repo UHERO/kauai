@@ -1,6 +1,7 @@
 ---
 ---
-
+# ------- overal context variables ------------
+window.freq = "a"
 #-------- used by several modules -------------  
 
 window.series_to_class = (series_name) ->
@@ -34,6 +35,21 @@ set_headline = (text) ->
 set_up_dashboard_elements = (elements) ->
   set_up_div elem for elem in elements
 
+set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
+  d3.select("#" + div_id).remove()
+  d3.select("#" + div_id.replace("div", "container")).insert("div", "div#buttons").attr("id", div_id).attr "class", "slider"
+  $("#" + div_id).slider
+    range: true
+    min: 0
+    max: dates.length - 1
+    values: [ pos1, pos2 ]
+    slide: slide_func
+
+  d3.select("#" + div_id).datum(dates)
+
+set_up_sliders = (dates)->
+  set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
+
 set_up_div = (elem) ->
   d3.select("#charts_area")
     .append("div")
@@ -58,13 +74,12 @@ render_loaded_data = (data) ->
   ]
   
   set_up_dashboard_elements(dashboard_elements)
-  create_data_table()
-  set_up_sliders()
-  page_setup()
+  # create_data_table()
+  # page_setup()
 
 render_page = (page_data) ->
-  console.log("would totally be loading this right now:")
-  console.log(page_data)
+  set_up_sliders(page_data.dates[freq])
+  create_data_table(page_data)
   
 window.load_page = (page_slug) ->
   load_page_data(page_slug, (data) ->
@@ -75,6 +90,5 @@ window.load_page = (page_slug) ->
 set_up_nav()
 set_headline("In 2013, per person per trip spending increaed by 9.63% compared to the previous year")
 d3.csv("data/kauai_data_annual.csv", render_loaded_data)
-d3.json("data/vis_meta.json", (json_data) -> console.log(json_data))
 
-# load_page("vis")
+load_page("vis")

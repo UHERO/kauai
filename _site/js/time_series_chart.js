@@ -97,7 +97,7 @@
     var chart_area, cur_domain, data, domain, duration;
     duration = 500;
     chart_area = d3.select("g#chart_area");
-    data = get_data_in_chart_view(series);
+    data = get_data_in_chart_view("" + series + "." + (freq.toUpperCase()));
     domain = get_series_extent(data);
     cur_domain = y[axis].scale.domain();
     if (!chart_area.selectAll("path." + y[axis]["class"]).empty()) {

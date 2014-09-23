@@ -1,7 +1,5 @@
 (function() {
-  var csv_data_a, csv_headers, dates, filter_and_format_time_series, freq, get_all_csv_data_for_series, prep_group_data, prep_series_data, prepare_csv_headers, series_array_from_csv_data, set_data_for, set_ts_data, spark_data, spark_formatted_data;
-
-  freq = "a";
+  var csv_data_a, csv_headers, dates, filter_and_format_time_series, get_all_csv_data_for_series, prep_group_data, prep_series_data, prepare_csv_headers, series_array_from_csv_data, set_data_for, set_ts_data, spark_data, spark_formatted_data;
 
   dates = {
     a: [],
@@ -194,12 +192,12 @@
         return d.date;
       });
     }
-    console.log(dates);
     _ref1 = meta.series_groups;
     for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
       group = _ref1[_j];
       prep_group_data(group, data);
     }
+    meta.dates = dates;
     return meta;
   };
 

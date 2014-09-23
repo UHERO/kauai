@@ -1,5 +1,7 @@
 (function() {
-  var page_setup, render_loaded_data, render_page, set_headline, set_up_dashboard_elements, set_up_div, set_up_nav;
+  var page_setup, render_loaded_data, render_page, set_headline, set_slider_in_div, set_up_dashboard_elements, set_up_div, set_up_nav, set_up_sliders;
+
+  window.freq = "a";
 
   window.series_to_class = function(series_name) {
     return series_name.replace(".", "_").replace("@", "_").replace("%", "pct");
@@ -36,6 +38,23 @@
     return _results;
   };
 
+  set_slider_in_div = function(div_id, dates, pos1, pos2, slide_func) {
+    d3.select("#" + div_id).remove();
+    d3.select("#" + div_id.replace("div", "container")).insert("div", "div#buttons").attr("id", div_id).attr("class", "slider");
+    $("#" + div_id).slider({
+      range: true,
+      min: 0,
+      max: dates.length - 1,
+      values: [pos1, pos2],
+      slide: slide_func
+    });
+    return d3.select("#" + div_id).datum(dates);
+  };
+
+  set_up_sliders = function(dates) {
+    return set_slider_in_div("sparkline_slider_div", dates, 0, dates.length - 1, trim_sparklines);
+  };
+
   set_up_div = function(elem) {
     return d3.select("#charts_area").append("div").attr("class", "dashboard_element").attr("id", elem.id).style("width", elem.width + "px").style("height", elem.height + "px").call(elem.type_function);
   };
@@ -63,15 +82,12 @@
         type_function: visitor_pie_chart
       }
     ];
-    set_up_dashboard_elements(dashboard_elements);
-    create_data_table();
-    set_up_sliders();
-    return page_setup();
+    return set_up_dashboard_elements(dashboard_elements);
   };
 
   render_page = function(page_data) {
-    console.log("would totally be loading this right now:");
-    return console.log(page_data);
+    set_up_sliders(page_data.dates[freq]);
+    return create_data_table(page_data);
   };
 
   window.load_page = function(page_slug) {
@@ -86,8 +102,6 @@
 
   d3.csv("data/kauai_data_annual.csv", render_loaded_data);
 
-  d3.json("data/vis_meta.json", function(json_data) {
-    return console.log(json_data);
-  });
+  load_page("vis");
 
 }).call(this);

@@ -530,14 +530,9 @@ g#pie_chart_area text {
   clear: both; }
 
 .cat_label {
-  float: left;
-  background-color: #CCC;
-  clear: both;
-  margin-bottom: 5px;
-  text-align: center;
   cursor: pointer; }
 
-.cat_label, #category_header {
+#category_header {
   width: 150px; }
 
 .series_label, .sparkline, .selected_value, .selected_perc,
