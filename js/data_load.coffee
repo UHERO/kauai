@@ -1,20 +1,23 @@
 ---
 ---
 
+freq = "a"
+dates = { a: [], q:[] , m:[] }
+
+#should delete all of these eventually
 csv_data_a = []
 csv_headers = {}
 window.ts_annual = {}
 window.ts_by_category = {}
-
 window.all_dates = []
 
 window.data_categories = 
-  "major indicators": { width: 130 }
-  "visitor industry": { width: 140 }
-  "labor": { width: 100 }
-  "personal income": { width: 120 }
-  "construction": { width: 100 }
-  "county revenue": { width: 120 }
+  "major indicators": { width: 130, slug: "major" }
+  "visitor industry": { width: 140, slug: "vis" }
+  "labor": { width: 100, slug: "labor" }
+  "personal income": { width: 120, slug: "income" }
+  "construction": { width: 100, slug: "const" }
+  "county revenue": { width: 120, slug: "county_rev" }
   
 get_all_csv_data_for_series = (series) ->
   array_to_populate = []
@@ -59,6 +62,58 @@ window.prepare_annual_data = (data) ->
   set_ts_data series for series in series_array_from_csv_data(data)
   window.ts_by_category = d3.nest().key((d) -> d.category).map(d3.values(ts_annual))
 
-  # console.log(ts_annual)
-  # console.log(window.ts_by_category)
-  # console.log(all_dates)
+
+# ------------ Keeper data stuff -------------
+
+spark_data = (name, data) ->
+  data.map((row) -> if row[name] == "" then null else +row[name] )
+
+set_data_for = (f, series, data) ->
+  series_data = spark_data("#{series.udaman_name}.#{f.toUpperCase()}", data[f])
+  peak = d3.max(series_data)
+  trough = d3.min(series_data)
+  last_i = series_data.length-1
+  discard = last_i while (series_data[last_i] == null and last_i -= 1)
+
+  series[f] =
+    data: series_data
+    yoy: []
+    peak: peak
+    trough: trough
+    last: series_data[last_i]
+    peak_i: series_data.indexOf(peak)
+    trough_i: series_data.indexOf(trough)
+    last_i: last_i
+    
+prep_series_data = (series, data) ->
+  (set_data_for f, series, data if series[f]) for f in ['a','q', 'm']
+    
+  if series.children? and series.children.length > 0
+    prep_series_data s, data for s in series.children
+    
+prep_group_data = (series_group, data) ->
+  prep_series_data series, data for series in series_group.series_list
+
+window.prepare_all_data = (meta, data) ->
+  dates[f] = data[f].map((d)->d.date) for f in d3.keys(data)
+  console.log(dates)
+  prep_group_data group, data for group in meta.series_groups
+  meta
+  
+window.load_page_data = (page_slug, callback) ->
+  meta_file = "data/#{page_slug}_meta.json"
+  data_file_a = "data/#{page_slug}_a.csv"
+  data_file_q = "data/#{page_slug}_q.csv"
+  data_file_m = "data/#{page_slug}_m.csv"
+  
+  q = queue()
+  q.defer(d3.json, meta_file)
+  q.defer(d3.csv, data_file_a)
+  q.defer(d3.csv, data_file_q)
+  q.defer(d3.csv, data_file_m)
+  q.awaitAll((error, results) -> 
+    meta = results[0]
+    data = { a: results[1], q: results[2], m: results[3] }
+    prepared_data = prepare_all_data(meta, data)
+    callback(prepared_data)
+  )

@@ -1,5 +1,5 @@
 (function() {
-  var page_setup, render_loaded_data, set_headline, set_up_dashboard_elements, set_up_div, set_up_nav;
+  var page_setup, render_loaded_data, render_page, set_headline, set_up_dashboard_elements, set_up_div, set_up_nav;
 
   window.series_to_class = function(series_name) {
     return series_name.replace(".", "_").replace("@", "_").replace("%", "pct");
@@ -69,10 +69,25 @@
     return page_setup();
   };
 
+  render_page = function(page_data) {
+    console.log("would totally be loading this right now:");
+    return console.log(page_data);
+  };
+
+  window.load_page = function(page_slug) {
+    return load_page_data(page_slug, function(data) {
+      return render_page(data);
+    });
+  };
+
   set_up_nav();
 
   set_headline("In 2013, per person per trip spending increaed by 9.63% compared to the previous year");
 
   d3.csv("data/kauai_data_annual.csv", render_loaded_data);
+
+  d3.json("data/vis_meta.json", function(json_data) {
+    return console.log(json_data);
+  });
 
 }).call(this);

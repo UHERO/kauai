@@ -62,8 +62,19 @@ render_loaded_data = (data) ->
   set_up_sliders()
   page_setup()
 
+render_page = (page_data) ->
+  console.log("would totally be loading this right now:")
+  console.log(page_data)
+  
+window.load_page = (page_slug) ->
+  load_page_data(page_slug, (data) ->
+    render_page(data)
+  )
 
 #-------- main run code -------------  
 set_up_nav()
 set_headline("In 2013, per person per trip spending increaed by 9.63% compared to the previous year")
 d3.csv("data/kauai_data_annual.csv", render_loaded_data)
+d3.json("data/vis_meta.json", (json_data) -> console.log(json_data))
+
+# load_page("vis")
