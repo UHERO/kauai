@@ -141,9 +141,9 @@ create_axis_control = (cat_series, axis) ->
     .on("click", (d) -> 
       button = d3.select(this)
       if (button.classed("off"))
-        add_to_line_chart(d.udaman_name, axis)
+        add_to_line_chart(d, axis)
       else
-        remove_from_line_chart(d.udaman_name, axis)
+        remove_from_line_chart(d, axis)
     )
 
 create_axis_controls = (cat_series) ->

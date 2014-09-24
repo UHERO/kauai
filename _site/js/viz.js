@@ -1,7 +1,7 @@
 (function() {
   var page_setup, render_loaded_data, render_page, set_headline, set_slider_in_div, set_up_dashboard_elements, set_up_div, set_up_nav, set_up_sliders;
 
-  window.freq = "a";
+  window.freq = "q";
 
   window.series_to_class = function(series_name) {
     return series_name.replace(".", "_").replace("@", "_").replace("%", "pct");
@@ -52,7 +52,8 @@
   };
 
   set_up_sliders = function(dates) {
-    return set_slider_in_div("sparkline_slider_div", dates, 0, dates.length - 1, trim_sparklines);
+    set_slider_in_div("sparkline_slider_div", dates, 0, dates.length - 1, trim_sparklines);
+    return set_slider_in_div("line_chart_slider_div", dates, 0, dates.length - 1, trim_time_series);
   };
 
   set_up_div = function(elem) {
@@ -67,8 +68,12 @@
   };
 
   render_loaded_data = function(data) {
+    return prepare_annual_data(data);
+  };
+
+  render_page = function(page_data) {
     var dashboard_elements;
-    prepare_annual_data(data);
+    set_up_sliders(page_data.dates[freq]);
     dashboard_elements = [
       {
         id: "line_chart",
@@ -82,11 +87,7 @@
         type_function: visitor_pie_chart
       }
     ];
-    return set_up_dashboard_elements(dashboard_elements);
-  };
-
-  render_page = function(page_data) {
-    set_up_sliders(page_data.dates[freq]);
+    set_up_dashboard_elements(dashboard_elements);
     return create_data_table(page_data);
   };
 

@@ -1,7 +1,7 @@
 ---
 ---
 # ------- overal context variables ------------
-window.freq = "a"
+window.freq = "q"
 #-------- used by several modules -------------  
 
 window.series_to_class = (series_name) ->
@@ -49,6 +49,7 @@ set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
 
 set_up_sliders = (dates)->
   set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
+  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
 
 set_up_div = (elem) ->
   d3.select("#charts_area")
@@ -68,17 +69,16 @@ page_setup = () ->
 render_loaded_data = (data) ->
   prepare_annual_data(data)
   
-  dashboard_elements = [ 
-    { id: "line_chart", width: 425, height: 300, type_function: line_chart },
-    { id: "pie_chart", width: 300, height: 300, type_function: visitor_pie_chart },
-  ]
-  
-  set_up_dashboard_elements(dashboard_elements)
-  # create_data_table()
-  # page_setup()
 
 render_page = (page_data) ->
   set_up_sliders(page_data.dates[freq])
+
+  dashboard_elements = [ 
+    { id: "line_chart", width: 425, height: 300, type_function: line_chart },
+    { id: "pie_chart", width: 300, height: 300, type_function: visitor_pie_chart }
+  ]
+  
+  set_up_dashboard_elements(dashboard_elements)
   create_data_table(page_data)
   
 window.load_page = (page_slug) ->

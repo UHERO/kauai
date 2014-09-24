@@ -140,9 +140,9 @@
       var button;
       button = d3.select(this);
       if (button.classed("off")) {
-        return add_to_line_chart(d.udaman_name, axis);
+        return add_to_line_chart(d, axis);
       } else {
-        return remove_from_line_chart(d.udaman_name, axis);
+        return remove_from_line_chart(d, axis);
       }
     });
   };
