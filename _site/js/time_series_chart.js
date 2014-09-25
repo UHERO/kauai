@@ -80,11 +80,7 @@
   };
 
   trim_d = function(d, extent) {
-    var dates;
-    d.trimmed_data = d.data.slice(extent[0], extent[1] + 1);
-    dates = d3.select("#line_chart_slider_div").datum();
-    console.log("se:" + (dates.slice(extent[0], extent[1] + 1)));
-    return console.log("do:" + (x.domain()));
+    return d.trimmed_data = d.data.slice(extent[0], extent[1] + 1);
   };
 
   adjust_x_axis_labels = function(text_elements) {
@@ -141,7 +137,6 @@
       duration = 0;
     }
     dates = d3.select("#line_chart_slider_div").datum();
-    console.log("slide_start " + dates[extent[0]]);
     update_x_domain(extent);
     return paths = d3.select("g#chart_area").selectAll("path").attr("d", function(d) {
       trim_d(d[freq], extent);
@@ -156,6 +151,7 @@
 
   window.add_to_line_chart = function(d, axis) {
     var domain, duration;
+    console.log(d[freq].yoy);
     duration = 500;
     trim_d(d[freq], slider_extent);
     domain = chart_extent(d[freq].trimmed_data);

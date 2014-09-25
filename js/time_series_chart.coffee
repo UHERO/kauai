@@ -121,7 +121,6 @@ update_y_domain_with_new = (axis, domain, duration = 500) ->
   
 redraw_line_chart = (extent, duration = 0) ->
   dates = d3.select("#line_chart_slider_div").datum()
-  console.log("slide_start #{dates[extent[0]]}")
   update_x_domain(extent)
 
   paths = d3.select("g#chart_area")
@@ -136,6 +135,7 @@ window.trim_time_series = (event, ui) ->
   redraw_line_chart(slider_extent)
 
 window.add_to_line_chart = (d, axis) ->
+  console.log(d[freq].yoy)
   duration = 500
   trim_d d[freq], slider_extent
   domain = chart_extent(d[freq].trimmed_data)  

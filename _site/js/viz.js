@@ -1,7 +1,7 @@
 (function() {
   var page_setup, render_loaded_data, render_page, set_headline, set_slider_in_div, set_up_dashboard_elements, set_up_div, set_up_nav, set_up_sliders;
 
-  window.freq = "a";
+  window.freq = "m";
 
   window.series_to_class = function(series_name) {
     return series_name.replace(".", "_").replace("@", "_").replace("%", "pct");
