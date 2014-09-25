@@ -170,7 +170,7 @@
     svg = set_up_svg(container);
     margin = {
       top: 10,
-      bottom: 25,
+      bottom: 75,
       left: 50,
       right: 50
     };
@@ -181,7 +181,9 @@
     x.rangePoints([0, chart_area_width]);
     y.left.scale.range([chart_area_height, 0]);
     y.right.scale.range([chart_area_height, 0]);
-    svg.append("g").attr("id", "time_axis").attr("transform", "translate(" + margin.left + "," + (margin.top + chart_area_height) + ")").call(time_axis);
+    svg.append("g").attr("id", "time_axis").attr("transform", "translate(" + margin.left + "," + (margin.top + chart_area_height) + ")").call(time_axis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr('dy', ".20em").attr("transform", function(d) {
+      return "rotate(-65)";
+    });
     svg.append("g").attr("id", "left_axis").attr("transform", "translate(" + margin.left + "," + margin.top + ")").call(y.left.axis);
     svg.append("g").attr("id", "right_axis").attr("transform", "translate(" + (margin.left + chart_area_width) + "," + margin.top + ")").call(y.right.axis);
     return chart_area = svg.append("g").attr("id", "chart_area").attr("transform", "translate(" + margin.left + "," + margin.top + ")");

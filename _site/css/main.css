@@ -447,6 +447,10 @@ pre {
   .highlight .il {
     color: #099; }
 
+.site-footer {
+  position: relative;
+  top: 50px; }
+
 #county_revenue.nav_link {
   margin: 0; }
 
@@ -474,10 +478,14 @@ pre {
   float: left; }
 
 #data {
-  clear: both; }
+  clear: both;
+  position: relative;
+  top: 50px; }
 
 #source_links {
-  clear: both; }
+  clear: both;
+  position: relative;
+  top: 50px; }
 
 h2#headline {
   padding: 10px 0 0 0; }
@@ -506,7 +514,9 @@ g#pie_chart_area text {
 
 /*********** General Div Alignment *****************/
 #controls {
-  clear: both; }
+  clear: both;
+  position: relative;
+  top: 67px; }
 
 #series_display {
   clear: both; }
@@ -519,11 +529,18 @@ g#pie_chart_area text {
   background: none; }
 
 #sparkline_slider_div {
-  height: 10px; }
+  height: 10px;
+  width: 370px; }
 
 .ui-slider .ui-slider-handle {
   width: 10px;
   height: 20px; }
+
+#line_chart_slider_container {
+  width: 350px;
+  position: relative;
+  top: 350px;
+  left: 50px; }
 
 /*********** Flextable Stuff *****************/
 .category {
@@ -588,6 +605,10 @@ g#pie_chart_area text {
   height: 20px;
   text-align: center;
   font-size: 11px; }
+
+#series_display h3 {
+  position: relative;
+  bottom: 40px; }
 
 #buttons a {
   text-decoration: none; }

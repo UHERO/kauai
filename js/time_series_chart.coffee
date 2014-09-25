@@ -161,7 +161,7 @@ window.line_chart = (container) ->
   svg = set_up_svg(container)
   margin = 
     top: 10
-    bottom: 25
+    bottom: 75
     left: 50
     right: 50
 
@@ -178,6 +178,11 @@ window.line_chart = (container) ->
     .attr("id", "time_axis")
     .attr("transform", "translate(#{margin.left},#{margin.top+chart_area_height})")
     .call(time_axis)
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr('dy', ".20em")
+    .attr("transform", (d) -> "rotate(-65)")
 
   svg.append("g")
     .attr("id", "left_axis")

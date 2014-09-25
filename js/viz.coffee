@@ -1,7 +1,7 @@
 ---
 ---
 # ------- overal context variables ------------
-window.freq = "q"
+window.freq = "a"
 #-------- used by several modules -------------  
 
 window.series_to_class = (series_name) ->
