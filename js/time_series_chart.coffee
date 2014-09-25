@@ -1,13 +1,9 @@
 ---
 ---
-start_date = 2004
-end_date = 2013
+slider_extent = null
 
 x_from_slider = (d,i) ->
-  slider_start = $("#line_chart_slider_div").slider("option", "values")[0]
-  dates = d3.select("#line_chart_slider_div").datum()
-  pos = slider_start + i
-  x(dates[pos])
+  x(all_dates()[slider_extent[0] + i])
   
 #---- Line Chart variables ---------
 
@@ -44,6 +40,16 @@ dummy_path = d3.svg.line()
 # ------------------------------------
 
 
+all_dates = ->
+  d3.select("#line_chart_slider_div").datum()
+    
+dates_extent = (extent) ->
+  all_dates().slice(extent[0], extent[1]+1)
+
+slider_dates = ->
+  extent = slider_extent
+  dates_extent(extent)
+  
   
 chart_extent = (array) ->
   full_extent = d3.extent(array)
@@ -65,22 +71,25 @@ toggle_axis_button = (series, axis) ->
     button.text("+").attr("class", "#{axis}_toggle off")
 
 trim_d = (d, extent) ->
-  d.trimmed_data = d.data.slice(extent[0], extent[1] + 1)
-  
+  d.trimmed_data = d.data.slice(extent[0], extent[1]+1)
+
+adjust_x_axis_labels = (text_elements) ->
+  text_elements
+    .attr("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr('dy', ".20em")
+    .attr("transform", (d) -> "rotate(-65)")
+
 update_x_domain = (extent, duration=0) ->
-  dates = d3.select("#line_chart_slider_div").datum()
-  x.domain(dates.slice(extent[0], extent[1]+1))
+  x.domain(dates_extent(extent))
 
   d3.select("#time_axis")
     .transition()
     .duration(duration)
     .call(time_axis)
     .selectAll("text")
-    .style("text-anchor", "end")
-    .attr("dx", "-.8em")
-    .attr('dy', ".20em")
-    .attr("transform", (d) -> "rotate(-65)")
-    
+    .call(adjust_x_axis_labels)
+
 update_domain = (axis, duration = 500) ->
   data = d3.select("g#chart_area").selectAll(".#{y[axis].class}").data().map((d) -> d[freq].trimmed_data)
 
@@ -121,13 +130,12 @@ redraw_line_chart = (extent, duration = 0) ->
     )
     
 window.trim_time_series = (event, ui) ->
-  values = $("#line_chart_slider_div").slider("option", "values")
-  redraw_line_chart(values)
+  slider_extent = ui.values
+  redraw_line_chart(slider_extent)
 
 window.add_to_line_chart = (d, axis) ->
   duration = 500
-  extent = $("#line_chart_slider_div").slider("option", "values")
-  trim_d d[freq], extent
+  trim_d d[freq], slider_extent
   domain = chart_extent(d[freq].trimmed_data)  
   
   update_y_domain_with_new(axis, domain, duration)
@@ -173,8 +181,8 @@ window.line_chart = (container) ->
   chart_area_width = svg.attr("width") - margin.left-margin.right
   chart_area_height = svg.attr("height") - margin.top - margin.bottom
 
-  extent = $("#line_chart_slider_div").slider("option", "values")
-  update_x_domain(extent)
+  slider_extent = [0, all_dates().length]
+  update_x_domain(slider_extent)
   x.rangePoints([0, chart_area_width])
   y.left.scale.range([chart_area_height,0])
   y.right.scale.range([chart_area_height,0])
@@ -184,10 +192,7 @@ window.line_chart = (container) ->
     .attr("transform", "translate(#{margin.left},#{margin.top+chart_area_height})")
     .call(time_axis)
     .selectAll("text")
-    .style("text-anchor", "end")
-    .attr("dx", "-.8em")
-    .attr('dy', ".20em")
-    .attr("transform", (d) -> "rotate(-65)")
+    .call(adjust_x_axis_labels)
 
   svg.append("g")
     .attr("id", "left_axis")
