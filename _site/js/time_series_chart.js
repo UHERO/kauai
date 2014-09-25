@@ -124,10 +124,12 @@
   };
 
   redraw_line_chart = function(extent, duration) {
-    var paths;
+    var dates, paths;
     if (duration == null) {
       duration = 0;
     }
+    dates = d3.select("#line_chart_slider_div").datum();
+    console.log("slide_start " + dates[extent[0]]);
     update_x_domain(extent);
     return paths = d3.select("g#chart_area").selectAll("path").attr("d", function(d) {
       trim_d(d[freq], extent);
