@@ -1,7 +1,7 @@
 ---
 ---
 # ------- overal context variables ------------
-window.freq = "q"
+window.freq = "a"
 #-------- used by several modules -------------  
 
 window.series_to_class = (series_name) ->
@@ -41,7 +41,7 @@ set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   $("#" + div_id).slider
     range: true
     min: 0
-    max: dates.length - 1
+    max: dates.length-1
     values: [ pos1, pos2 ]
     slide: slide_func
 
