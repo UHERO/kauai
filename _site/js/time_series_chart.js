@@ -1,5 +1,5 @@
 (function() {
-  var adjust_x_axis_labels, all_dates, chart_extent, combine_extent, dates_extent, dummy_path, redraw_line_chart, slider_dates, slider_extent, time_axis, toggle_axis_button, trim_d, update_domain, update_x_domain, update_y_domain_with_new, x, x_from_slider, y, y_left, y_right;
+  var all_dates, chart_extent, combine_extent, dates_extent, dummy_path, redraw_line_chart, regenerate_path, slider_dates, slider_extent, time_axis, toggle_axis_button, trim_d, update_domain, update_x_domain, update_y_domain_with_new, x, x_from_slider, y, y_left, y_right;
 
   slider_extent = null;
 
@@ -38,7 +38,13 @@
     }
   };
 
-  time_axis = d3.svg.axis().scale(x);
+  time_axis = d3.svg.axis().scale(x).tickFormat(function(d, i) {
+    if (i === 0 || i === (slider_extent[1] - slider_extent[0])) {
+      return d;
+    } else {
+      return "";
+    }
+  });
 
   dummy_path = d3.svg.line().x(x_from_slider).y(0).defined(function(d) {
     return d !== null;
@@ -83,18 +89,12 @@
     return d.trimmed_data = d.data.slice(extent[0], extent[1] + 1);
   };
 
-  adjust_x_axis_labels = function(text_elements) {
-    return text_elements.attr("text-anchor", "end").attr("dx", "-.8em").attr('dy', ".20em").attr("transform", function(d) {
-      return "rotate(-65)";
-    });
-  };
-
   update_x_domain = function(extent, duration) {
     if (duration == null) {
       duration = 0;
     }
     x.domain(dates_extent(extent));
-    return d3.select("#time_axis").transition().duration(duration).call(time_axis).selectAll("text").call(adjust_x_axis_labels);
+    return d3.select("#time_axis").transition().duration(duration).call(time_axis);
   };
 
   update_domain = function(axis, duration) {
@@ -131,16 +131,22 @@
     return d3.select("#" + axis + "_axis").transition().duration(duration).call(y[axis].axis);
   };
 
+  regenerate_path = function(d, extent, axis) {
+    trim_d(d[freq], extent);
+    return y[axis].path(d[freq].trimmed_data);
+  };
+
   redraw_line_chart = function(extent, duration) {
-    var dates, paths;
+    var l_paths, r_paths;
     if (duration == null) {
       duration = 0;
     }
-    dates = d3.select("#line_chart_slider_div").datum();
     update_x_domain(extent);
-    return paths = d3.select("g#chart_area").selectAll("path").attr("d", function(d) {
-      trim_d(d[freq], extent);
-      return y["left"].path(d[freq].trimmed_data);
+    l_paths = d3.select("g#chart_area path.s_left").attr("d", function(d) {
+      return regenerate_path(d, extent, "left");
+    });
+    return r_paths = d3.select("g#chart_area path.s_right").attr("d", function(d) {
+      return regenerate_path(d, extent, "right");
     });
   };
 
@@ -188,12 +194,12 @@
     };
     chart_area_width = svg.attr("width") - margin.left - margin.right;
     chart_area_height = svg.attr("height") - margin.top - margin.bottom;
-    slider_extent = [0, all_dates().length];
+    slider_extent = [0, all_dates().length - 1];
     update_x_domain(slider_extent);
     x.rangePoints([0, chart_area_width]);
     y.left.scale.range([chart_area_height, 0]);
     y.right.scale.range([chart_area_height, 0]);
-    svg.append("g").attr("id", "time_axis").attr("transform", "translate(" + margin.left + "," + (margin.top + chart_area_height) + ")").call(time_axis).selectAll("text").call(adjust_x_axis_labels);
+    svg.append("g").attr("id", "time_axis").attr("transform", "translate(" + margin.left + "," + (margin.top + chart_area_height) + ")").call(time_axis);
     svg.append("g").attr("id", "left_axis").attr("transform", "translate(" + margin.left + "," + margin.top + ")").call(y.left.axis);
     svg.append("g").attr("id", "right_axis").attr("transform", "translate(" + (margin.left + chart_area_width) + "," + margin.top + ")").call(y.right.axis);
     return chart_area = svg.append("g").attr("id", "chart_area").attr("transform", "translate(" + margin.left + "," + margin.top + ")");

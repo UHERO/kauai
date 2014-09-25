@@ -30,7 +30,7 @@ y =
             .defined((d) -> d isnt null)
     
 
-time_axis = d3.svg.axis().scale(x)
+time_axis = d3.svg.axis().scale(x).tickFormat((d,i) -> if i is 0 or i is (slider_extent[1] - slider_extent[0]) then d else "")
 
 dummy_path = d3.svg.line()
   .x(x_from_slider)
@@ -73,13 +73,6 @@ toggle_axis_button = (series, axis) ->
 trim_d = (d, extent) ->
   d.trimmed_data = d.data.slice(extent[0], extent[1]+1)
 
-adjust_x_axis_labels = (text_elements) ->
-  text_elements
-    .attr("text-anchor", "end")
-    .attr("dx", "-.8em")
-    .attr('dy', ".20em")
-    .attr("transform", (d) -> "rotate(-65)")
-
 update_x_domain = (extent, duration=0) ->
   x.domain(dates_extent(extent))
 
@@ -87,8 +80,6 @@ update_x_domain = (extent, duration=0) ->
     .transition()
     .duration(duration)
     .call(time_axis)
-    .selectAll("text")
-    .call(adjust_x_axis_labels)
 
 update_domain = (axis, duration = 500) ->
   data = d3.select("g#chart_area").selectAll(".#{y[axis].class}").data().map((d) -> d[freq].trimmed_data)
@@ -118,17 +109,19 @@ update_y_domain_with_new = (axis, domain, duration = 500) ->
     .duration(duration)
     .call(y[axis].axis)
 
+
+regenerate_path = (d, extent, axis) ->
+  trim_d d[freq], extent
+  y[axis].path(d[freq].trimmed_data)
   
 redraw_line_chart = (extent, duration = 0) ->
-  dates = d3.select("#line_chart_slider_div").datum()
   update_x_domain(extent)
 
-  paths = d3.select("g#chart_area")
-    .selectAll("path")
-    .attr("d", (d) -> 
-      trim_d d[freq], extent
-      y["left"].path(d[freq].trimmed_data)
-    )
+  l_paths = d3.select("g#chart_area path.s_left")
+    .attr("d", (d) -> regenerate_path(d, extent, "left") )
+
+  r_paths = d3.select("g#chart_area path.s_right")
+    .attr("d", (d) -> regenerate_path(d, extent, "right") )
     
 window.trim_time_series = (event, ui) ->
   slider_extent = ui.values
@@ -183,7 +176,7 @@ window.line_chart = (container) ->
   chart_area_width = svg.attr("width") - margin.left-margin.right
   chart_area_height = svg.attr("height") - margin.top - margin.bottom
 
-  slider_extent = [0, all_dates().length]
+  slider_extent = [0, all_dates().length-1]
   update_x_domain(slider_extent)
   x.rangePoints([0, chart_area_width])
   y.left.scale.range([chart_area_height,0])
@@ -193,8 +186,6 @@ window.line_chart = (container) ->
     .attr("id", "time_axis")
     .attr("transform", "translate(#{margin.left},#{margin.top+chart_area_height})")
     .call(time_axis)
-    .selectAll("text")
-    .call(adjust_x_axis_labels)
 
   svg.append("g")
     .attr("id", "left_axis")
