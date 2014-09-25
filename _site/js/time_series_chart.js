@@ -72,7 +72,11 @@
   };
 
   trim_d = function(d, extent) {
-    return d.trimmed_data = d.data.slice(extent[0], extent[1] + 1);
+    var dates;
+    d.trimmed_data = d.data.slice(extent[0], extent[1] + 1);
+    dates = d3.select("#line_chart_slider_div").datum();
+    console.log("se:" + (dates.slice(extent[0], extent[1] + 1)));
+    return console.log("do:" + (x.domain()));
   };
 
   update_x_domain = function(extent, duration) {

@@ -66,6 +66,9 @@ toggle_axis_button = (series, axis) ->
 
 trim_d = (d, extent) ->
   d.trimmed_data = d.data.slice(extent[0], extent[1] + 1)
+  dates = d3.select("#line_chart_slider_div").datum()
+  console.log("se:#{dates.slice(extent[0], extent[1] + 1)}")
+  console.log("do:#{x.domain()}")
   
 update_x_domain = (extent, duration=0) ->
   dates = d3.select("#line_chart_slider_div").datum()
