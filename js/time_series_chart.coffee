@@ -75,6 +75,11 @@ update_x_domain = (extent, duration=0) ->
     .transition()
     .duration(duration)
     .call(time_axis)
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr('dy', ".20em")
+    .attr("transform", (d) -> "rotate(-65)")
     
 update_domain = (axis, duration = 500) ->
   data = d3.select("g#chart_area").selectAll(".#{y[axis].class}").data().map((d) -> d[freq].trimmed_data)

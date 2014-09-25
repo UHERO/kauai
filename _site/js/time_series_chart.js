@@ -82,7 +82,9 @@
     }
     dates = d3.select("#line_chart_slider_div").datum();
     x.domain(dates.slice(extent[0], extent[1] + 1));
-    return d3.select("#time_axis").transition().duration(duration).call(time_axis);
+    return d3.select("#time_axis").transition().duration(duration).call(time_axis).selectAll("text").style("text-anchor", "end").attr("dx", "-.8em").attr('dy', ".20em").attr("transform", function(d) {
+      return "rotate(-65)";
+    });
   };
 
   update_domain = function(axis, duration) {
