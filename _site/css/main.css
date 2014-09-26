@@ -536,17 +536,16 @@ g#pie_chart_area text {
   width: 10px;
   height: 20px; }
 
+/* should probably set in code when setting the rectangle sizes */
 #line_chart_slider_container {
-  width: 350px;
+  width: 330px;
   float: left;
-  margin-left: 50px;
-  border: 1px solid red; }
+  margin-left: 50px; }
 
 #time_slice_slider_container {
-  width: 340px;
+  width: 250px;
   float: left;
-  margin-left: 50px;
-  border: 1px solid red; }
+  margin-left: 80px; }
 
 /*********** Flextable Stuff *****************/
 .category {

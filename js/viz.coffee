@@ -32,8 +32,7 @@ set_up_nav = () ->
 set_headline = (text) ->
   d3.select("#headline").text(text)
 
-set_up_dashboard_elements = (elements) ->
-  set_up_div elem for elem in elements
+
 
 set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()
@@ -50,6 +49,7 @@ set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
 set_up_sliders = (dates)->
   set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
   set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
+  set_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
 
 set_up_div = (elem) ->
   d3.select("#charts_area")
@@ -59,7 +59,10 @@ set_up_div = (elem) ->
     .style("width", elem.width+"px")
     .style("height", elem.height+"px")
     .call(elem.type_function)
- 
+
+set_up_dashboard_elements = (elements) ->
+  set_up_div elem for elem in elements
+       
 page_setup = () ->
   collapse d3.select("#cat_Construction")
   collapse d3.select("#cat_Employment")

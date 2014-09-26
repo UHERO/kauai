@@ -1,13 +1,28 @@
 ---
 ---
+slider_extent = null
+
 window.add_to_pie = (series) ->
   console.log("sending to right")
 
 window.remove_from_pie = (series) ->
   console.log("removing from left")
 
+
+all_dates = ->
+  d3.select("#time_slice_slider_div").datum()
+    
+dates_extent = (extent) ->
+  all_dates().slice(extent[0], extent[1]+1)
+
+slider_dates = ->
+  extent = slider_extent
+  dates_extent(extent)
+  
+
 window.redraw_slice = (event, ui) ->
-  console.log(ui)
+  slider_extent = ui.values
+  d3.select("#slice_slider_selection").text(all_dates()[slider_extent[1]])
   
 window.visitor_pie_chart = (container) ->
   svg = set_up_svg(container)
@@ -25,6 +40,7 @@ window.visitor_pie_chart = (container) ->
   chart_area = svg.append("g")
     .attr("id", "pie_chart_area")
     .attr("transform", "translate(#{center_x},#{center_y})")
+
   pie_data = ["VISUSW", "VISUSE", "VISJP", "VISCAN"].map((d) -> 
     data_point = ts_annual["#{d}@KAU.A"].data.filter((d) -> +d.period == 2013)[0].val
     { val: +data_point, s_name: d }
@@ -49,8 +65,8 @@ window.visitor_pie_chart = (container) ->
       slice = d3.select(this)
       slice.attr("fill-opacity", ".3")
 
-      chart_area.append("text.pie_label")
-        .attr("pie_label")
+      chart_area.append("text")
+        .attr("class","pie_label")
         .attr("text-anchor", "middle")
         .attr("transform", "translate( #{pie_arc.centroid(d)} )" )
         .text(d.data.s_name)

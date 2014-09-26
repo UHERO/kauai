@@ -28,16 +28,6 @@
     return d3.select("#headline").text(text);
   };
 
-  set_up_dashboard_elements = function(elements) {
-    var elem, _i, _len, _results;
-    _results = [];
-    for (_i = 0, _len = elements.length; _i < _len; _i++) {
-      elem = elements[_i];
-      _results.push(set_up_div(elem));
-    }
-    return _results;
-  };
-
   set_slider_in_div = function(div_id, dates, pos1, pos2, slide_func) {
     d3.select("#" + div_id).remove();
     d3.select("#" + div_id.replace("div", "container")).insert("div", "div#buttons").attr("id", div_id).attr("class", "slider");
@@ -53,11 +43,22 @@
 
   set_up_sliders = function(dates) {
     set_slider_in_div("sparkline_slider_div", dates, 0, dates.length - 1, trim_sparklines);
-    return set_slider_in_div("line_chart_slider_div", dates, 0, dates.length - 1, trim_time_series);
+    set_slider_in_div("line_chart_slider_div", dates, 0, dates.length - 1, trim_time_series);
+    return set_slider_in_div("time_slice_slider_div", dates, 0, dates.length - 1, redraw_slice);
   };
 
   set_up_div = function(elem) {
     return d3.select("#charts_area").append("div").attr("class", "dashboard_element").attr("id", elem.id).style("width", elem.width + "px").style("height", elem.height + "px").call(elem.type_function);
+  };
+
+  set_up_dashboard_elements = function(elements) {
+    var elem, _i, _len, _results;
+    _results = [];
+    for (_i = 0, _len = elements.length; _i < _len; _i++) {
+      elem = elements[_i];
+      _results.push(set_up_div(elem));
+    }
+    return _results;
   };
 
   page_setup = function() {
