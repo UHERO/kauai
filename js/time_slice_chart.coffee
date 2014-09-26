@@ -1,12 +1,12 @@
 ---
 ---
-slider_extent = null
+slider_val = null
 svg = null
 chart_area = null
 color = d3.scale.category20c()
 
 pie_layout = d3.layout.pie()
-  .value((d) -> d[freq].data[selected_pos()])
+  .value((d) -> d[freq].data[slider_val])
 
 pie_arc = d3.svg.arc()
   .outerRadius(100)
@@ -18,21 +18,14 @@ all_dates = ->
 dates_extent = (extent) ->
   all_dates().slice(extent[0], extent[1]+1)
 
-slider_dates = ->
-  extent = slider_extent
-  dates_extent(extent)
-
 selected_date = ->
-  all_dates()[selected_pos()]
-
-selected_pos = ->
-  slider_extent[1]
+  all_dates()[slider_val]
 
 set_date_shown = ->
   d3.select("#slice_slider_selection").text(selected_date())
     
 window.redraw_slice = (event, ui) ->
-  slider_extent = ui.values
+  slider_val = ui.value
   set_date_shown()
   pie_slices = chart_area.selectAll("path")
   pie_data = pie_slices.data().map((d) -> d.data)
@@ -65,7 +58,7 @@ mouseout_pie = (d) ->
   chart_area.select("text.pie_label").remove()
 
 set_slider_dates = (extent) ->
-  slider_extent = extent
+  slider_val = extent[1]
   # no need to change the dates, slider indices are still relative
   # to full date / data arrays
   $("#time_slice_slider_div").slider("option", "min", extent[0])
@@ -89,7 +82,7 @@ window.pie_these_series = (series_data) ->
     .on("mouseout", mouseout_pie)
 
 window.visitor_pie_chart = (container) ->
-  slider_extent = [0, all_dates().length-1]
+  slider_val = all_dates().length-1
   svg = set_up_svg(container)
 
   center_x = svg.attr("width") / 2

@@ -46,10 +46,21 @@ set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
 
   d3.select("#" + div_id).datum(dates)
 
+set_single_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
+  d3.select("#" + div_id).remove()
+  d3.select("#" + div_id.replace("div", "container")).insert("div", "div#buttons").attr("id", div_id).attr "class", "slider"
+  $("#" + div_id).slider
+    min: 0
+    max: dates.length-1
+    value: pos2
+    slide: slide_func
+
+  d3.select("#" + div_id).datum(dates)
+  
 set_up_sliders = (dates)->
   set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
   set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
-  set_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
+  set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
 
 set_up_div = (elem) ->
   d3.select("#charts_area")

@@ -1,7 +1,7 @@
 (function() {
-  var all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_date, selected_pos, set_date_shown, set_slider_dates, slider_dates, slider_extent, svg;
+  var all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_date, set_date_shown, set_slider_dates, slider_val, svg;
 
-  slider_extent = null;
+  slider_val = null;
 
   svg = null;
 
@@ -10,7 +10,7 @@
   color = d3.scale.category20c();
 
   pie_layout = d3.layout.pie().value(function(d) {
-    return d[freq].data[selected_pos()];
+    return d[freq].data[slider_val];
   });
 
   pie_arc = d3.svg.arc().outerRadius(100).innerRadius(0);
@@ -23,18 +23,8 @@
     return all_dates().slice(extent[0], extent[1] + 1);
   };
 
-  slider_dates = function() {
-    var extent;
-    extent = slider_extent;
-    return dates_extent(extent);
-  };
-
   selected_date = function() {
-    return all_dates()[selected_pos()];
-  };
-
-  selected_pos = function() {
-    return slider_extent[1];
+    return all_dates()[slider_val];
   };
 
   set_date_shown = function() {
@@ -43,7 +33,7 @@
 
   window.redraw_slice = function(event, ui) {
     var pie_data, pie_slices;
-    slider_extent = ui.values;
+    slider_val = ui.value;
     set_date_shown();
     pie_slices = chart_area.selectAll("path");
     pie_data = pie_slices.data().map(function(d) {
@@ -94,7 +84,7 @@
   };
 
   set_slider_dates = function(extent) {
-    slider_extent = extent;
+    slider_val = extent[1];
     $("#time_slice_slider_div").slider("option", "min", extent[0]);
     $("#time_slice_slider_div").slider("option", "max", extent[1]);
     return set_date_shown();
@@ -114,7 +104,7 @@
 
   window.visitor_pie_chart = function(container) {
     var center_x, center_y;
-    slider_extent = [0, all_dates().length - 1];
+    slider_val = all_dates().length - 1;
     svg = set_up_svg(container);
     center_x = svg.attr("width") / 2;
     center_y = svg.attr("height") / 2;
