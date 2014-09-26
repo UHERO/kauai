@@ -1,5 +1,5 @@
 (function() {
-  var all_dates, chart_area, color, dates_extent, pie_arc, pie_data, pie_data_from_series, pie_layout, selected_date, selected_pos, slider_dates, slider_extent, svg;
+  var all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_date, selected_pos, set_date_shown, set_slider_dates, slider_dates, slider_extent, svg;
 
   slider_extent = null;
 
@@ -9,21 +9,11 @@
 
   color = d3.scale.category20c();
 
-  pie_data = null;
-
   pie_layout = d3.layout.pie().value(function(d) {
-    return d.vals[selected_pos()];
+    return d[freq].data[selected_pos()];
   });
 
   pie_arc = d3.svg.arc().outerRadius(100).innerRadius(0);
-
-  window.add_to_pie = function(series) {
-    return console.log("sending to right");
-  };
-
-  window.remove_from_pie = function(series) {
-    return console.log("removing from left");
-  };
 
   all_dates = function() {
     return d3.select("#time_slice_slider_div").datum();
@@ -47,38 +37,79 @@
     return slider_extent[1];
   };
 
-  window.redraw_slice = function(event, ui) {
-    slider_extent = ui.values;
-    d3.select("#slice_slider_selection").text(selected_date());
-    return chart_area.selectAll("path").data(pie_layout(pie_data)).attr("d", pie_arc);
+  set_date_shown = function() {
+    return d3.select("#slice_slider_selection").text(selected_date());
   };
 
-  pie_data_from_series = function(series_data) {
-    var data;
-    return data = series_data.map(function(d) {
-      return {
-        vals: d[freq].data,
-        s_name: d.display_name
-      };
+  window.redraw_slice = function(event, ui) {
+    var pie_data, pie_slices;
+    slider_extent = ui.values;
+    set_date_shown();
+    pie_slices = chart_area.selectAll("path");
+    pie_data = pie_slices.data().map(function(d) {
+      return d.data;
     });
+    return pie_slices.data(pie_layout(pie_data), function(d) {
+      return d.data.display_name;
+    }).attr("d", pie_arc);
+  };
+
+  get_data_index_extent = function(data) {
+    var end_i, start_i;
+    start_i = data.findIndex(function(d) {
+      return d !== null;
+    });
+    end_i = data.length - 1 - data.slice().reverse().findIndex(function(d) {
+      return d !== null;
+    });
+    return [start_i, end_i];
+  };
+
+  get_common_dates = function(series_data) {
+    var arr;
+    arr = series_data.map(function(series) {
+      return get_data_index_extent(series[freq].data);
+    });
+    return [
+      d3.max(arr.map(function(d) {
+        return d[0];
+      })), d3.min(arr.map(function(d) {
+        return d[1];
+      }))
+    ];
+  };
+
+  mouseover_pie = function(d, i) {
+    var slice;
+    slice = d3.select(this);
+    slice.attr("fill-opacity", ".3");
+    return chart_area.append("text").attr("class", "pie_label").attr("text-anchor", "middle").attr("transform", "translate( " + (pie_arc.centroid(d)) + " )").text(d.data.display_name);
+  };
+
+  mouseout_pie = function(d) {
+    var slice;
+    slice = d3.select(this);
+    slice.attr("fill-opacity", "1");
+    return chart_area.select("text.pie_label").remove();
+  };
+
+  set_slider_dates = function(extent) {
+    slider_extent = extent;
+    $("#time_slice_slider_div").slider("option", "min", extent[0]);
+    $("#time_slice_slider_div").slider("option", "max", extent[1]);
+    return set_date_shown();
   };
 
   window.pie_these_series = function(series_data) {
-    pie_data = pie_data_from_series(series_data);
+    var data_extent;
+    data_extent = get_common_dates(series_data);
+    set_slider_dates(data_extent);
     chart_area.selectAll("path").remove();
-    return chart_area.selectAll("path").data(pie_layout(pie_data)).enter().append("path").attr("d", pie_arc).attr("fill", function(d) {
-      return color(d.data.s_name);
-    }).attr("stroke", "white").attr("stroke-width", 2).on("mouseover", function(d, i) {
-      var slice;
-      slice = d3.select(this);
-      slice.attr("fill-opacity", ".3");
-      return chart_area.append("text").attr("class", "pie_label").attr("text-anchor", "middle").attr("transform", "translate( " + (pie_arc.centroid(d)) + " )").text(d.data.s_name);
-    }).on("mouseout", function(d) {
-      var slice;
-      slice = d3.select(this);
-      slice.attr("fill-opacity", "1");
-      return chart_area.select("text.pie_label").remove();
-    });
+    return chart_area.selectAll("path").data(pie_layout(series_data), function(d) {
+      return d.data.display_name;
+    }).enter().append("path").attr("d", pie_arc).attr("fill", function(d) {
+      return color(d.data.display_name);
+    }).attr("stroke", "white").attr("stroke-width", 2).on("mouseover", mouseover_pie).on("mouseout", mouseout_pie);
   };
 
   window.visitor_pie_chart = function(container) {
