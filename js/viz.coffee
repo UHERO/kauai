@@ -69,10 +69,6 @@ page_setup = () ->
   collapse d3.select("#cat_General")
   collapse d3.select("#cat_Income")
 
-render_loaded_data = (data) ->
-  prepare_annual_data(data)
-  
-
 render_page = (page_data) ->
   set_up_sliders(page_data.dates[freq])
 
@@ -84,7 +80,7 @@ render_page = (page_data) ->
   set_up_dashboard_elements(dashboard_elements)
   create_data_table(page_data)
   console.log(page_data)
-  pie_these_series(page_data.series_groups[0].series_list)
+  pie_these_series(page_data.series_groups[0].series_list[0].children)
   
 window.load_page = (page_slug) ->
   load_page_data(page_slug, (data) ->
@@ -94,6 +90,5 @@ window.load_page = (page_slug) ->
 #-------- main run code -------------  
 set_up_nav()
 set_headline("In 2013, per person per trip spending increaed by 9.63% compared to the previous year")
-d3.csv("data/kauai_data_annual.csv", render_loaded_data)
 
 load_page("vis")
