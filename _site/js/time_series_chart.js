@@ -80,11 +80,7 @@
   };
 
   trim_d = function(d, extent) {
-    var dates;
-    d.trimmed_data = d.data.slice(extent[0], extent[1] + 1);
-    dates = d3.select("#line_chart_slider_div").datum();
-    console.log("se:" + (dates.slice(extent[0], extent[1] + 1)));
-    return console.log("do:" + (x.domain()));
+    return d.trimmed_data = d.data.slice(extent[0], extent[1] + 1);
   };
 
   adjust_x_axis_labels = function(text_elements) {
