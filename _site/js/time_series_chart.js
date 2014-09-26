@@ -157,6 +157,7 @@
 
   window.add_to_line_chart = function(d, axis) {
     var domain, duration;
+    console.log(d);
     duration = 500;
     trim_d(d[freq], slider_extent);
     domain = chart_extent(d[freq].data);

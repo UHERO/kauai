@@ -83,6 +83,8 @@ render_page = (page_data) ->
   
   set_up_dashboard_elements(dashboard_elements)
   create_data_table(page_data)
+  console.log(page_data)
+  pie_these_series(page_data.series_groups[0].series_list)
   
 window.load_page = (page_slug) ->
   load_page_data(page_slug, (data) ->

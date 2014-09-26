@@ -128,6 +128,7 @@ window.trim_time_series = (event, ui) ->
   redraw_line_chart(slider_extent)
 
 window.add_to_line_chart = (d, axis) ->
+  console.log(d)
   duration = 500
   trim_d d[freq], slider_extent
   domain = chart_extent(d[freq].data)  

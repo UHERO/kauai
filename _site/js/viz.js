@@ -89,7 +89,9 @@
       }
     ];
     set_up_dashboard_elements(dashboard_elements);
-    return create_data_table(page_data);
+    create_data_table(page_data);
+    console.log(page_data);
+    return pie_these_series(page_data.series_groups[0].series_list);
   };
 
   window.load_page = function(page_slug) {
