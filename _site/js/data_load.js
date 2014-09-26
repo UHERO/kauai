@@ -1,5 +1,5 @@
 (function() {
-  var csv_data_a, csv_headers, dates, filter_and_format_time_series, get_all_csv_data_for_series, prep_group_data, prep_series_data, prepare_csv_headers, series_array_from_csv_data, set_data_for, set_ts_data, spark_data, spark_formatted_data;
+  var csv_data_a, csv_headers, dates, filter_and_format_time_series, get_all_csv_data_for_series, prep_group_data, prep_series_data, prepare_csv_headers, series_array_from_csv_data, set_data_for, set_ts_data, spark_data, spark_formatted_data, yoy;
 
   dates = {
     a: [],
@@ -121,6 +121,24 @@
     }).map(d3.values(ts_annual));
   };
 
+  yoy = function(d, i, array, f) {
+    var last, offset;
+    if (d === null || i === 0) {
+      return null;
+    }
+    offset = {
+      a: 1,
+      q: 4,
+      m: 12
+    }[f];
+    last = array[i - offset];
+    if (last === null) {
+      return null;
+    } else {
+      return (d - last) / last * 100;
+    }
+  };
+
   spark_data = function(name, data) {
     return data.map(function(row) {
       if (row[name] === "") {
@@ -142,7 +160,9 @@
     }
     return series[f] = {
       data: series_data,
-      yoy: [],
+      yoy: series_data.map(function(d, i, array) {
+        return yoy(d, i, array, f);
+      }),
       peak: peak,
       trough: trough,
       last: series_data[last_i],

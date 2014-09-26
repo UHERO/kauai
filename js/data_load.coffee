@@ -64,6 +64,14 @@ window.prepare_annual_data = (data) ->
 
 # ------------ Keeper data stuff -------------
 
+
+yoy = (d,i,array,f) ->
+  return null if d is null or i is 0
+  offset = { a: 1, q: 4, m: 12 }[f]
+  last = array[i-offset]
+  if last is null then null else (d-last) / last * 100
+  
+  
 spark_data = (name, data) ->
   data.map((row) -> if row[name] == "" then null else +row[name] )
 
@@ -76,7 +84,7 @@ set_data_for = (f, series, data) ->
 
   series[f] =
     data: series_data
-    yoy: []
+    yoy: series_data.map((d,i,array) -> yoy(d,i,array,f))
     peak: peak
     trough: trough
     last: series_data[last_i]
