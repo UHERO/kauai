@@ -93,8 +93,7 @@
     if (duration == null) {
       duration = 0;
     }
-    x.domain(dates_extent(extent));
-    return d3.select("#time_axis").transition().duration(duration).call(time_axis);
+    return x.domain(dates_extent(extent));
   };
 
   update_domain = function(axis, duration) {
@@ -198,7 +197,6 @@
     x.rangePoints([0, chart_area_width]);
     y.left.scale.range([chart_area_height, 0]);
     y.right.scale.range([chart_area_height, 0]);
-    svg.append("g").attr("id", "time_axis").attr("transform", "translate(" + margin.left + "," + (margin.top + chart_area_height) + ")").call(time_axis);
     svg.append("g").attr("id", "left_axis").attr("transform", "translate(" + margin.left + "," + margin.top + ")").call(y.left.axis);
     svg.append("g").attr("id", "right_axis").attr("transform", "translate(" + (margin.left + chart_area_width) + "," + margin.top + ")").call(y.right.axis);
     return chart_area = svg.append("g").attr("id", "chart_area").attr("transform", "translate(" + margin.left + "," + margin.top + ")");

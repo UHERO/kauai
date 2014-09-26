@@ -81,6 +81,7 @@ page_setup = () ->
   collapse d3.select("#cat_Income")
 
 render_page = (page_data) ->
+  #maybe fix sliders so they correspond to panel sizes
   set_up_sliders(page_data.dates[freq])
 
   dashboard_elements = [ 
@@ -90,7 +91,8 @@ render_page = (page_data) ->
   
   set_up_dashboard_elements(dashboard_elements)
   create_data_table(page_data)
-  console.log(page_data)
+  
+  add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
   pie_these_series(page_data.series_groups[0].series_list[0].children)
   
 window.load_page = (page_slug) ->

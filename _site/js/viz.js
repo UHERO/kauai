@@ -98,7 +98,7 @@
     ];
     set_up_dashboard_elements(dashboard_elements);
     create_data_table(page_data);
-    console.log(page_data);
+    add_to_line_chart(page_data.series_groups[0].series_list[0], "left");
     return pie_these_series(page_data.series_groups[0].series_list[0].children);
   };
 

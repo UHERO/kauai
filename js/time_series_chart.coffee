@@ -76,10 +76,10 @@ trim_d = (d, extent) ->
 update_x_domain = (extent, duration=0) ->
   x.domain(dates_extent(extent))
 
-  d3.select("#time_axis")
-    .transition()
-    .duration(duration)
-    .call(time_axis)
+  # d3.select("#time_axis")
+  #   # .transition()
+  #   # .duration(duration)
+  #   .call(time_axis)
 
 update_domain = (axis, duration = 500) ->
   data = d3.select("g#chart_area").selectAll(".#{y[axis].class}").data().map((d) -> d[freq].data)
@@ -181,10 +181,10 @@ window.line_chart = (container) ->
   y.left.scale.range([chart_area_height,0])
   y.right.scale.range([chart_area_height,0])
 
-  svg.append("g")
-    .attr("id", "time_axis")
-    .attr("transform", "translate(#{margin.left},#{margin.top+chart_area_height})")
-    .call(time_axis)
+  # svg.append("g")
+  #   .attr("id", "time_axis")
+  #   .attr("transform", "translate(#{margin.left},#{margin.top+chart_area_height})")
+  #   .call(time_axis)
 
   svg.append("g")
     .attr("id", "left_axis")
