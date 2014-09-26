@@ -82,7 +82,7 @@ update_x_domain = (extent, duration=0) ->
     .call(time_axis)
 
 update_domain = (axis, duration = 500) ->
-  data = d3.select("g#chart_area").selectAll(".#{y[axis].class}").data().map((d) -> d[freq].trimmed_data)
+  data = d3.select("g#chart_area").selectAll(".#{y[axis].class}").data().map((d) -> d[freq].data)
 
   if data.length == 0
     y[axis].scale.domain([0,1])
@@ -117,10 +117,10 @@ regenerate_path = (d, extent, axis) ->
 redraw_line_chart = (extent, duration = 0) ->
   update_x_domain(extent)
 
-  l_paths = d3.select("g#chart_area path.s_left")
+  l_paths = d3.selectAll("g#chart_area path.s_left")
     .attr("d", (d) -> regenerate_path(d, extent, "left") )
 
-  r_paths = d3.select("g#chart_area path.s_right")
+  r_paths = d3.selectAll("g#chart_area path.s_right")
     .attr("d", (d) -> regenerate_path(d, extent, "right") )
     
 window.trim_time_series = (event, ui) ->
@@ -128,10 +128,9 @@ window.trim_time_series = (event, ui) ->
   redraw_line_chart(slider_extent)
 
 window.add_to_line_chart = (d, axis) ->
-  console.log(d[freq].yoy)
   duration = 500
   trim_d d[freq], slider_extent
-  domain = chart_extent(d[freq].trimmed_data)  
+  domain = chart_extent(d[freq].data)  
   
   update_y_domain_with_new(axis, domain, duration)
   
@@ -169,7 +168,7 @@ window.line_chart = (container) ->
   svg = set_up_svg(container)
   margin = 
     top: 10
-    bottom: 75
+    bottom: 20
     left: 50
     right: 50
 

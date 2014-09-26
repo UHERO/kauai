@@ -103,7 +103,7 @@
       duration = 500;
     }
     data = d3.select("g#chart_area").selectAll("." + y[axis]["class"]).data().map(function(d) {
-      return d[freq].trimmed_data;
+      return d[freq].data;
     });
     if (data.length === 0) {
       y[axis].scale.domain([0, 1]);
@@ -142,10 +142,10 @@
       duration = 0;
     }
     update_x_domain(extent);
-    l_paths = d3.select("g#chart_area path.s_left").attr("d", function(d) {
+    l_paths = d3.selectAll("g#chart_area path.s_left").attr("d", function(d) {
       return regenerate_path(d, extent, "left");
     });
-    return r_paths = d3.select("g#chart_area path.s_right").attr("d", function(d) {
+    return r_paths = d3.selectAll("g#chart_area path.s_right").attr("d", function(d) {
       return regenerate_path(d, extent, "right");
     });
   };
@@ -157,10 +157,9 @@
 
   window.add_to_line_chart = function(d, axis) {
     var domain, duration;
-    console.log(d[freq].yoy);
     duration = 500;
     trim_d(d[freq], slider_extent);
-    domain = chart_extent(d[freq].trimmed_data);
+    domain = chart_extent(d[freq].data);
     update_y_domain_with_new(axis, domain, duration);
     d3.select("g#chart_area").append("path").datum(d).attr("id", y[axis]["class"] + ("_" + (series_to_class(d.udaman_name)))).attr("class", "" + y[axis]["class"] + " line_chart_path").attr("stroke", "#777").attr("d", function(d) {
       return dummy_path(d[freq].trimmed_data);
@@ -188,7 +187,7 @@
     svg = set_up_svg(container);
     margin = {
       top: 10,
-      bottom: 75,
+      bottom: 20,
       left: 50,
       right: 50
     };
