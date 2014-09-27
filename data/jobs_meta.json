@@ -7,21 +7,26 @@
       "children_sum": true,
       "a": true, "q": true, "m": true,
       "children" : [
+        {"display_name": "Total Government Jobs", "udaman_name": "EGV@KAU", "a": true, "q": true, "m": true},
         {"display_name": "Retail Trade Jobs", "udaman_name": "ERT@KAU", "a": true, "q": true, "m": true},
         {"display_name": "Admin & Waste Management", "udaman_name": "EAD@KAU", "a": true, "q": true, "m": true},
         {"display_name": "Transportation & Utilities", "udaman_name": "E_TU@KAU", "a": true, "q": true, "m": true},
-        {"display_name": "Accom & Food Services", "udaman_name": "EAF@KAU", "a": true, "q": true, "m": true},
+        {"display_name": "Accom & Food Services", "udaman_name": "EAF@KAU", "a": true, "q": true, "m": true, "children":[
+          {"display_name":"Accomodation Jobs", "udaman_name": "EAFAC@KAU", "a": true, "q": true, "m": true},
+          {"display_name":"Food Svc. & Drinking Place Jobs", "udaman_name":"EAFFD@KAU", "a": true, "q": true, "m": true}
+        ]},
         {"display_name": "Healthcare & Social Asst", "udaman_name": "EHC@KAU", "a": true, "q": true, "m": true},
         {"display_name": "Construction & Mining", "udaman_name": "ECT@KAU", "a": true, "q": true, "m": true},
         {"display_name": "Other service jobs", "udaman_name": "EOS@KAU", "a": true, "q": true, "m": true}
       ]
-      },
+      }
+    ]
+  },{
+    "group_name": "Labor Overview",
+    "series_list": [
       {"display_name": "Employment Rate", "udaman_name": "EMPL@KAU", "a": true, "q": true, "m": true},
       {"display_name": "Unemployment Rate", "udaman_name": "UR@KAU", "a": true, "q": true, "m": true}
     ]
-  },{
-    "group_name": "Total Government Jobs",
-    "series_list": [{"display_name": "Total Government Jobs", "udaman_name": "EGV@KAU", "a": true, "q": true, "m": true}]
   }
   ]
 }
