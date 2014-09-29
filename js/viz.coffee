@@ -92,6 +92,7 @@ render_page = (page_data) ->
   
   set_up_dashboard_elements(dashboard_elements)
   create_data_table(page_data)
+  set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
   
   add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
   pie_these_series(page_data.series_groups[0].series_list[0].children)

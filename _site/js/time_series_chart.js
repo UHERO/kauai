@@ -46,7 +46,7 @@
     }
   });
 
-  dummy_path = d3.svg.line().x(x_from_slider).y(0).defined(function(d) {
+  dummy_path = d3.svg.line().x(x_from_slider).y(-20).defined(function(d) {
     return d !== null;
   });
 
@@ -155,30 +155,43 @@
   };
 
   window.add_to_line_chart = function(d, axis) {
-    var domain, duration;
+    var domain, duration, path;
     duration = 500;
     trim_d(d[freq], slider_extent);
     domain = chart_extent(d[freq].data);
+    path = d3.select("g#chart_area #path_" + (series_to_class(d.udaman_name)));
     update_y_domain_with_new(axis, domain, duration);
-    d3.select("g#chart_area").append("path").datum(d).attr("id", y[axis]["class"] + ("_" + (series_to_class(d.udaman_name)))).attr("class", "" + y[axis]["class"] + " line_chart_path").attr("stroke", "#777").attr("d", function(d) {
+    path.classed("" + y[axis]["class"], true).attr("d", function(d) {
       return dummy_path(d[freq].trimmed_data);
     });
-    d3.select("g#chart_area").selectAll("path." + y[axis]["class"]).transition().duration(duration).attr("d", function(d) {
+    d3.selectAll("g#chart_area path." + y[axis]["class"]).transition().duration(duration).attr("d", function(d) {
       return y[axis].path(d[freq].trimmed_data);
     });
     return toggle_axis_button(d.udaman_name, axis);
   };
 
   window.remove_from_line_chart = function(d, axis) {
-    var chart_area, duration;
+    var chart_area, duration, path;
     duration = 500;
     chart_area = d3.select("g#chart_area");
-    d3.select("#s_" + axis + "_" + (series_to_class(d.udaman_name))).remove();
+    path = d3.select("g#chart_area #path_" + (series_to_class(d.udaman_name)));
+    path.classed("s_" + axis, false);
+    path.transition().duration(500).attr("d", function(d) {
+      return dummy_path(d[freq].trimmed_data);
+    });
     update_domain(axis, duration);
     chart_area.selectAll("path." + y[axis]["class"]).transition().duration(duration).attr("d", function(d) {
       return y[axis].path(d[freq].trimmed_data);
     });
     return toggle_axis_button(d.udaman_name, axis);
+  };
+
+  window.set_up_line_chart_paths = function(data) {
+    return d3.select("g#chart_area").selectAll("path.line_chart_path").data(data).enter().append("path").attr("id", function(d) {
+      return "path_" + (series_to_class(d.udaman_name));
+    }).attr("class", function(d) {
+      return "" + (series_to_class(d.udaman_name)) + " line_chart_path";
+    }).attr("stroke", "#777");
   };
 
   window.line_chart = function(container) {
