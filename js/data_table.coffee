@@ -1,10 +1,14 @@
 ---
 ---
-
+cell_width = 50;
 series_height = 45;
+datatable_width= 300;
 x = d3.scale.linear().clamp(true).range([ 0, 145 ])
 y = d3.scale.linear().range([ series_height, 5 ])
 
+all_dates = ->
+  d3.select("#datatable_slider_div").datum()
+  
 spark_line = d3.svg.line()
   .x((d, i) -> x i)
   .y((d) -> d)
@@ -152,14 +156,22 @@ draw_spark_area = (svg, duration) ->
     .transition()
     .duration(duration)
     .attr "d", spark_area_path
-
+    
+window.slide_table = (event, ui) ->
+  offset_val = ui.value+1
+  offset= -(offset_val * cell_width - datatable_width)
+  d3.selectAll(".data_cols .container")
+    .transition()
+    .duration(200)
+    .style("margin-left", offset+"px")
+    
 create_data_columns = (cat_series) ->
   container = cat_series.append("div")
     .attr("class", "data_cols")
     .append("div")
     .attr("class", "container")
-    .style("width", (d) -> (d[freq].data.length*50)+"px")
-    .style("margin-left", (d) -> -((d[freq].data.length-6)*50)+"px")
+    .style("width", (d) -> (d[freq].data.length*cell_width)+"px")
+    .style("margin-left", (d) -> -(d[freq].data.length*cell_width-datatable_width)+"px")
     
   container.selectAll("div.cell")
     .data((d) -> console.log(d); d[freq].data)

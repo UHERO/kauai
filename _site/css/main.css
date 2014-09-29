@@ -528,12 +528,20 @@ g#pie_chart_area text {
   background: none; }
 
 #sparkline_slider_div {
-  height: 10px;
-  width: 370px; }
+  height: 10px; }
 
 .ui-slider .ui-slider-handle {
   width: 10px;
   height: 20px; }
+
+#sparkline_slider_container {
+  width: 370px;
+  float: left; }
+
+#datatable_slider_container {
+  width: 300px;
+  float: left;
+  margin-left: 50px; }
 
 /* should probably set in code when setting the rectangle sizes */
 #line_chart_slider_container {
