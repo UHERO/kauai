@@ -1,5 +1,5 @@
 (function() {
-  var dates, prep_group_data, prep_series_data, set_data_for, spark_data, yoy;
+  var dates, format_d, prep_group_data, prep_series_data, set_data_for, spark_data, yoy;
 
   dates = {
     a: [],
@@ -116,13 +116,31 @@
     return _results;
   };
 
+  format_d = function(date, f) {
+    var q_map;
+    q_map = {
+      "01": "1",
+      "04": "2",
+      "07": "3",
+      "10": "4"
+    };
+    switch (f) {
+      case "a":
+        return date.slice(0, 4);
+      case "q":
+        return date.slice(0, 4) + "Q" + q_map[date.slice(5, 7)];
+      case "m":
+        return date.slice(0, 4) + "M" + date.slice(5, 7);
+    }
+  };
+
   window.prepare_all_data = function(meta, data) {
     var f, group, _i, _j, _len, _len1, _ref, _ref1;
     _ref = d3.keys(data);
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       f = _ref[_i];
       dates[f] = data[f].map(function(d) {
-        return d.date;
+        return format_d(d.date, f);
       });
     }
     _ref1 = meta.series_groups;

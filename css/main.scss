@@ -83,7 +83,7 @@ g#pie_chart_area text { pointer-events: none; }
 
 
 /*********** General Div Alignment *****************/
-#controls {clear:both; position:relative; top:67px }
+#controls {clear:both; top:67px }
 #series_display {clear:both;}
 #series_history {clear:both}
 
@@ -108,12 +108,20 @@ g#pie_chart_area text { pointer-events: none; }
 .series_label, .sparkline, .selected_value, .selected_perc,
 #category_header, #series_header, #sparkline_header, #level_header, #yoy_header,
 #line_left_header, #line_right_header, #pie_header,
-.left_toggle, .right_toggle {float:left}
+.left_toggle, .right_toggle, .data_cols, .container, .cell {float:left}
 
 
-.series {float:left; width:450px; text-align:center; font-size:10px; overflow:hidden;}
+.series {float:left; /*width:450px; text-align:center;*/ font-size:10px; overflow:hidden;}
 .series_label, #series_header { width: 180px; padding: 0 5px;}
+
+.series_label {padding-left: 0}
+.child .series_label span { padding-left: 20px;}
 .series_label span { display: inline-block; vertical-align:middle; line-height:normal;}
+
+.data_cols { width: 300px; overflow:hidden; height:100%}
+.container { height:100%; }
+.cell { float: left; height:100%; border:0px solid red; width:50px; text-align:center }
+
 .sparkline, #sparkline_header { width:150px; }
 .selected_value, #level_header { width:70px; }
 .selected_perc, #yoy_header { width: 40px; }
