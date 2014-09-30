@@ -56,7 +56,8 @@
   set_up_sliders = function(dates) {
     set_slider_in_div("sparkline_slider_div", dates, 0, dates.length - 1, trim_sparklines);
     set_slider_in_div("line_chart_slider_div", dates, 0, dates.length - 1, trim_time_series);
-    return set_single_slider_in_div("time_slice_slider_div", dates, 0, dates.length - 1, redraw_slice);
+    set_single_slider_in_div("time_slice_slider_div", dates, 0, dates.length - 1, redraw_slice);
+    return set_single_slider_in_div("datatable_slider_div", dates, 0, dates.length - 1, slide_table);
   };
 
   set_up_div = function(elem) {
@@ -98,6 +99,7 @@
     ];
     set_up_dashboard_elements(dashboard_elements);
     create_data_table(page_data);
+    set_up_line_chart_paths(d3.selectAll("#series_display .series").data());
     add_to_line_chart(page_data.series_groups[0].series_list[0], "left");
     return pie_these_series(page_data.series_groups[0].series_list[0].children);
   };

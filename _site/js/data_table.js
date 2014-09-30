@@ -1,11 +1,19 @@
 (function() {
-  var add_parent, create_axis_control, create_axis_controls, create_series_label, create_series_rows, create_sparklines, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, series_height, spark_area_path, spark_line, trimmed_data_object, x, y;
+  var add_parent, all_dates, cell_width, class_name_from_series_node, click_cat, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, series_height, series_row_class, spark_area_path, spark_line, trimmed_data_object, x, y;
+
+  cell_width = 50;
 
   series_height = 45;
+
+  datatable_width = 300;
 
   x = d3.scale.linear().clamp(true).range([0, 145]);
 
   y = d3.scale.linear().range([series_height, 5]);
+
+  all_dates = function() {
+    return d3.select("#datatable_slider_div").datum();
+  };
 
   spark_line = d3.svg.line().x(function(d, i) {
     return x(i);
@@ -24,23 +32,53 @@
   });
 
   window.collapse = function(cat) {
-    cat.transition().style("height", series_height + "px").style("line-height", series_height + "px").attr("state", "collapsed");
-    return d3.select(cat.node().parentNode).selectAll("div.series").transition().style("height", function(d) {
-      if (d.primary === "Primary") {
-        return series_height + "px";
-      } else {
-        return "0px";
-      }
-    });
+    cat.attr("state", "collapsed");
+    return d3.select(cat.node().parentNode).selectAll("div.series").transition().style("height", "0px");
   };
 
   window.expand = function(cat) {
-    cat.transition().style("height", function(d) {
-      return (d.value.length * series_height) + "px";
-    }).style("line-height", function(d) {
-      return (d.value.length * series_height) + "px";
-    }).attr("state", "expanded");
-    return d3.select(cat.node().parentNode).selectAll("div.series").transition().style("height", series_height + "px");
+    cat.attr("state", "expanded");
+    return d3.select(cat.node().parentNode).selectAll("div.series").filter(function(d) {
+      var child, collapsed, row;
+      row = d3.select(this);
+      collapsed = row.attr("state") === "collapsed";
+      child = row.classed("child");
+      return !child || !collapsed;
+    }).transition().style("height", series_height + "px");
+  };
+
+  class_name_from_series_node = function(node) {
+    return series_to_class(node.datum().udaman_name);
+  };
+
+  window.collapse_series = function(series) {
+    series.attr("state", "collapsed");
+    return d3.selectAll(".child_of_" + (class_name_from_series_node(series))).transition().style("height", "0px").attr("state", "collapsed");
+  };
+
+  window.expand_series = function(series) {
+    series.attr("state", "expanded");
+    return d3.selectAll(".child_of_" + (class_name_from_series_node(series))).transition().style("height", series_height + "px").attr("state", "expanded");
+  };
+
+  click_cat = function(d) {
+    var cat;
+    cat = d3.select(this);
+    if (cat.attr("state") === "expanded") {
+      return collapse(cat);
+    } else {
+      return expand(cat);
+    }
+  };
+
+  click_series = function(d) {
+    var series;
+    series = d3.select(this);
+    if (series.attr("state") === "expanded") {
+      return collapse_series(series);
+    } else {
+      return expand_series(series);
+    }
   };
 
   mouseover_series = function(d) {
@@ -135,6 +173,28 @@
     return spark_area.transition().duration(duration).attr("d", spark_area_path);
   };
 
+  window.slide_table = function(event, ui) {
+    var offset, offset_val;
+    offset_val = ui.value + 1;
+    offset = -(offset_val * cell_width - datatable_width);
+    return d3.selectAll(".data_cols .container").transition().duration(200).style("margin-left", offset + "px");
+  };
+
+  create_data_columns = function(cat_series) {
+    var container;
+    container = cat_series.append("div").attr("class", "data_cols").append("div").attr("class", "container").style("width", function(d) {
+      return (d[freq].data.length * cell_width) + "px";
+    }).style("margin-left", function(d) {
+      return -(d[freq].data.length * cell_width - datatable_width) + "px";
+    });
+    return container.selectAll("div.cell").data(function(d) {
+      console.log(d);
+      return d[freq].data;
+    }).enter().append("div").attr("class", "cell").text(function(d) {
+      return (+d).toFixed(3);
+    });
+  };
+
   create_axis_control = function(cat_series, axis) {
     return cat_series.append("div").attr("class", "" + axis + "_toggle off").text("+").on("click", function(d) {
       var button;
@@ -164,14 +224,21 @@
     });
   };
 
+  series_row_class = function(d) {
+    var child_class, parent_class;
+    child_class = d.series_parent !== "" ? " child child_of_" + (series_to_class(d.series_parent)) : "";
+    parent_class = d.children_sum ? " parent" : "";
+    return "series" + child_class + parent_class;
+  };
+
   create_series_rows = function(cat_divs) {
     var cat_series;
     cat_series = cat_divs.selectAll("div.series").data(function(d) {
       return flatten(d.series_list);
     }).enter().append("div").attr("id", function(d) {
       return "s_row_" + (series_to_class(d.udaman_name));
-    }).attr("class", "series").style("height", series_height + "px");
-    return cat_series.call(create_series_label).call(create_sparklines).call(create_axis_controls);
+    }).attr("class", series_row_class).attr("state", "expanded").style("height", series_height + "px").on("mouseover", mouseover_series).on("mouseout", mouseout_series).on("click", click_series);
+    return cat_series.call(create_series_label).call(create_sparklines).call(create_axis_controls).call(create_data_columns);
   };
 
   window.create_data_table = function(page_data) {
@@ -185,15 +252,7 @@
       return d3.select(this).style("background-color", "#999");
     }).on("mouseout", function(d) {
       return d3.selectAll('.cat_label').style("background-color", "#FFF");
-    }).on("click", function(d) {
-      var cat;
-      cat = d3.select(this);
-      if (cat.attr("state") === "expanded") {
-        return collapse(cat);
-      } else {
-        return expand(cat);
-      }
-    });
+    }).on("click", click_cat);
     return create_series_rows(cat_divs);
   };
 

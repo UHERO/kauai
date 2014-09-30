@@ -515,7 +515,6 @@ g#pie_chart_area text {
 /*********** General Div Alignment *****************/
 #controls {
   clear: both;
-  position: relative;
   top: 67px; }
 
 #series_display {
@@ -529,12 +528,20 @@ g#pie_chart_area text {
   background: none; }
 
 #sparkline_slider_div {
-  height: 10px;
-  width: 370px; }
+  height: 10px; }
 
 .ui-slider .ui-slider-handle {
   width: 10px;
   height: 20px; }
+
+#sparkline_slider_container {
+  width: 370px;
+  float: left; }
+
+#datatable_slider_container {
+  width: 300px;
+  float: left;
+  margin-left: 50px; }
 
 /* should probably set in code when setting the rectangle sizes */
 #line_chart_slider_container {
@@ -560,13 +567,12 @@ g#pie_chart_area text {
 .series_label, .sparkline, .selected_value, .selected_perc,
 #category_header, #series_header, #sparkline_header, #level_header, #yoy_header,
 #line_left_header, #line_right_header, #pie_header,
-.left_toggle, .right_toggle {
+.left_toggle, .right_toggle, .data_cols, .container, .cell {
   float: left; }
 
 .series {
   float: left;
-  width: 450px;
-  text-align: center;
+  /*width:450px; text-align:center;*/
   font-size: 10px;
   overflow: hidden; }
 
@@ -574,10 +580,31 @@ g#pie_chart_area text {
   width: 180px;
   padding: 0 5px; }
 
+.series_label {
+  padding-left: 0; }
+
+.child .series_label span {
+  padding-left: 20px; }
+
 .series_label span {
   display: inline-block;
   vertical-align: middle;
   line-height: normal; }
+
+.data_cols {
+  width: 300px;
+  overflow: hidden;
+  height: 100%; }
+
+.container {
+  height: 100%; }
+
+.cell {
+  float: left;
+  height: 100%;
+  border: 0px solid red;
+  width: 50px;
+  text-align: center; }
 
 .sparkline, #sparkline_header {
   width: 150px; }

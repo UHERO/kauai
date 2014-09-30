@@ -48,8 +48,15 @@ prep_series_data = (series, data) ->
 prep_group_data = (series_group, data) ->
   prep_series_data series, data for series in series_group.series_list
 
+format_d = (date, f) ->
+  q_map = {"01":"1", "04":"2", "07":"3", "10":"4" }
+  switch f
+    when "a" then date.slice(0,4)
+    when "q" then date.slice(0,4)+"Q"+q_map[date.slice(5,7)]
+    when "m" then date.slice(0,4)+"M"+date.slice(5,7)
+    
 window.prepare_all_data = (meta, data) ->
-  dates[f] = data[f].map((d)->d.date) for f in d3.keys(data)
+  dates[f] = data[f].map((d)->format_d(d.date,f)) for f in d3.keys(data)
   prep_group_data group, data for group in meta.series_groups
   meta.dates = dates
   meta

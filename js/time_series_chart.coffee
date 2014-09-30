@@ -34,7 +34,7 @@ time_axis = d3.svg.axis().scale(x).tickFormat((d,i) -> if i is 0 or i is (slider
 
 dummy_path = d3.svg.line()
   .x(x_from_slider)
-  .y(0)
+  .y(-20)
   .defined((d) -> d isnt null)
 
 # ------------------------------------
@@ -75,11 +75,6 @@ trim_d = (d, extent) ->
 
 update_x_domain = (extent, duration=0) ->
   x.domain(dates_extent(extent))
-
-  # d3.select("#time_axis")
-  #   # .transition()
-  #   # .duration(duration)
-  #   .call(time_axis)
 
 update_domain = (axis, duration = 500) ->
   data = d3.select("g#chart_area").selectAll(".#{y[axis].class}").data().map((d) -> d[freq].data)
@@ -131,17 +126,14 @@ window.add_to_line_chart = (d, axis) ->
   duration = 500
   trim_d d[freq], slider_extent
   domain = chart_extent(d[freq].data)  
-  
+  path = d3.select("g#chart_area #path_#{series_to_class(d.udaman_name)}")
+
   update_y_domain_with_new(axis, domain, duration)
   
-  d3.select("g#chart_area").append("path")
-    .datum(d)
-    .attr("id", y[axis].class + "_#{series_to_class(d.udaman_name)}")
-    .attr("class", "#{y[axis].class} line_chart_path")
-    .attr("stroke", "#777")
+  path.classed("#{y[axis].class}", true)
     .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
     
-  d3.select("g#chart_area").selectAll("path.#{y[axis].class}")
+  d3.selectAll("g#chart_area path.#{y[axis].class}") 
     .transition()
     .duration(duration)
     .attr("d", (d) -> y[axis].path(d[freq].trimmed_data))
@@ -152,8 +144,13 @@ window.add_to_line_chart = (d, axis) ->
 window.remove_from_line_chart = (d, axis) ->
   duration = 500
   chart_area = d3.select("g#chart_area")  
-  d3.select("#s_#{axis}_#{series_to_class(d.udaman_name)}").remove()
+  path = d3.select("g#chart_area #path_#{series_to_class(d.udaman_name)}")
 
+  path.classed("s_#{axis}", false)
+  path.transition()
+    .duration(500)
+    .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
+    
   update_domain(axis, duration)
 
   chart_area.selectAll("path.#{y[axis].class}")
@@ -163,7 +160,17 @@ window.remove_from_line_chart = (d, axis) ->
 
   toggle_axis_button(d.udaman_name, axis)
 
-  
+
+window.set_up_line_chart_paths = (data) ->
+  d3.select("g#chart_area")
+    .selectAll("path.line_chart_path")
+    .data(data)
+    .enter()
+    .append("path")
+    .attr("id", (d) -> "path_#{series_to_class(d.udaman_name)}")
+    .attr("class", (d) -> "#{series_to_class(d.udaman_name)} line_chart_path")
+    .attr("stroke", "#777")
+    
 window.line_chart = (container) ->
   svg = set_up_svg(container)
   margin = 
@@ -180,11 +187,6 @@ window.line_chart = (container) ->
   x.rangePoints([0, chart_area_width])
   y.left.scale.range([chart_area_height,0])
   y.right.scale.range([chart_area_height,0])
-
-  # svg.append("g")
-  #   .attr("id", "time_axis")
-  #   .attr("transform", "translate(#{margin.left},#{margin.top+chart_area_height})")
-  #   .call(time_axis)
 
   svg.append("g")
     .attr("id", "left_axis")
