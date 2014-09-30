@@ -485,7 +485,10 @@ pre {
 #source_links {
   clear: both;
   position: relative;
-  top: 50px; }
+  top: 50px;
+  margin-top: 100px;
+  text-align: right;
+  font-size: 10px; }
 
 h2#headline {
   padding: 10px 0 0 0; }
@@ -566,7 +569,7 @@ g#pie_chart_area text {
 
 .series_label, .sparkline, .selected_value, .selected_perc,
 #category_header, #series_header, #sparkline_header, #level_header, #yoy_header,
-#line_left_header, #line_right_header, #pie_header,
+#line_left_header, #line_right_header, #pie_header, #datatable_header,
 .left_toggle, .right_toggle, .data_cols, .container, .cell {
   float: left; }
 
@@ -578,7 +581,7 @@ g#pie_chart_area text {
 
 .series_label, #series_header {
   width: 180px;
-  padding: 0 5px; }
+  padding: 0; }
 
 .series_label {
   padding-left: 0; }
@@ -590,6 +593,11 @@ g#pie_chart_area text {
   display: inline-block;
   vertical-align: middle;
   line-height: normal; }
+
+#datatable_header {
+  width: 300px;
+  overflow: hidden;
+  height: 100%; }
 
 .data_cols {
   width: 300px;
@@ -626,7 +634,9 @@ g#pie_chart_area text {
 
 .left_toggle, .right_toggle {
   width: 40px;
-  text_align: center;
+  text-align: center;
+  font-size: 12px;
+  line-height: 45px;
   cursor: pointer; }
 
 #sparkline_header {

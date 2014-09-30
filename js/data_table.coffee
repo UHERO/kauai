@@ -160,11 +160,25 @@ draw_spark_area = (svg, duration) ->
 window.slide_table = (event, ui) ->
   offset_val = ui.value+1
   offset= -(offset_val * cell_width - datatable_width)
-  d3.selectAll(".data_cols .container")
+  d3.selectAll(".container")
     .transition()
     .duration(200)
     .style("margin-left", offset+"px")
+
+populate_dates = ->
+  container = d3.select("#datatable_header")
+    .append("div")
+    .attr("class", "container")
+    .style("width", (all_dates().length*cell_width)+"px")
+    .style("margin-left", -(all_dates().length*cell_width-datatable_width)+"px")
     
+  container.selectAll("div.cell")
+    .data(all_dates())
+    .enter()
+    .append("div")
+    .attr("class", "cell")
+    .text((d) -> d)
+
 create_data_columns = (cat_series) ->
   container = cat_series.append("div")
     .attr("class", "data_cols")
@@ -239,6 +253,7 @@ create_series_rows = (cat_divs)->
     .call(create_data_columns)
     
 window.create_data_table = (page_data)->
+  populate_dates()
   cat_divs = d3.select("#series_display")
     .selectAll("div.category")
     .data(page_data.series_groups)

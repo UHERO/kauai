@@ -1,5 +1,5 @@
 (function() {
-  var add_parent, all_dates, cell_width, class_name_from_series_node, click_cat, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, series_height, series_row_class, spark_area_path, spark_line, trimmed_data_object, x, y;
+  var add_parent, all_dates, cell_width, class_name_from_series_node, click_cat, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, populate_dates, series_height, series_row_class, spark_area_path, spark_line, trimmed_data_object, x, y;
 
   cell_width = 50;
 
@@ -177,7 +177,15 @@
     var offset, offset_val;
     offset_val = ui.value + 1;
     offset = -(offset_val * cell_width - datatable_width);
-    return d3.selectAll(".data_cols .container").transition().duration(200).style("margin-left", offset + "px");
+    return d3.selectAll(".container").transition().duration(200).style("margin-left", offset + "px");
+  };
+
+  populate_dates = function() {
+    var container;
+    container = d3.select("#datatable_header").append("div").attr("class", "container").style("width", (all_dates().length * cell_width) + "px").style("margin-left", -(all_dates().length * cell_width - datatable_width) + "px");
+    return container.selectAll("div.cell").data(all_dates()).enter().append("div").attr("class", "cell").text(function(d) {
+      return d;
+    });
   };
 
   create_data_columns = function(cat_series) {
@@ -243,6 +251,7 @@
 
   window.create_data_table = function(page_data) {
     var cat_divs, cat_labels;
+    populate_dates();
     cat_divs = d3.select("#series_display").selectAll("div.category").data(page_data.series_groups).enter().append("div").attr("class", "category");
     cat_labels = cat_divs.append("div").attr("class", "cat_label").attr("id", function(d) {
       return "cat_" + (series_to_class(d.group_name));
