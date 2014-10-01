@@ -9,6 +9,7 @@ x_from_slider = (d,i) ->
 
 y_left = d3.scale.linear()
 y_right = d3.scale.linear()
+
 x = d3.scale.ordinal()
 window.x_scale = x  
 y =
@@ -37,6 +38,13 @@ dummy_path = d3.svg.line()
   .y(-20)
   .defined((d) -> d isnt null)
 
+
+y_yoy = (d) ->
+  if d < 0 then y_right(0) else y_right(d)
+
+y_height = (d)->
+  Math.abs(y_right(0)-y_right(d))
+  
 # ------------------------------------
 
 
@@ -59,6 +67,14 @@ chart_extent = (array) ->
     full_extent[1] + range*.1
   ]
 
+yoy_chart_extent = (array) ->
+  full_extent = d3.extent(array)
+  range = full_extent[1] - full_extent[0]
+  [
+    full_extent[0] - range*.1
+    full_extent[1] + range*.1
+  ]
+  
 combine_extent = (ex1, ex2) ->
   [ d3.min([ex1[0],ex2[0]]), d3.max([ex1[1],ex2[1]]) ]
 
@@ -73,6 +89,9 @@ toggle_axis_button = (series, axis) ->
 trim_d = (d, extent) ->
   d.trimmed_data = d.data.slice(extent[0], extent[1]+1)
 
+trim_yoy = (d, extent) ->
+  d.trimmed_yoy = d.yoy.slice(extent[0], extent[1] + 1)
+  
 update_x_domain = (extent, duration=0) ->
   x.domain(dates_extent(extent))
 
@@ -108,7 +127,36 @@ update_y_domain_with_new = (axis, domain, duration = 500) ->
 regenerate_path = (d, extent, axis) ->
   trim_d d[freq], extent
   y[axis].path(d[freq].trimmed_data)
+
+regenerate_bars = (d,extent) ->
+  trim_yoy d[freq], extent
   
+  bars = d3.select("g#chart_area")
+    .selectAll("rect.yoy")
+    .data(d[freq].trimmed_yoy)
+  
+  bars.enter()
+    .append("rect")
+    .attr("class", "yoy")
+    .attr("fill", "gray")
+    .attr("fill-opacity", 0.5)
+    
+  bars.exit().remove()
+  
+  bars
+    .attr("x", x_from_slider)
+    .attr("y", y_yoy)
+    .attr("width", 1)
+    .attr("height", y_height)
+    
+redraw_line_and_bar_chart = (extent) ->
+  update_x_domain(extent)
+  path = d3.select("g#chart_area path.with_bar")
+    .attr("d", (d) -> regenerate_path(d, extent, "left") )
+  
+  regenerate_bars(path.datum(), extent)
+  
+    
 redraw_line_chart = (extent, duration = 0) ->
   update_x_domain(extent)
 
@@ -121,7 +169,31 @@ redraw_line_chart = (extent, duration = 0) ->
 window.trim_time_series = (event, ui) ->
   slider_extent = ui.values
   redraw_line_chart(slider_extent)
+  redraw_line_and_bar_chart(slider_extent)
 
+window.display_line_and_bar_chart = (d) ->
+  duration = 500
+  trim_d d[freq], slider_extent
+  domain = chart_extent(d[freq].data) 
+  yoy_domain = yoy_chart_extent(d[freq].yoy)
+   
+  path = d3.select("g#chart_area #path_#{series_to_class(d.udaman_name)}")
+  
+  update_y_domain_with_new("left", domain, duration)
+  update_y_domain_with_new("right", yoy_domain, duration)
+  
+  path
+    .classed("with_bar", true)
+    .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
+
+  path
+    .transition()
+    .duration(duration)
+    .attr("d", (d) -> y["left"].path(d[freq].trimmed_data))
+    
+  regenerate_bars(d, slider_extent)
+    
+  
 window.add_to_line_chart = (d, axis) ->
   duration = 500
   trim_d d[freq], slider_extent
@@ -130,7 +202,8 @@ window.add_to_line_chart = (d, axis) ->
 
   update_y_domain_with_new(axis, domain, duration)
   
-  path.classed("#{y[axis].class}", true)
+  path
+    .classed("#{y[axis].class}", true)
     .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
     
   d3.selectAll("g#chart_area path.#{y[axis].class}") 
@@ -187,7 +260,8 @@ window.line_chart = (container) ->
   x.rangePoints([0, chart_area_width])
   y.left.scale.range([chart_area_height,0])
   y.right.scale.range([chart_area_height,0])
-
+  # y_yoy.range([chart_area_height,0])
+  
   svg.append("g")
     .attr("id", "left_axis")
     .attr("transform", "translate(#{margin.left},#{margin.top})")
