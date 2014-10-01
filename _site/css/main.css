@@ -594,6 +594,9 @@ g#pie_chart_area text {
   width: 180px;
   padding: 0; }
 
+.series.selected, .series.hovered {
+  background-color: #EEE; }
+
 .series_label {
   padding-left: 0; }
 

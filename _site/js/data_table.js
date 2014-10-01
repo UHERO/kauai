@@ -1,5 +1,5 @@
 (function() {
-  var add_parent, all_dates, cell_width, class_name_from_series_node, click_cat, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, populate_dates, series_height, series_row_class, spark_area_path, spark_line, trimmed_data_object, x, y;
+  var add_parent, add_series, all_dates, cell_width, class_name_from_series_node, clear_series, click_cat, click_expander, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, populate_dates, s_row, series_height, series_row_class, spark_area_path, spark_line, trimmed_data_object, x, y;
 
   cell_width = 50;
 
@@ -10,6 +10,8 @@
   x = d3.scale.linear().clamp(true).range([0, 145]);
 
   y = d3.scale.linear().range([series_height, 5]);
+
+  window.mode = "line_bar";
 
   all_dates = function() {
     return d3.select("#datatable_slider_div").datum();
@@ -61,6 +63,10 @@
     return d3.selectAll(".child_of_" + (class_name_from_series_node(series))).transition().style("height", series_height + "px").attr("state", "expanded");
   };
 
+  s_row = function(udaman_name) {
+    return d3.select("#s_row_" + (series_to_class(udaman_name)));
+  };
+
   click_cat = function(d) {
     var cat;
     cat = d3.select(this);
@@ -74,6 +80,16 @@
   click_series = function(d) {
     var series;
     series = d3.select(this);
+    if (series.classed("selected")) {
+      return clear_series(series);
+    } else {
+      return add_series(series);
+    }
+  };
+
+  click_expander = function(d) {
+    var series;
+    series = s_row(d.udman_name);
     if (series.attr("state") === "expanded") {
       return collapse_series(series);
     } else {
@@ -82,12 +98,51 @@
   };
 
   mouseover_series = function(d) {
-    var this_cat;
-    return this_cat = d3.select(this).style("background-color", "#EEE");
+    return d3.select(this).classed("hovered", true);
   };
 
   mouseout_series = function(d) {
-    return d3.selectAll(".series").style("background-color", "#FFF").selectAll("div");
+    return d3.selectAll(".series").classed("hovered", false);
+  };
+
+  window.highlight_series_row = function(d) {
+    return s_row(d.udaman_name).classed("selected", true);
+  };
+
+  window.unhighlight_series_row = function(d) {
+    return s_row(d.udaman_name).classed("selected", false);
+  };
+
+  add_series = function(series) {
+    var current_selection, d, sel_count;
+    d = series.datum();
+    current_selection = d3.selectAll(".series.selected");
+    sel_count = current_selection.data().length;
+    highlight_series_row(d);
+    switch (sel_count) {
+      case 0:
+        return display_line_and_bar_chart(d);
+      case 1:
+        return line_and_bar_to_multi_line(d);
+      default:
+        return add_to_line_chart(d, "left");
+    }
+  };
+
+  clear_series = function(series) {
+    var current_selection, d, sel_count;
+    d = series.datum();
+    current_selection = d3.selectAll(".series.selected");
+    sel_count = current_selection.data().length;
+    unhighlight_series_row(d);
+    switch (sel_count) {
+      case 1:
+        return clear_line_and_bar_chart(d);
+      case 2:
+        return multi_line_to_line_and_bar(d);
+      default:
+        return clear_from_line_chart(d);
+    }
   };
 
   add_parent = function(series_data, parent) {
@@ -203,15 +258,7 @@
   };
 
   create_axis_control = function(cat_series, axis) {
-    return cat_series.append("div").attr("class", "" + axis + "_toggle off").text("+").on("click", function(d) {
-      var button;
-      button = d3.select(this);
-      if (button.classed("off")) {
-        return add_to_line_chart(d, axis);
-      } else {
-        return remove_from_line_chart(d, axis);
-      }
-    });
+    return cat_series.append("div").attr("class", "" + axis + "_toggle off").text(".");
   };
 
   create_axis_controls = function(cat_series) {
@@ -226,7 +273,12 @@
   };
 
   create_series_label = function(cat_series) {
-    return cat_series.append("div").attr("class", "series_label").style("line-height", series_height + "px").append("span").text(function(d) {
+    var label, parents;
+    label = cat_series.append("div").attr("class", "series_label").style("line-height", series_height + "px");
+    parents = label.filter(function(d) {
+      return d.children_sum;
+    }).append("a").attr("href", "javascript:;").html("&nbsp; + ").on("click", click_expander);
+    return label.append("span").text(function(d) {
       return d.display_name;
     });
   };
@@ -244,7 +296,7 @@
       return flatten(d.series_list);
     }).enter().append("div").attr("id", function(d) {
       return "s_row_" + (series_to_class(d.udaman_name));
-    }).attr("class", series_row_class).attr("state", "expanded").style("height", series_height + "px").on("mouseover", mouseover_series).on("mouseout", mouseout_series).on("click", click_series);
+    }).attr("class", series_row_class).attr("state", "expanded").style("height", series_height + "px").style("cursor", "pointer").on("mouseover", mouseover_series).on("mouseout", mouseout_series).on("click", click_series);
     return cat_series.call(create_series_label).call(create_sparklines).call(create_axis_controls).call(create_data_columns);
   };
 

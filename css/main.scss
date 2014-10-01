@@ -125,6 +125,7 @@ g#pie_chart_area text { pointer-events: none; }
 
 .series {float:left; /*width:450px; text-align:center;*/ font-size:10px; overflow:hidden;}
 .series_label, #series_header { width: 180px; padding:0;}
+.series.selected, .series.hovered  { background-color: #EEE}
 
 .series_label {padding-left: 0}
 .child .series_label span { padding-left: 20px;}
