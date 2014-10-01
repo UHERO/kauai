@@ -106,6 +106,8 @@ window.load_page = (page_slug) ->
 
 #-------- main run code -------------  
 set_up_nav()
-set_headline("In 2013, per person per trip spending increaed by 9.63% compared to the previous year")
-
+set_headline("Visitor Industry")
 load_page("vis")
+
+
+

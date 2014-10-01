@@ -112,7 +112,7 @@
 
   set_up_nav();
 
-  set_headline("In 2013, per person per trip spending increaed by 9.63% compared to the previous year");
+  set_headline("Visitor Industry");
 
   load_page("vis");
 
