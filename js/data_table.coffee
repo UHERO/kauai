@@ -188,7 +188,7 @@ create_data_columns = (cat_series) ->
     .style("margin-left", (d) -> -(d[freq].data.length*cell_width-datatable_width)+"px")
     
   container.selectAll("div.cell")
-    .data((d) -> console.log(d); d[freq].data)
+    .data((d) -> d[freq].data)
     .enter()
     .append("div")
     .attr("class", "cell")

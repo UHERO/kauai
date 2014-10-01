@@ -196,7 +196,6 @@
       return -(d[freq].data.length * cell_width - datatable_width) + "px";
     });
     return container.selectAll("div.cell").data(function(d) {
-      console.log(d);
       return d[freq].data;
     }).enter().append("div").attr("class", "cell").text(function(d) {
       return (+d).toFixed(3);

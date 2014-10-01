@@ -1,5 +1,5 @@
 (function() {
-  var page_setup, render_page, set_headline, set_single_slider_in_div, set_slider_in_div, set_up_dashboard_elements, set_up_div, set_up_nav, set_up_sliders;
+  var clear_dashboard_elements, clear_data_table, clear_previous_page, clear_sliders, page_setup, render_page, set_headline, set_single_slider_in_div, set_slider_in_div, set_up_dashboard_elements, set_up_div, set_up_nav, set_up_sliders;
 
   window.freq = "q";
 
@@ -21,6 +21,8 @@
       return d.value.width + "px";
     }).text(function(d) {
       return d.key;
+    }).on("click", function(d) {
+      return load_page(d.value);
     });
   };
 
@@ -81,8 +83,29 @@
     return collapse(d3.select("#cat_Income"));
   };
 
+  clear_dashboard_elements = function() {
+    return d3.selectAll("#charts_area .dashboard_element").remove();
+  };
+
+  clear_data_table = function() {
+    return d3.selectAll("#series_display .category").remove();
+  };
+
+  clear_sliders = function() {
+    set_slider_in_div("sparkline_slider_div", dates, 0, dates.length - 1, trim_sparklines);
+    set_slider_in_div("line_chart_slider_div", dates, 0, dates.length - 1, trim_time_series);
+    set_single_slider_in_div("time_slice_slider_div", dates, 0, dates.length - 1, redraw_slice);
+    return set_single_slider_in_div("datatable_slider_div", dates, 0, dates.length - 1, slide_table);
+  };
+
+  clear_previous_page = function() {
+    clear_dashboard_elements();
+    return clear_data_table();
+  };
+
   render_page = function(page_data) {
     var dashboard_elements;
+    clear_previous_page();
     set_up_sliders(page_data.dates[freq]);
     dashboard_elements = [
       {
@@ -104,16 +127,15 @@
     return pie_these_series(page_data.series_groups[0].series_list[0].children);
   };
 
-  window.load_page = function(page_slug) {
-    return load_page_data(page_slug, function(data) {
+  window.load_page = function(data_category) {
+    return load_page_data(data_category.slug, function(data) {
+      set_headline(data_category.title);
       return render_page(data);
     });
   };
 
   set_up_nav();
 
-  set_headline("Visitor Industry");
-
-  load_page("vis");
+  load_page(data_categories["visitor industry"]);
 
 }).call(this);

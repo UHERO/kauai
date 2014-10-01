@@ -17,7 +17,6 @@ window.set_up_svg = (container) ->
     .attr("width", width)
 
 #-------- page setup methods -------------  
-    
 set_up_nav = () ->
   d3.select("div#nav")
     .selectAll("div.nav_link")
@@ -28,6 +27,7 @@ set_up_nav = () ->
     .attr("id", (d) -> d.key.replace(" ", "_"))
     .style("width", (d) -> d.value.width+"px")
     .text((d) -> d.key)
+    .on("click", (d) -> load_page(d.value))
 
 set_headline = (text) ->
   d3.select("#headline").text(text)
@@ -81,7 +81,27 @@ page_setup = () ->
   collapse d3.select("#cat_General")
   collapse d3.select("#cat_Income")
 
+clear_dashboard_elements = ->
+  d3.selectAll("#charts_area .dashboard_element").remove()
+  
+clear_data_table = ->
+  d3.selectAll("#series_display .category").remove()
+  
+clear_sliders = ->
+  set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
+  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
+  set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
+  set_single_slider_in_div "datatable_slider_div", dates, 0, dates.length-1, slide_table
+  
+  
+clear_previous_page = ->
+  clear_dashboard_elements()
+  clear_data_table()
+  # don't need to clear sliders because they already clear themselves. 
+  # Possibly move that in here if it doesn't break things
+  
 render_page = (page_data) ->
+  clear_previous_page()
   #maybe fix sliders so they correspond to panel sizes
   set_up_sliders(page_data.dates[freq])
 
@@ -96,18 +116,18 @@ render_page = (page_data) ->
   
   # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
   display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
-  
   pie_these_series(page_data.series_groups[0].series_list[0].children)
   
-window.load_page = (page_slug) ->
-  load_page_data(page_slug, (data) ->
+window.load_page = (data_category) ->
+  # this takes some time to load, so put in page loading graphic
+  load_page_data(data_category.slug, (data) ->
+    set_headline(data_category.title)
     render_page(data)
   )
 
 #-------- main run code -------------  
 set_up_nav()
-set_headline("Visitor Industry")
-load_page("vis")
+load_page(data_categories["visitor industry"])
 
 
 
