@@ -10,27 +10,33 @@
   window.data_categories = {
     "major indicators": {
       width: 130,
-      slug: "major"
+      slug: "major",
+      title: "Major Indicators"
     },
     "visitor industry": {
       width: 140,
-      slug: "vis"
+      slug: "vis",
+      title: "Visitor Industry"
     },
     "labor": {
       width: 100,
-      slug: "labor"
+      slug: "jobs",
+      title: "Employment and Labor"
     },
     "personal income": {
       width: 120,
-      slug: "income"
+      slug: "income",
+      title: "Personal Income"
     },
     "construction": {
       width: 100,
-      slug: "const"
+      slug: "const",
+      title: "Construction Industry"
     },
     "county revenue": {
       width: 120,
-      slug: "county_rev"
+      slug: "county_rev",
+      title: "County Revenue"
     }
   };
 

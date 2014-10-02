@@ -5,6 +5,7 @@ series_height = 45;
 datatable_width= 300;
 x = d3.scale.linear().clamp(true).range([ 0, 145 ])
 y = d3.scale.linear().range([ series_height, 5 ])
+window.mode = "line_bar"
 
 all_dates = ->
   d3.select("#datatable_slider_div").datum()
@@ -60,6 +61,9 @@ window.expand_series = (series) ->
     .style("height", series_height + "px")
     .attr("state", "expanded")
 
+s_row = (udaman_name) ->
+  return d3.select("#s_row_#{series_to_class(udaman_name)}")
+    
 click_cat = (d) ->
   cat = d3.select(this)
   if cat.attr("state") is "expanded"
@@ -67,21 +71,54 @@ click_cat = (d) ->
   else
     expand cat
 
+# also add in a way to switch to right axis here
 click_series = (d) ->
   series = d3.select(this)
+  if series.classed("selected") then clear_series(series) else add_series(series)
+
+click_expander = (d) ->
+  series = s_row(d.udman_name)
   if series.attr("state") is "expanded"
     collapse_series series
   else
     expand_series series
-      
+        
 mouseover_series = (d) ->
-  this_cat = d3.select(this).style("background-color", "#EEE")
+  d3.select(this).classed("hovered", true)
 
 mouseout_series = (d) ->
-  d3.selectAll(".series")
-    .style("background-color", "#FFF")
-    .selectAll("div")
+  d3.selectAll(".series").classed("hovered", false)
 
+window.highlight_series_row = (d) ->
+  s_row(d.udaman_name).classed("selected", true)
+  
+window.unhighlight_series_row = (d) ->
+  s_row(d.udaman_name).classed("selected", false)
+  
+add_series = (series) ->
+  d = series.datum()
+  current_selection = d3.selectAll(".series.selected")
+  sel_count = current_selection.data().length
+
+  highlight_series_row(d)
+
+  switch sel_count
+    when 0 then display_line_and_bar_chart(d)
+    when 1 then line_and_bar_to_multi_line(d)
+    else add_to_line_chart(d, "left")
+
+clear_series= (series) ->
+  d = series.datum()
+  current_selection = d3.selectAll(".series.selected")
+  sel_count = current_selection.data().length
+
+  unhighlight_series_row(d)
+
+  switch sel_count
+    when 1 then clear_line_and_bar_chart(d)
+    when 2 then multi_line_to_line_and_bar(d)
+    else clear_from_line_chart(d)
+  
 add_parent = (series_data, parent) ->
   series_data.series_parent = parent
   series_data
@@ -163,11 +200,25 @@ draw_spark_area = (svg, duration) ->
 window.slide_table = (event, ui) ->
   offset_val = ui.value+1
   offset= -(offset_val * cell_width - datatable_width)
-  d3.selectAll(".data_cols .container")
+  d3.selectAll(".container")
     .transition()
     .duration(200)
     .style("margin-left", offset+"px")
+
+populate_dates = ->
+  container = d3.select("#datatable_header")
+    .append("div")
+    .attr("class", "container")
+    .style("width", (all_dates().length*cell_width)+"px")
+    .style("margin-left", -(all_dates().length*cell_width-datatable_width)+"px")
     
+  container.selectAll("div.cell")
+    .data(all_dates())
+    .enter()
+    .append("div")
+    .attr("class", "cell")
+    .text((d) -> d)
+
 create_data_columns = (cat_series) ->
   container = cat_series.append("div")
     .attr("class", "data_cols")
@@ -177,7 +228,7 @@ create_data_columns = (cat_series) ->
     .style("margin-left", (d) -> -(d[freq].data.length*cell_width-datatable_width)+"px")
     
   container.selectAll("div.cell")
-    .data((d) -> console.log(d); d[freq].data)
+    .data((d) -> d[freq].data)
     .enter()
     .append("div")
     .attr("class", "cell")
@@ -186,14 +237,15 @@ create_data_columns = (cat_series) ->
 create_axis_control = (cat_series, axis) ->
   cat_series.append("div")
     .attr("class", "#{axis}_toggle off")
-    .text("+")
-    .on("click", (d) -> 
-      button = d3.select(this)
-      if (button.classed("off"))
-        add_to_line_chart(d, axis)
-      else
-        remove_from_line_chart(d, axis)
-    )
+    .text(".")
+    # .text("+")
+    # .on("click", (d) -> 
+    #   button = d3.select(this)
+    #   if (button.classed("off"))
+    #     add_to_line_chart(d, axis)
+    #   else
+    #     remove_from_line_chart(d, axis)
+    # )
 
 create_axis_controls = (cat_series) ->
   cat_series
@@ -210,9 +262,17 @@ create_sparklines = (cat_series) ->
   draw_sparklines spark_range, 0
     
 create_series_label = (cat_series) ->
-  cat_series.append("div")
+  label = cat_series.append("div")
     .attr("class", "series_label")
     .style("line-height", series_height + "px")
+
+  parents = label.filter((d) -> d.children_sum)
+    .append("a")
+    .attr("href", "javascript:;")
+    .html("&nbsp; + ")
+    .on("click", click_expander)
+    
+  label
     .append("span")
     .text((d) -> d.display_name)
       
@@ -231,6 +291,7 @@ create_series_rows = (cat_divs)->
     .attr("class", series_row_class)
     .attr("state", "expanded")
     .style("height", series_height + "px")
+    .style("cursor", "pointer")
     .on("mouseover", mouseover_series)
     .on("mouseout", mouseout_series)
     .on("click", click_series)
@@ -242,6 +303,7 @@ create_series_rows = (cat_divs)->
     .call(create_data_columns)
     
 window.create_data_table = (page_data)->
+  populate_dates()
   cat_divs = d3.select("#series_display")
     .selectAll("div.category")
     .data(page_data.series_groups)

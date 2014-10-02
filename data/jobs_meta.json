@@ -8,8 +8,8 @@
       "a": true, "q": true, "m": true,
       "children" : [
         {"display_name": "Construction & Mining", "udaman_name": "ECT@KAU", "a": true, "q": true, "m": true},
-        {"display_name": "Manufacturing", "udaman_name": "EMN@KAU", "a": true, "q": true, "m", true},
-        {"display_name": "Trade, Transport, & Utility", "udaman_name": "E_TTU@KAU", "a": true, "q": true, "m", true, "children" : [
+        {"display_name": "Manufacturing", "udaman_name": "EMN@KAU", "a": true, "q": true, "m": true},
+        {"display_name": "Trade, Transport, & Utility", "udaman_name": "E_TTU@KAU", "a": true, "q": true, "m": true, "children" : [
           {"display_name": "Transportation & Utilities", "udaman_name": "E_TU@KAU", "a": true, "q": true, "m": true},
           {"display_name": "Total Trade Jobs", "udaman_name": "E_TRADE@KAU", "a": true, "q": true, "m": true}
         ]},
@@ -38,7 +38,7 @@
         {"display_name": "Total Government Jobs", "udaman_name": "EGV@KAU", "a": true, "q": true, "m": true, "children": [
           {"display_name": "Federal Government Jobs", "udaman_name": "EGVFD@KAU", "a": true, "q": true, "m": true},
           {"display_name": "State & Local Government Jobs", "udaman_name": "E_GVSL@KAU", "a": true, "q": true, "m": true}
-        ]}       
+        ]},       
         {"display_name": "Retail Trade Jobs", "udaman_name": "ERT@KAU", "a": true, "q": true, "m": true},
         {"display_name": "Admin & Waste Management", "udaman_name": "EAD@KAU", "a": true, "q": true, "m": true},
         {"display_name": "Transportation & Utilities", "udaman_name": "E_TU@KAU", "a": true, "q": true, "m": true},

@@ -1,5 +1,5 @@
 (function() {
-  var all_dates, chart_extent, combine_extent, dates_extent, dummy_path, redraw_line_chart, regenerate_path, slider_dates, slider_extent, time_axis, toggle_axis_button, trim_d, update_domain, update_x_domain, update_y_domain_with_new, x, x_from_slider, y, y_left, y_right;
+  var all_dates, chart_extent, combine_extent, dates_extent, dummy_path, hide_bars, redraw_line_and_bar_chart, redraw_line_chart, regenerate_bars, regenerate_path, s_path, show_bars, slider_dates, slider_extent, time_axis, toggle_axis_button, trim_d, trim_yoy, update_domain, update_x_domain, update_y_domain_with_new, x, x_from_slider, y, y_height, y_left, y_right, y_yoy, yoy_chart_extent;
 
   slider_extent = null;
 
@@ -50,6 +50,18 @@
     return d !== null;
   });
 
+  y_yoy = function(d) {
+    if (d < 0) {
+      return y_right(0);
+    } else {
+      return y_right(d);
+    }
+  };
+
+  y_height = function(d) {
+    return Math.abs(y_right(0) - y_right(d));
+  };
+
   all_dates = function() {
     return d3.select("#line_chart_slider_div").datum();
   };
@@ -71,6 +83,13 @@
     return [full_extent[0] - range * .1, full_extent[1] + range * .1];
   };
 
+  yoy_chart_extent = function(array) {
+    var full_extent, range;
+    full_extent = d3.extent(array);
+    range = full_extent[1] - full_extent[0];
+    return [full_extent[0] - range * .1, full_extent[1] + range * .1];
+  };
+
   combine_extent = function(ex1, ex2) {
     return [d3.min([ex1[0], ex2[0]]), d3.max([ex1[1], ex2[1]])];
   };
@@ -85,8 +104,16 @@
     }
   };
 
+  s_path = function(udaman_name) {
+    return d3.select("g#chart_area #path_" + (series_to_class(udaman_name)));
+  };
+
   trim_d = function(d, extent) {
     return d.trimmed_data = d.data.slice(extent[0], extent[1] + 1);
+  };
+
+  trim_yoy = function(d, extent) {
+    return d.trimmed_yoy = d.yoy.slice(extent[0], extent[1] + 1);
   };
 
   update_x_domain = function(extent, duration) {
@@ -135,6 +162,41 @@
     return y[axis].path(d[freq].trimmed_data);
   };
 
+  show_bars = function(d, extent) {
+    var bars, duration;
+    duration = 500;
+    trim_yoy(d[freq], extent);
+    bars = d3.select("g#chart_area").selectAll("rect.yoy").data(d[freq].trimmed_yoy);
+    bars.enter().append("rect").attr("class", "yoy").attr("fill", "gray").attr("fill-opacity", 0.5).attr("y", y_right(0)).attr("x", x_from_slider).attr("height", 0).attr("width", 1);
+    return bars.transition().duration(duration).attr("y", y_yoy).attr("height", y_height);
+  };
+
+  regenerate_bars = function(d, extent) {
+    var bars;
+    trim_yoy(d[freq], extent);
+    bars = d3.select("g#chart_area").selectAll("rect.yoy").data(d[freq].trimmed_yoy);
+    bars.enter().append("rect").attr("class", "yoy").attr("fill", "gray").attr("fill-opacity", 0.5);
+    bars.exit().remove();
+    return bars.attr("x", x_from_slider).attr("y", y_yoy).attr("width", 1).attr("height", y_height);
+  };
+
+  hide_bars = function() {
+    var bars, duration;
+    duration = 500;
+    bars = d3.select("g#chart_area").selectAll("rect.yoy").transition().duration(duration).attr("y", y_right(0)).attr("height", 0);
+    y["right"].scale.domain([0, 1]);
+    return d3.select("#right_axis").transition().duration(duration).call(y["right"].axis);
+  };
+
+  redraw_line_and_bar_chart = function(extent) {
+    var path;
+    update_x_domain(extent);
+    path = d3.select("g#chart_area path.with_bar").attr("d", function(d) {
+      return regenerate_path(d, extent, "left");
+    });
+    return regenerate_bars(path.datum(), extent);
+  };
+
   redraw_line_chart = function(extent, duration) {
     var l_paths, r_paths;
     if (duration == null) {
@@ -151,7 +213,64 @@
 
   window.trim_time_series = function(event, ui) {
     slider_extent = ui.values;
-    return redraw_line_chart(slider_extent);
+    switch (window.mode) {
+      case "multi_line":
+        return redraw_line_chart(slider_extent);
+      case "line_bar":
+        return redraw_line_and_bar_chart(slider_extent);
+      default:
+        return redraw_line_chart(slider_extent);
+    }
+  };
+
+  window.line_and_bar_to_multi_line = function(d) {
+    hide_bars();
+    d3.select("g#chart_area path.with_bar").classed("with_bar", false).classed("s_left", true);
+    add_to_line_chart(d, "left");
+    return window.mode = "multi_line";
+  };
+
+  window.multi_line_to_line_and_bar = function(d) {
+    var duration, keep_path, kp_d, yoy_domain;
+    duration = 500;
+    clear_from_line_chart(d);
+    keep_path = d3.select("g#chart_area path.s_left, g#chart_area path.s_right").classed("with_bar", true);
+    kp_d = keep_path.datum();
+    yoy_domain = yoy_chart_extent(kp_d[freq].yoy);
+    update_y_domain_with_new("right", yoy_domain, duration);
+    show_bars(kp_d, slider_extent);
+    return window.mode = "line_bar";
+  };
+
+  window.clear_from_line_chart = function(d) {
+    var axis, path;
+    path = s_path(d.udaman_name);
+    axis = path.classed("s_left") ? "left" : "right";
+    return remove_from_line_chart(d, axis);
+  };
+
+  window.clear_line_and_bar_chart = function(d) {
+    hide_bars();
+    return remove_from_line_chart(d, "left");
+  };
+
+  window.display_line_and_bar_chart = function(d) {
+    var domain, duration, path, yoy_domain;
+    highlight_series_row(d);
+    duration = 500;
+    trim_d(d[freq], slider_extent);
+    domain = chart_extent(d[freq].data);
+    yoy_domain = yoy_chart_extent(d[freq].yoy);
+    path = d3.select("g#chart_area #path_" + (series_to_class(d.udaman_name)));
+    update_y_domain_with_new("left", domain, duration);
+    update_y_domain_with_new("right", yoy_domain, duration);
+    path.classed("with_bar", true).attr("d", function(d) {
+      return dummy_path(d[freq].trimmed_data);
+    });
+    path.transition().duration(duration).attr("d", function(d) {
+      return y["left"].path(d[freq].trimmed_data);
+    });
+    return show_bars(d, slider_extent);
   };
 
   window.add_to_line_chart = function(d, axis) {

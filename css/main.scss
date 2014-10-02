@@ -66,7 +66,7 @@ $on-laptop:        800px;
 #pie_chart { }
 
 #data { clear:both; position:relative; top:50px }
-#source_links { clear: both; position:relative; top:50px}
+#source_links { clear: both; position:relative; top:50px; margin-top:100px; text-align:right; font-size:10px;}
 
 h2#headline { padding: 10px 0 0 0; }
 
@@ -90,11 +90,19 @@ g#pie_chart_area text { pointer-events: none; }
 
 /*********** Slider Stuff *****************/
 .ui-widget-header { background:none;}
-#sparkline_slider_div { height:10px; }
+.ui-slider-horizontal { height: 0.4em }
 .ui-slider .ui-slider-handle{
-    width:10px; 
-    height:20px;
+    width:5px; 
+    height:15px;
 }
+
+.ui-slider-horizontal .ui-slider-handle {
+  top: -0.3em;
+  margin-left: -0.3em; 
+}
+
+#time_slice_slider_div.ui-slider .ui-slider-handle,
+#datatable_slider_div.ui-slider .ui-slider-handle { height:.4em; width:15px; top: -.05em; margin-left: -0.5em}
 
 #sparkline_slider_container {width:370px; float:left;}
 #datatable_slider_container {width:300px; float:left; margin-left:50px}
@@ -111,17 +119,19 @@ g#pie_chart_area text { pointer-events: none; }
 
 .series_label, .sparkline, .selected_value, .selected_perc,
 #category_header, #series_header, #sparkline_header, #level_header, #yoy_header,
-#line_left_header, #line_right_header, #pie_header,
+#line_left_header, #line_right_header, #pie_header, #datatable_header,
 .left_toggle, .right_toggle, .data_cols, .container, .cell {float:left}
 
 
 .series {float:left; /*width:450px; text-align:center;*/ font-size:10px; overflow:hidden;}
-.series_label, #series_header { width: 180px; padding: 0 5px;}
+.series_label, #series_header { width: 180px; padding:0;}
+.series.selected, .series.hovered  { background-color: #EEE}
 
 .series_label {padding-left: 0}
 .child .series_label span { padding-left: 20px;}
 .series_label span { display: inline-block; vertical-align:middle; line-height:normal;}
 
+#datatable_header { width: 300px; overflow:hidden; height:100%}
 .data_cols { width: 300px; overflow:hidden; height:100%}
 .container { height:100%; }
 .cell { float: left; height:100%; border:0px solid red; width:50px; text-align:center }
@@ -133,7 +143,7 @@ g#pie_chart_area text { pointer-events: none; }
 #line_left_header { width: 40px }
 #line_right_header { width: 40px }
 #pie_header { width: 40px }
-.left_toggle, .right_toggle { width: 40px; text_align:center; cursor:pointer }
+.left_toggle, .right_toggle { width: 40px; text-align:center; font-size:12px; line-height:45px; cursor:pointer }
 
 #sparkline_header {font-weight:bold; font-size:11px;}
 #table_header { height: 20px; text-align:center; font-size:11px;}
