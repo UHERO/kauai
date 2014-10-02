@@ -135,6 +135,10 @@
   };
 
   window.trim_sparklines = function(event, ui) {
+    var text;
+    text = d3.select(".ui-slider-handle").style("left");
+    console.log(text);
+    d3.select("h3#date").text(all_dates()[ui.value]);
     return draw_sparklines(ui.values, 0);
   };
 
