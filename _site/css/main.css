@@ -680,4 +680,6 @@ g#pie_chart_area text {
   width: 100px; }
 
 #date {
-  font-size: 12px; }
+  font-size: 12px;
+  position: absolute;
+  top: -20px; }

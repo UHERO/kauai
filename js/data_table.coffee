@@ -142,9 +142,9 @@ trimmed_data_object = (d, start_i, end_i) ->
   new_d
 
 window.trim_sparklines = (event, ui) ->
-  text = d3.select(".ui-slider-handle").style("left")
-  console.log(text)
-  d3.select("h3#date").text(all_dates()[ui.value])
+  text = d3.select("#sparkline_slider_div div.ui-slider-range").style("left").split("px")
+  
+  d3.select("h3#date").text(all_dates()[ui.value]).style("left", (parseInt(text[0])) + "px")
   draw_sparklines ui.values, 0
   
 draw_sparklines = (extent, duration) ->

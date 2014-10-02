@@ -191,9 +191,8 @@
 
   window.trim_sparklines = function(event, ui) {
     var text;
-    text = d3.select(".ui-slider-handle").style("left");
-    console.log(text);
-    d3.select("h3#date").text(all_dates()[ui.value]);
+    text = d3.select("#sparkline_slider_div div.ui-slider-range").style("left").split("px");
+    d3.select("h3#date").text(all_dates()[ui.value]).style("left", (parseInt(text[0])) + "px");
     return draw_sparklines(ui.values, 0);
   };
 
