@@ -190,9 +190,8 @@
   };
 
   window.trim_sparklines = function(event, ui) {
-    var text;
-    text = d3.select("#sparkline_slider_div div.ui-slider-range").style("left").split("px");
-    d3.select("h3#date").text(all_dates()[ui.value]).style("left", (parseInt(text[0])) + "px");
+    d3.select("h3#date_series_left").text(all_dates()[ui.values[0]]);
+    d3.select("h3#date_series_right").text(all_dates()[ui.values[1]]);
     return draw_sparklines(ui.values, 0);
   };
 
@@ -233,6 +232,7 @@
 
   window.slide_table = function(event, ui) {
     var offset, offset_val;
+    d3.select("h3#date_table").text(all_dates()[ui.value]);
     offset_val = ui.value + 1;
     offset = -(offset_val * cell_width - datatable_width);
     return d3.selectAll(".container").transition().duration(200).style("margin-left", offset + "px");
