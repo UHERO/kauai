@@ -153,7 +153,10 @@ g#pie_chart_area text { pointer-events: none; }
 #geo, #freq { float:left; margin-top:10px;}
 #geo { width :300px; }
 #freq {width :100px; }
-
-
+#date_series_left{ font-size:12px; position:absolute; top:-20px; left:-20px}
+#date_series_right{font-size:12px; position:absolute; top:-20px; left:345px}
+#date_table{font-size:12px; position:absolute; top:-20px; left:700px}
+#date_line_left{ font-size:12px; position:absolute; top:-20px; left:-20px}
+#date_line_right{font-size:12px; position:absolute; top:-20px; left:345px}
 
 

@@ -142,6 +142,8 @@ trimmed_data_object = (d, start_i, end_i) ->
   new_d
 
 window.trim_sparklines = (event, ui) ->
+  d3.select("h3#date_series_left").text(all_dates()[ui.values[0]])
+  d3.select("h3#date_series_right").text(all_dates()[ui.values[1]])
   draw_sparklines ui.values, 0
   
 draw_sparklines = (extent, duration) ->
@@ -195,6 +197,7 @@ draw_spark_area = (svg, duration) ->
     .attr "d", spark_area_path
     
 window.slide_table = (event, ui) ->
+  d3.select("h3#date_table").text(all_dates()[ui.value])
   offset_val = ui.value+1
   offset= -(offset_val * cell_width - datatable_width)
   d3.selectAll(".container")
