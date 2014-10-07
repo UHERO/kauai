@@ -1,8 +1,8 @@
 ---
 ---
-cell_width = 50;
-series_height = 45;
-datatable_width= 300;
+cell_width = 50
+series_height = 45
+datatable_width= 300
 x = d3.scale.linear().clamp(true).range([ 0, 145 ])
 y = d3.scale.linear().range([ series_height, 5 ])
 window.mode = "line_bar"
@@ -202,7 +202,7 @@ window.slide_table = (event, ui) ->
   offset= -(offset_val * cell_width - datatable_width)
   d3.selectAll(".container")
     .transition()
-    .duration(200)
+    #.duration(200)
     .style("margin-left", offset+"px")
 
 populate_dates = ->

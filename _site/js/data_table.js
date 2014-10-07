@@ -235,7 +235,7 @@
     d3.select("h3#date_table").text(all_dates()[ui.value]);
     offset_val = ui.value + 1;
     offset = -(offset_val * cell_width - datatable_width);
-    return d3.selectAll(".container").transition().duration(200).style("margin-left", offset + "px");
+    return d3.selectAll(".container").transition().style("margin-left", offset + "px");
   };
 
   populate_dates = function() {
