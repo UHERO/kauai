@@ -212,7 +212,19 @@
   };
 
   window.trim_time_series = function(event, ui) {
+    var text;
     slider_extent = ui.values;
+    d3.select("h3#date_line_left").text(all_dates()[ui.values[0]]);
+    d3.select("h3#date_line_right").text(all_dates()[ui.values[1]]);
+    if (d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") === "left") {
+      text = d3.select("#line_chart_slider_container a.ui-state-focus").style("left").split("px");
+      console.log(text);
+      d3.select("h3#date_line_left").style("left", (parseInt(text[0]) + 480) + "px");
+    }
+    if (d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") === "right") {
+      text = d3.select("#line_chart_slider_container a.ui-state-focus").style("left").split("px");
+      d3.select("h3#date_line_right").style("left", (parseInt(text[0]) + 480) + "px");
+    }
     switch (window.mode) {
       case "multi_line":
         return redraw_line_chart(slider_extent);

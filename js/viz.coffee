@@ -45,6 +45,11 @@ set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
     slide: slide_func
 
   d3.select("#" + div_id).datum(dates)
+  d3.selectAll("#" + div_id + " a").data([1,2]).attr("slider", (d) -> 
+    if d == 1  
+      return "left" 
+    if d == 2 
+      return "right")
 
 set_single_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()

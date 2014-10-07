@@ -700,11 +700,11 @@ g#pie_chart_area text {
 #date_line_left {
   font-size: 12px;
   position: absolute;
-  top: -20px;
-  left: -20px; }
+  bottom: 10px;
+  left: 480px; }
 
 #date_line_right {
   font-size: 12px;
   position: absolute;
-  top: -20px;
-  left: 345px; }
+  bottom: 10px;
+  left: 810px; }

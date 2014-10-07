@@ -40,7 +40,15 @@
       values: [pos1, pos2],
       slide: slide_func
     });
-    return d3.select("#" + div_id).datum(dates);
+    d3.select("#" + div_id).datum(dates);
+    return d3.selectAll("#" + div_id + " a").data([1, 2]).attr("slider", function(d) {
+      if (d === 1) {
+        return "left";
+      }
+      if (d === 2) {
+        return "right";
+      }
+    });
   };
 
   set_single_slider_in_div = function(div_id, dates, pos1, pos2, slide_func) {
