@@ -12,7 +12,8 @@
             { "display_name": "Japan Visitor Arrivals" , "udaman_name": "VISJP@KAU" , "a": true , "q": true , "m": true},
             { "display_name": "Other Visitor Arrivals" , "udaman_name": "VISRES@KAU" , "a": true , "q": true , "m": true}
           ] 
-        }      
+        }, 
+        { "display_name": "Canada Visitor Arrivals" , "udaman_name": "VISCAN@KAU" , "a": true , "q": true , "m": true }
       ]
     }, { 
       "group_name": "Visitor Census", 
