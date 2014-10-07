@@ -1,6 +1,6 @@
 # Site settings
 title: Kauai Dashboard Prototype
-email: jrpage@hawaii.edu
+email: uhero@hawaii.edu
 description: > # this means to ignore newlines until "baseurl:"
     This dashboard provides Kauai economic data at a glance.
 baseurl: "/kauai/" # the subpath of your site, e.g. /blog/
