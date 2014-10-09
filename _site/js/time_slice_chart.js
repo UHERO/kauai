@@ -73,7 +73,9 @@
     var slice;
     slice = d3.select(this);
     slice.attr("fill-opacity", ".3");
-    return chart_area.append("text").attr("class", "pie_label").attr("text-anchor", "middle").attr("transform", "translate( " + (pie_arc.centroid(d)) + " )").text(d.data.display_name);
+    return chart_area.append("text").attr("class", "pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
+      return "translate( " + (pie_arc.centroid(d)) + " )";
+    }).text(d.data.display_name);
   };
 
   mouseout_pie = function(d) {
@@ -91,15 +93,21 @@
   };
 
   window.pie_these_series = function(series_data) {
-    var data_extent;
+    var data_extent, max_pie;
     data_extent = get_common_dates(series_data);
     set_slider_dates(data_extent);
     chart_area.selectAll("path").remove();
-    return chart_area.selectAll("path").data(pie_layout(series_data), function(d) {
+    max_pie = d3.max(pie_layout(series_data));
+    chart_area.selectAll("path").data(pie_layout(series_data), function(d) {
       return d.data.display_name;
     }).enter().append("path").attr("d", pie_arc).attr("fill", function(d) {
       return color(d.data.display_name);
-    }).attr("stroke", "white").attr("stroke-width", 2).on("mouseover", mouseover_pie).on("mouseout", mouseout_pie);
+    }).attr("stroke", "white").attr("stroke-width", 2);
+    return chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
+      return "translate( " + (pie_arc.centroid(d)) + " )";
+    }).text(function(d) {
+      return d.data.display_name;
+    }).attr("");
   };
 
   window.visitor_pie_chart = function(container) {

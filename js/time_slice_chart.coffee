@@ -49,7 +49,7 @@ mouseover_pie = (d,i) ->
   chart_area.append("text")
     .attr("class","pie_label")
     .attr("text-anchor", "middle")
-    .attr("transform", "translate( #{pie_arc.centroid(d)} )" )
+    .attr("transform", (d) -> "translate( #{pie_arc.centroid(d)} )" )
     .text(d.data.display_name)
 
 mouseout_pie = (d) ->
@@ -70,6 +70,7 @@ window.pie_these_series = (series_data) ->
   set_slider_dates(data_extent)
   chart_area.selectAll("path").remove()
 
+  max_pie = d3.max(pie_layout(series_data))
   chart_area.selectAll("path")
     .data(pie_layout(series_data), (d) -> d.data.display_name)
     .enter()
@@ -78,8 +79,19 @@ window.pie_these_series = (series_data) ->
     .attr("fill", (d) -> color(d.data.display_name))
     .attr("stroke", "white")
     .attr("stroke-width", 2)
-    .on("mouseover", mouseover_pie)
-    .on("mouseout", mouseout_pie)
+    # .on("mouseover", mouseover_pie)
+    #     .on("mouseout", mouseout_pie)
+  
+  chart_area.selectAll("text")
+    .data([max_pie])
+    .enter()
+    .append("text")
+    .attr("class","pie_label")
+    .attr("text-anchor", "middle")
+    .attr("transform", (d) -> "translate( #{pie_arc.centroid(d)} )" )
+    .text((d) -> d.data.display_name)
+    .attr("")
+    #.style("font-size", "9px")
 
 window.visitor_pie_chart = (container) ->
   slider_val = all_dates().length-1
