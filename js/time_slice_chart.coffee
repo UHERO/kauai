@@ -3,6 +3,7 @@
 slider_val = null
 svg = null
 chart_area = null
+max_pie = null
 color = d3.scale.category20c()
 
 pie_layout = d3.layout.pie()
@@ -49,14 +50,28 @@ mouseover_pie = (d,i) ->
   chart_area.append("text")
     .attr("class","pie_label")
     .attr("text-anchor", "middle")
-    .attr("transform", (d) -> "translate( #{pie_arc.centroid(d)} )" )
+    .attr("transform", "translate( #{pie_arc.centroid(d)} )" )
     .text(d.data.display_name)
+    
+  if max_pie.value == d.value 
+    chart_area.select("text.in_pie_label").remove()
 
 mouseout_pie = (d) ->
   slice = d3.select(this)
   slice.attr("fill-opacity", "1")
   chart_area.select("text.pie_label").remove()
-
+  if max_pie.value == d.value 
+    chart_area.selectAll("text")
+      .data([max_pie])
+      .enter()
+      .append("text")
+      .attr("class","in_pie_label")
+      .attr("text-anchor", "middle")
+      .attr("transform", (d) -> "translate( #{pie_arc.centroid(d)} )" )
+      .text((d) -> d.data.display_name)
+      .style("font-size", "9px")
+      .style('font-weight', "bold")
+      
 set_slider_dates = (extent) ->
   slider_val = extent[1]
   # no need to change the dates, slider indices are still relative
@@ -70,7 +85,9 @@ window.pie_these_series = (series_data) ->
   set_slider_dates(data_extent)
   chart_area.selectAll("path").remove()
 
-  max_pie = d3.max(pie_layout(series_data))
+  sorted_array = pie_layout(series_data).sort((a,b) -> a.value - b.value)
+  console.log(sorted_array)
+  max_pie = sorted_array[sorted_array.length-1]
   chart_area.selectAll("path")
     .data(pie_layout(series_data), (d) -> d.data.display_name)
     .enter()
@@ -79,19 +96,19 @@ window.pie_these_series = (series_data) ->
     .attr("fill", (d) -> color(d.data.display_name))
     .attr("stroke", "white")
     .attr("stroke-width", 2)
-    # .on("mouseover", mouseover_pie)
-    #     .on("mouseout", mouseout_pie)
+    .on("mouseover", mouseover_pie)
+    .on("mouseout", mouseout_pie)
   
   chart_area.selectAll("text")
     .data([max_pie])
     .enter()
     .append("text")
-    .attr("class","pie_label")
+    .attr("class","in_pie_label")
     .attr("text-anchor", "middle")
     .attr("transform", (d) -> "translate( #{pie_arc.centroid(d)} )" )
     .text((d) -> d.data.display_name)
-    .attr("")
-    #.style("font-size", "9px")
+    .style("font-size", "9px")
+    .style('font-weight', "bold")
 
 window.visitor_pie_chart = (container) ->
   slider_val = all_dates().length-1

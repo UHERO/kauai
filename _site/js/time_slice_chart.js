@@ -1,11 +1,13 @@
 (function() {
-  var all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_date, set_date_shown, set_slider_dates, slider_val, svg;
+  var all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_date, set_date_shown, set_slider_dates, slider_val, svg;
 
   slider_val = null;
 
   svg = null;
 
   chart_area = null;
+
+  max_pie = null;
 
   color = d3.scale.category20c();
 
@@ -73,16 +75,24 @@
     var slice;
     slice = d3.select(this);
     slice.attr("fill-opacity", ".3");
-    return chart_area.append("text").attr("class", "pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
-      return "translate( " + (pie_arc.centroid(d)) + " )";
-    }).text(d.data.display_name);
+    chart_area.append("text").attr("class", "pie_label").attr("text-anchor", "middle").attr("transform", "translate( " + (pie_arc.centroid(d)) + " )").text(d.data.display_name);
+    if (max_pie.value === d.value) {
+      return chart_area.select("text.in_pie_label").remove();
+    }
   };
 
   mouseout_pie = function(d) {
     var slice;
     slice = d3.select(this);
     slice.attr("fill-opacity", "1");
-    return chart_area.select("text.pie_label").remove();
+    chart_area.select("text.pie_label").remove();
+    if (max_pie.value === d.value) {
+      return chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
+        return "translate( " + (pie_arc.centroid(d)) + " )";
+      }).text(function(d) {
+        return d.data.display_name;
+      }).style("font-size", "9px").style('font-weight', "bold");
+    }
   };
 
   set_slider_dates = function(extent) {
@@ -93,21 +103,25 @@
   };
 
   window.pie_these_series = function(series_data) {
-    var data_extent, max_pie;
+    var data_extent, sorted_array;
     data_extent = get_common_dates(series_data);
     set_slider_dates(data_extent);
     chart_area.selectAll("path").remove();
-    max_pie = d3.max(pie_layout(series_data));
+    sorted_array = pie_layout(series_data).sort(function(a, b) {
+      return a.value - b.value;
+    });
+    console.log(sorted_array);
+    max_pie = sorted_array[sorted_array.length - 1];
     chart_area.selectAll("path").data(pie_layout(series_data), function(d) {
       return d.data.display_name;
     }).enter().append("path").attr("d", pie_arc).attr("fill", function(d) {
       return color(d.data.display_name);
-    }).attr("stroke", "white").attr("stroke-width", 2);
-    return chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
+    }).attr("stroke", "white").attr("stroke-width", 2).on("mouseover", mouseover_pie).on("mouseout", mouseout_pie);
+    return chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
       return "translate( " + (pie_arc.centroid(d)) + " )";
     }).text(function(d) {
       return d.data.display_name;
-    }).attr("");
+    }).style("font-size", "9px").style('font-weight', "bold");
   };
 
   window.visitor_pie_chart = function(container) {
