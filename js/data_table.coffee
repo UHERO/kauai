@@ -244,15 +244,16 @@ create_data_columns = (cat_series) ->
 create_axis_control = (cat_series, axis) ->
   cat_series.append("div")
     .attr("class", "#{axis}_toggle off")
-    .text(".")
-    # .text("+")
-    # .on("click", (d) -> 
-    #   button = d3.select(this)
-    #   if (button.classed("off"))
-    #     add_to_line_chart(d, axis)
-    #   else
-    #     remove_from_line_chart(d, axis)
-    # )
+    #.text(".")
+    .text("+")
+    .on("click", (d) -> 
+      d3.event.stopPropagation
+      button = d3.select(this)
+      if (button.classed("off"))
+        add_to_line_chart(d, axis)
+      else
+        remove_from_line_chart(d, axis)
+)
 
 create_axis_controls = (cat_series) ->
   cat_series

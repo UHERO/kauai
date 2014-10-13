@@ -4,10 +4,10 @@
     <title>Kauai Dashboard Prototype</title>
     <description>This dashboard provides Kauai economic data at a glance.
 </description>
-    <link>http://uhero.github.io/kauai/</link>
-    <atom:link href="http://uhero.github.io/kauai/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Tue, 07 Oct 2014 07:08:03 -0400</pubDate>
-    <lastBuildDate>Tue, 07 Oct 2014 07:08:03 -0400</lastBuildDate>
+    <link>http://uhero.github.io/</link>
+    <atom:link href="http://uhero.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Mon, 13 Oct 2014 09:37:49 -0400</pubDate>
+    <lastBuildDate>Mon, 13 Oct 2014 09:37:49 -0400</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -28,8 +28,8 @@
 
 </description>
         <pubDate>Mon, 08 Sep 2014 07:29:19 -0400</pubDate>
-        <link>http://uhero.github.io/kauai/jekyll/update/2014/09/08/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">http://uhero.github.io/kauai/jekyll/update/2014/09/08/welcome-to-jekyll.html</guid>
+        <link>http://uhero.github.io/jekyll/update/2014/09/08/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://uhero.github.io/jekyll/update/2014/09/08/welcome-to-jekyll.html</guid>
         
         
         <category>jekyll</category>

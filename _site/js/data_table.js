@@ -270,7 +270,16 @@
   };
 
   create_axis_control = function(cat_series, axis) {
-    return cat_series.append("div").attr("class", "" + axis + "_toggle off").text(".");
+    return cat_series.append("div").attr("class", "" + axis + "_toggle off").text("+").on("click", function(d) {
+      var button;
+      d3.event.stopPropagation;
+      button = d3.select(this);
+      if (button.classed("off")) {
+        return add_to_line_chart(d, axis);
+      } else {
+        return remove_from_line_chart(d, axis);
+      }
+    });
   };
 
   create_axis_controls = function(cat_series) {
