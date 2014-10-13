@@ -240,8 +240,9 @@
   };
 
   window.slide_table = function(event, ui) {
-    var offset, offset_val;
-    d3.select("h3#date_table").text(all_dates()[ui.value]);
+    var offset, offset_val, text;
+    text = d3.select("#datatable_slider_div a").style("left").split("px");
+    d3.select("h3#date_table").text(all_dates()[ui.value]).style("left", (parseInt(text) + 400) + "px");
     offset_val = ui.value + 1;
     offset = -(offset_val * cell_width - datatable_width);
     return d3.selectAll(".container").transition().style("margin-left", offset + "px");

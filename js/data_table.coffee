@@ -204,7 +204,8 @@ draw_spark_area = (svg, duration) ->
     .attr "d", spark_area_path
     
 window.slide_table = (event, ui) ->
-  d3.select("h3#date_table").text(all_dates()[ui.value])
+  text = d3.select("#datatable_slider_div a").style("left").split("px")
+  d3.select("h3#date_table").text(all_dates()[ui.value]).style("left", (parseInt(text) + 400) + "px")
   offset_val = ui.value+1
   offset= -(offset_val * cell_width - datatable_width)
   d3.selectAll(".container")
