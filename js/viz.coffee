@@ -36,7 +36,9 @@ set_headline = (text) ->
 
 set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()
+  # sneaky select of *_slider_container here
   d3.select("#" + div_id.replace("div", "container")).insert("div", "div#buttons").attr("id", div_id).attr "class", "slider"
+  # this is where the jQuery UI Slider is instantiated
   $("#" + div_id).slider
     range: true
     min: 0
