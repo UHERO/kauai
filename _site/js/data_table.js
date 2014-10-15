@@ -1,5 +1,5 @@
 (function() {
-  var add_parent, add_series, all_dates, cell_width, class_name_from_series_node, clear_series, click_cat, click_expander, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, populate_dates, s_row, series_height, series_row_class, spark_area_path, spark_line, trimmed_data_object, x, y;
+  var add_parent, add_series, all_dates, cell_width, class_name_from_series_node, clear_series, click_cat, click_expander, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, populate_dates, s_row, series_height, series_row_class, set_primary_series, set_secondary_axis, spark_area_path, spark_line, trimmed_data_object, x, y;
 
   cell_width = 50;
 
@@ -50,7 +50,7 @@
   };
 
   class_name_from_series_node = function(node) {
-    return series_to_class(node.datum().udaman_name);
+    return window.series_to_class(node.datum().udaman_name);
   };
 
   window.collapse_series = function(series) {
@@ -64,15 +64,23 @@
   };
 
   s_row = function(udaman_name) {
-    return d3.select("#s_row_" + (series_to_class(udaman_name)));
+    return d3.select("#s_row_" + (window.series_to_class(udaman_name)));
   };
 
   click_cat = function(d) {
     var cat;
     cat = d3.select(this);
     if (cat.attr("state") === "expanded") {
+      cat.select(".glyphicon").classed({
+        "glyphicon-chevron-down": false,
+        "glyphicon-chevron-right": true
+      });
       return collapse(cat);
     } else {
+      cat.select(".glyphicon").classed({
+        "glyphicon-chevron-down": true,
+        "glyphicon-chevron-right": false
+      });
       return expand(cat);
     }
   };
@@ -80,11 +88,7 @@
   click_series = function(d) {
     var series;
     series = d3.select(this);
-    if (series.classed("selected")) {
-      return clear_series(series);
-    } else {
-      return add_series(series);
-    }
+    return set_primary_series(series);
   };
 
   click_expander = function(d) {
@@ -111,6 +115,35 @@
 
   window.unhighlight_series_row = function(d) {
     return s_row(d.udaman_name).classed("selected", false);
+  };
+
+
+  /*
+   * this function replaces add_series and clear_series
+   * the new functionality allows the user to
+   * select the series on the left by clicking the series
+   * a separate button will allow them to select 
+   * at most one series on the right axis
+   */
+
+  set_primary_series = function(series) {
+    var d, series_to_remove;
+    d = series.datum();
+    d3.selectAll(".series").classed("selected", false);
+    series.classed("selected", true);
+    series_to_remove = d3.selectAll(".series:not(.selected)");
+    series_to_remove.each(function(d) {
+      return unhighlight_series_row(d);
+    });
+    line_and_bar_to_multi_line(d);
+    return series_to_remove.each(function(d) {
+      return multi_line_to_line_and_bar(d);
+    });
+  };
+
+  set_secondary_axis = function(series) {
+    var d;
+    return d = series.datum();
   };
 
   add_series = function(series) {
@@ -276,9 +309,9 @@
       d3.event.stopPropagation;
       button = d3.select(this);
       if (button.classed("off")) {
-        return add_to_line_chart(d, axis);
+
       } else {
-        return remove_from_line_chart(d, axis);
+
       }
     });
   };
@@ -295,11 +328,8 @@
   };
 
   create_series_label = function(cat_series) {
-    var label, parents;
+    var label;
     label = cat_series.append("div").attr("class", "series_label").style("line-height", series_height + "px");
-    parents = label.filter(function(d) {
-      return d.children_sum;
-    }).append("a").attr("href", "javascript:;").html("&nbsp; + ").on("click", click_expander);
     return label.append("span").text(function(d) {
       return d.display_name;
     });
@@ -307,7 +337,7 @@
 
   series_row_class = function(d) {
     var child_class, parent_class;
-    child_class = d.series_parent !== "" ? " child child_of_" + (series_to_class(d.series_parent)) : "";
+    child_class = d.series_parent !== "" ? " child child_of_" + (window.series_to_class(d.series_parent)) : "";
     parent_class = d.children_sum ? " parent" : "";
     return "series" + child_class + parent_class;
   };
@@ -317,7 +347,7 @@
     cat_series = cat_divs.selectAll("div.series").data(function(d) {
       return flatten(d.series_list);
     }).enter().append("div").attr("id", function(d) {
-      return "s_row_" + (series_to_class(d.udaman_name));
+      return "s_row_" + (window.series_to_class(d.udaman_name));
     }).attr("class", series_row_class).attr("state", "expanded").style("height", series_height + "px").style("cursor", "pointer").on("mouseover", mouseover_series).on("mouseout", mouseout_series).on("click", click_series);
     return cat_series.call(create_series_label).call(create_sparklines).call(create_axis_controls).call(create_data_columns);
   };
@@ -327,9 +357,9 @@
     populate_dates();
     cat_divs = d3.select("#series_display").selectAll("div.category").data(page_data.series_groups).enter().append("div").attr("class", "category");
     cat_labels = cat_divs.append("div").attr("class", "cat_label").attr("id", function(d) {
-      return "cat_" + (series_to_class(d.group_name));
-    }).attr("state", "expanded").text(function(d) {
-      return d.group_name;
+      return "cat_" + (window.series_to_class(d.group_name));
+    }).attr("state", "expanded").html(function(d) {
+      return "<span class='glyphicon glyphicon-chevron-down'></span> " + d.group_name;
     }).on("mouseover", function(d) {
       return d3.select(this).style("background-color", "#999");
     }).on("mouseout", function(d) {

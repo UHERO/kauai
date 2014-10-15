@@ -79,14 +79,14 @@ combine_extent = (ex1, ex2) ->
 
 
 toggle_axis_button = (series, axis) ->
-  button = d3.select("#s_row_#{series_to_class(series)} .#{axis}_toggle")
+  button = d3.select("#s_row_#{window.series_to_class(series)} .#{axis}_toggle")
   if button.classed("off")
     button.text("-").attr("class", "#{axis}_toggle on")
   else
     button.text("+").attr("class", "#{axis}_toggle off")
 
 s_path = (udaman_name) ->
-  d3.select("g#chart_area #path_#{series_to_class(udaman_name)}")
+  d3.select("g#chart_area #path_#{window.series_to_class(udaman_name)}")
 
 trim_d = (d, extent) ->
   d.trimmed_data = d.data.slice(extent[0], extent[1]+1)
@@ -215,7 +215,7 @@ window.trim_time_series = (event, ui) ->
   d3.select("h3#date_line_right").text(all_dates()[ui.values[1]])
   if d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") == "left"
     text = d3.select("#line_chart_slider_container a.ui-state-focus").style("left").split("px")
-    console.log(text)
+    #console.log(text)
     d3.select("h3#date_line_left").style("left", (parseInt(text[0]) + 480) + "px")
   
   if d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") == "right"
@@ -264,7 +264,7 @@ window.display_line_and_bar_chart = (d) ->
   domain = chart_extent(d[freq].data) 
   yoy_domain = yoy_chart_extent(d[freq].yoy)
    
-  path = d3.select("g#chart_area #path_#{series_to_class(d.udaman_name)}")
+  path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
   
   update_y_domain_with_new("left", domain, duration)
   update_y_domain_with_new("right", yoy_domain, duration)
@@ -284,7 +284,7 @@ window.add_to_line_chart = (d, axis) ->
   duration = 500
   trim_d d[freq], slider_extent
   domain = chart_extent(d[freq].data)  
-  path = d3.select("g#chart_area #path_#{series_to_class(d.udaman_name)}")
+  path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
 
   update_y_domain_with_new(axis, domain, duration)
   
@@ -303,7 +303,7 @@ window.add_to_line_chart = (d, axis) ->
 window.remove_from_line_chart = (d, axis) ->
   duration = 500
   chart_area = d3.select("g#chart_area")  
-  path = d3.select("g#chart_area #path_#{series_to_class(d.udaman_name)}")
+  path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
 
   path.classed("s_#{axis}", false)
   path.transition()
@@ -326,8 +326,8 @@ window.set_up_line_chart_paths = (data) ->
     .data(data)
     .enter()
     .append("path")
-    .attr("id", (d) -> "path_#{series_to_class(d.udaman_name)}")
-    .attr("class", (d) -> "#{series_to_class(d.udaman_name)} line_chart_path")
+    .attr("id", (d) -> "path_#{window.series_to_class(d.udaman_name)}")
+    .attr("class", (d) -> "#{window.series_to_class(d.udaman_name)} line_chart_path")
     .attr("stroke", "#777")
     
 window.line_chart = (container) ->
