@@ -38,30 +38,25 @@ set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()
   # sneaky select of *_slider_container here
   d3.select("#" + div_id.replace("div", "container")).insert("div", "div#buttons").attr("id", div_id).attr "class", "slider"
-  # this is where the jQuery UI Slider is instantiated
-  ###
-  $("#" + div_id).slider
-    range: true
-    min: 0
-    max: dates.length-1
-    values: [ pos1, pos2 ]
-    slide: slide_func###
-  #change the above jquery ui slider to nouislider (below)
+  # instantiate the noUISlider
   $("#" + div_id).noUiSlider
     start: [ pos1,pos2 ]
     range:
       min: 0
       max: dates.length-1
+    step: 1
+    connect: true
+
   #console.log("hi")
   $("#" + div_id).on "slide", slide_func
   #console.log("there")
 
   d3.select("#" + div_id).datum(dates)
-  d3.selectAll("#" + div_id + " a").data([1,2]).attr("slider", (d) -> 
-    if d == 1  
-      return "left" 
-    if d == 2 
-      return "right")
+  #d3.selectAll("#" + div_id + " a").data([1,2]).attr("slider", (d) -> 
+    #if d == 1  
+      #return "left" 
+    #if d == 2 
+      #return "right")
 
 set_single_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()

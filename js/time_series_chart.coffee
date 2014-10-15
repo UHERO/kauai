@@ -52,7 +52,11 @@ all_dates = ->
   d3.select("#line_chart_slider_div").datum()
     
 dates_extent = (extent) ->
-  all_dates().slice(extent[0], extent[1]+1)
+  # debugging an issue with the line_chart not updating
+  console.log extent
+  date_extent = all_dates().slice(parseInt(parseInt(extent[0])), parseInt(extent[1])+1)
+  console.log "date_extent -> #{JSON.stringify date_extent}"
+  date_extent
 
 slider_dates = ->
   extent = slider_extent
@@ -212,19 +216,18 @@ redraw_line_chart = (extent, duration = 0) ->
 # change this
 #window.trim_time_series = (event, ui) ->
 window.trim_time_series = (event) ->
-  ui =
-    values: $("#sparkline_slider_div").val()
-  slider_extent = ui.values
-  d3.select("h3#date_line_left").text(all_dates()[ui.values[0]])
-  d3.select("h3#date_line_right").text(all_dates()[ui.values[1]])
-  if d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") == "left"
-    text = d3.select("#line_chart_slider_container a.ui-state-focus").style("left").split("px")
-    #console.log(text)
-    d3.select("h3#date_line_left").style("left", (parseInt(text[0]) + 480) + "px")
+  slider_extent =  $("#line_chart_slider_div").val().map (value) -> +value
+  console.log JSON.stringify slider_extent 
+  d3.select("h3#date_line_left").text(all_dates()[slider_extent[0]])
+  d3.select("h3#date_line_right").text(all_dates()[slider_extent[1]])
+  #if d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") == "left"
+    #text = d3.select("#line_chart_slider_container a.ui-state-focus").style("left").split("px")
+    ##console.log(text)
+    #d3.select("h3#date_line_left").style("left", (parseInt(text[0]) + 480) + "px")
   
-  if d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") == "right"
-    text = d3.select("#line_chart_slider_container a.ui-state-focus").style("left").split("px")
-    d3.select("h3#date_line_right").style("left", (parseInt(text[0]) + 480) + "px")
+  #if d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") == "right"
+    #text = d3.select("#line_chart_slider_container a.ui-state-focus").style("left").split("px")
+    #d3.select("h3#date_line_right").style("left", (parseInt(text[0]) + 480) + "px")
     
   switch window.mode
     when "multi_line" then redraw_line_chart(slider_extent)
