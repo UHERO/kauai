@@ -144,7 +144,7 @@ trimmed_data_object = (d, start_i, end_i) ->
 #change this
 #window.trim_sparklines = (event, ui) ->
 window.trim_sparklines = (event) ->
-  ui:
+  ui =
     values: $("#sparkline_slider_div").val()
   d3.select("h3#date_series_left").text(all_dates()[ui.values[0]])
   d3.select("h3#date_series_right").text(all_dates()[ui.values[1]])
