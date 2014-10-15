@@ -169,7 +169,11 @@ trimmed_data_object = (d, start_i, end_i) ->
   new_d.scaled_data = new_d.spark_data.map((e) -> (if e is null then null else y(e)))
   new_d
 
-window.trim_sparklines = (event, ui) ->
+#change this
+#window.trim_sparklines = (event, ui) ->
+window.trim_sparklines = (event) ->
+  ui:
+    values: $("#sparkline_slider_div").val()
   d3.select("h3#date_series_left").text(all_dates()[ui.values[0]])
   d3.select("h3#date_series_right").text(all_dates()[ui.values[1]])
   if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "left"
@@ -295,6 +299,7 @@ create_sparklines = (cat_series) ->
     .attr("height", series_height)
     .attr("width", 150)
 
+#this line seems to throw an error about slider initialization
   spark_range = $("#sparkline_slider_div").slider("option","values")
   draw_sparklines spark_range, 0
     

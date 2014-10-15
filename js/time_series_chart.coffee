@@ -209,7 +209,11 @@ redraw_line_chart = (extent, duration = 0) ->
   r_paths = d3.selectAll("g#chart_area path.s_right")
     .attr("d", (d) -> regenerate_path(d, extent, "right") )
     
-window.trim_time_series = (event, ui) ->
+# change this
+#window.trim_time_series = (event, ui) ->
+window.trim_time_series = (event) ->
+  ui:
+    values: $("#sparkline_slider_div").val()
   slider_extent = ui.values
   d3.select("h3#date_line_left").text(all_dates()[ui.values[0]])
   d3.select("h3#date_line_right").text(all_dates()[ui.values[1]])

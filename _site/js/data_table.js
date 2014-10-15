@@ -222,8 +222,13 @@
     return new_d;
   };
 
-  window.trim_sparklines = function(event, ui) {
+  window.trim_sparklines = function(event) {
     var text;
+    ({
+      ui: {
+        values: $("#sparkline_slider_div").val()
+      }
+    });
     d3.select("h3#date_series_left").text(all_dates()[ui.values[0]]);
     d3.select("h3#date_series_right").text(all_dates()[ui.values[1]]);
     if (d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") === "left") {
