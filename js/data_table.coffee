@@ -45,7 +45,7 @@ window.expand = (cat) ->
   
 
 class_name_from_series_node = (node) ->
-  return series_to_class(node.datum().udaman_name)
+  return window.series_to_class(node.datum().udaman_name)
     
 window.collapse_series = (series) ->
   series.attr("state", "collapsed")
@@ -62,19 +62,23 @@ window.expand_series = (series) ->
     .attr("state", "expanded")
 
 s_row = (udaman_name) ->
-  return d3.select("#s_row_#{series_to_class(udaman_name)}")
+  return d3.select("#s_row_#{window.series_to_class(udaman_name)}")
     
 click_cat = (d) ->
   cat = d3.select(this)
   if cat.attr("state") is "expanded"
+    cat.select(".glyphicon").classed({"glyphicon-chevron-down": false, "glyphicon-chevron-right": true})
     collapse cat
   else
+    cat.select(".glyphicon").classed({"glyphicon-chevron-down": true, "glyphicon-chevron-right": false})
     expand cat
 
 # also add in a way to switch to right axis here
 click_series = (d) ->
   series = d3.select(this)
-  if series.classed("selected") then clear_series(series) else add_series(series)
+  #if series.classed("selected") then clear_series(series) else add_series(series)
+  set_primary_series(series)
+  
 
 click_expander = (d) ->
   series = s_row(d.udman_name)
@@ -94,7 +98,31 @@ window.highlight_series_row = (d) ->
   
 window.unhighlight_series_row = (d) ->
   s_row(d.udaman_name).classed("selected", false)
-  
+
+###
+# this function replaces add_series and clear_series
+# the new functionality allows the user to
+# select the series on the left by clicking the series
+# a separate button will allow them to select 
+# at most one series on the right axis
+###
+set_primary_series = (series) ->
+  d = series.datum()
+  # remove selected class from all series
+  d3.selectAll(".series").classed("selected", false)
+  series.classed("selected", true);
+  series_to_remove = d3.selectAll(".series:not(.selected)")
+  series_to_remove.each((d) -> unhighlight_series_row(d))
+
+  #highlight_series_row(d) # redundant next function calls this
+  line_and_bar_to_multi_line(d)
+  series_to_remove.each((d) -> multi_line_to_line_and_bar(d))
+  #series_to_remove.each((d) -> clear_line_and_bar_chart(d))
+
+set_secondary_axis = (series) ->
+    d = series.datum()
+
+
 add_series = (series) ->
   d = series.datum()
   current_selection = d3.selectAll(".series.selected")
@@ -255,9 +283,9 @@ create_axis_control = (cat_series, axis) ->
       d3.event.stopPropagation
       button = d3.select(this)
       if (button.classed("off"))
-        add_to_line_chart(d, axis)
+        #add_to_line_chart(d, axis)
       else
-        remove_from_line_chart(d, axis)
+        #remove_from_line_chart(d, axis)
 )
 
 create_axis_controls = (cat_series) ->
@@ -280,18 +308,18 @@ create_series_label = (cat_series) ->
     .attr("class", "series_label")
     .style("line-height", series_height + "px")
 
-  parents = label.filter((d) -> d.children_sum)
-    .append("a")
-    .attr("href", "javascript:;")
-    .html("&nbsp; + ")
-    .on("click", click_expander)
+  #parents = label.filter((d) -> d.children_sum)
+    #.append("a")
+    #.attr("href", "javascript:;")
+    #.html("&nbsp; + ")
+    #.on("click", click_expander)
     
   label
     .append("span")
     .text((d) -> d.display_name)
       
 series_row_class = (d)->
-  child_class = if d.series_parent != "" then " child child_of_#{series_to_class(d.series_parent)}" else ""
+  child_class = if d.series_parent != "" then " child child_of_#{window.series_to_class(d.series_parent)}" else ""
   parent_class = if d.children_sum then " parent" else ""
   "series" + child_class + parent_class
     
@@ -301,7 +329,7 @@ create_series_rows = (cat_divs)->
     .data((d) -> flatten(d.series_list))
     .enter()
     .append("div")
-    .attr("id",(d) -> "s_row_#{series_to_class(d.udaman_name)}")
+    .attr("id",(d) -> "s_row_#{window.series_to_class(d.udaman_name)}")
     .attr("class", series_row_class)
     .attr("state", "expanded")
     .style("height", series_height + "px")
@@ -327,9 +355,10 @@ window.create_data_table = (page_data)->
 
   cat_labels = cat_divs.append("div")
     .attr("class", "cat_label")
-    .attr("id",(d)->"cat_#{series_to_class(d.group_name)}")
+    .attr("id",(d)->"cat_#{window.series_to_class(d.group_name)}")
     .attr("state", "expanded")
-    .text((d) -> d.group_name)
+    .html((d) -> "<span class='glyphicon glyphicon-chevron-down'></span> #{d.group_name}")
+    #.text((d) -> d.group_name)
     .on("mouseover", (d) -> d3.select(this).style "background-color", "#999")
     .on("mouseout", (d) -> d3.selectAll('.cat_label').style "background-color", "#FFF")
     .on("click", click_cat)

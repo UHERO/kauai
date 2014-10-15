@@ -5,7 +5,7 @@ window.freq = "q"
 #-------- used by several modules -------------  
 
 window.series_to_class = (series_name) ->
-  series_name.replace(".","_").replace("@","_").replace("%","pct")
+  series_name.replace(".","_").replace("@","_").replace("%","pct").replace(" ", "_")
 
 window.set_up_svg = (container) ->
   width = +container.style("width").slice(0,-2)
