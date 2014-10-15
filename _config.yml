@@ -3,7 +3,7 @@ title: Kauai Dashboard Prototype
 email: uhero@hawaii.edu
 description: > # this means to ignore newlines until "baseurl:"
     This dashboard provides Kauai economic data at a glance.
-baseurl: "/kauai" # the subpath of your site, e.g. /blog/
+baseurl: "/kauai/" # the subpath of your site, e.g. /blog/
 url: "http://uhero.github.io" # the base hostname & protocol for your site
 twitter_username: UHEROnews
 github_username:  UHERO
