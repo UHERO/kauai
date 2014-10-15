@@ -212,7 +212,7 @@ redraw_line_chart = (extent, duration = 0) ->
 # change this
 #window.trim_time_series = (event, ui) ->
 window.trim_time_series = (event) ->
-  ui:
+  ui =
     values: $("#sparkline_slider_div").val()
   slider_extent = ui.values
   d3.select("h3#date_line_left").text(all_dates()[ui.values[0]])
