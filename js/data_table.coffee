@@ -176,13 +176,13 @@ window.trim_sparklines = (event) ->
     values: $("#sparkline_slider_div").val()
   d3.select("h3#date_series_left").text(all_dates()[ui.values[0]])
   d3.select("h3#date_series_right").text(all_dates()[ui.values[1]])
-  if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "left"
-    text = d3.select("#sparkline_slider_div a.ui-state-focus").style("left").split("px")
-    d3.select("h3#date_series_left").style("left", (parseInt(text[0]) - 20) + "px")
+  #if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "left"
+    #text = d3.select("#sparkline_slider_div a.ui-state-focus").style("left").split("px")
+    #d3.select("h3#date_series_left").style("left", (parseInt(text[0]) - 20) + "px")
   
-  if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "right"
-    text = d3.select("#sparkline_slider_div a.ui-state-focus").style("left").split("px")
-    d3.select("h3#date_series_right").style("left", (parseInt(text[0]) - 20) + "px")
+  #if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "right"
+    #text = d3.select("#sparkline_slider_div a.ui-state-focus").style("left").split("px")
+    #d3.select("h3#date_series_right").style("left", (parseInt(text[0]) - 20) + "px")
   draw_sparklines ui.values, 0
   
 draw_sparklines = (extent, duration) ->
@@ -300,7 +300,7 @@ create_sparklines = (cat_series) ->
     .attr("width", 150)
 
 #this line seems to throw an error about slider initialization
-  spark_range = $("#sparkline_slider_div").slider("option","values")
+  spark_range = $("#sparkline_slider_div").val()
   draw_sparklines spark_range, 0
     
 create_series_label = (cat_series) ->
