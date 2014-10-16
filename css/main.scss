@@ -116,7 +116,7 @@ g#pie_chart_area text { pointer-events: none; }
 /*********** Flextable Stuff *****************/
 
 .category { clear:both;}
-.cat_label { cursor:pointer}
+.cat_label { cursor:pointer; border-bottom:2px solid rgb(49, 130, 189)}
 #category_header { width:150px; }
 
 .series_label, .sparkline, .selected_value, .selected_perc,
@@ -149,8 +149,8 @@ g#pie_chart_area text { pointer-events: none; }
 .child .series_label span { padding-left: 10px;}
 .series_label span { display: inline-block; vertical-align:middle; line-height:normal;}
 
-#datatable_header { width: 300px; overflow:hidden; height:100%}
-.data_cols { width: 300px; overflow:hidden; height:100%}
+#datatable_header { width: 300px; overflow:hidden; height:100%; margin-left: 160px;}
+.data_cols { width: 319px; overflow:hidden; height:100%}
 .container { height:100%; }
 .cell { float: left; height:100%; border:0px solid red; width:50px; text-align:center }
 
@@ -161,7 +161,7 @@ g#pie_chart_area text { pointer-events: none; }
 #line_left_header { width: 40px }
 #line_right_header { width: 40px }
 #pie_header { width: 40px }
-.left_toggle, .right_toggle { width: 40px; text-align:center; font-size:20px; line-height:45px; cursor:pointer }
+.left_toggle, .right_toggle { width: 40px; text-align:center; font-size:20px; line-height:45px; cursor:pointer; margin-right:50px;}
 
 #sparkline_header {font-weight:bold; font-size:11px;}
 #table_header { height: 20px; text-align:center; font-size:11px;}
