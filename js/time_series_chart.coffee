@@ -261,11 +261,16 @@ window.multi_line_to_line_and_bar = (d) ->
 window.clear_from_line_chart = (d) ->
   path = s_path d.udaman_name
   axis = if path.classed("s_left") then "left" else "right"
+  console.log(d.udaman_name)
+  console.log(path.classed("s_left"))
+  console.log(path.classed("s_right"))
   remove_from_line_chart(d,axis)
   
 window.clear_line_and_bar_chart = (d) ->
   hide_bars()
+  d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}").classed("with_bar", false)
   remove_from_line_chart(d,"left")
+
   
 window.display_line_and_bar_chart = (d) ->
   highlight_series_row(d)
@@ -307,7 +312,7 @@ window.add_to_line_chart = (d, axis) ->
     .duration(duration)
     .attr("d", (d) -> y[axis].path(d[freq].trimmed_data))
   
-  toggle_axis_button(d.udaman_name, axis)
+  #toggle_axis_button(d.udaman_name, axis)
 
 
 window.remove_from_line_chart = (d, axis) ->
@@ -327,7 +332,7 @@ window.remove_from_line_chart = (d, axis) ->
     .duration(duration)
     .attr("d", (d) -> y[axis].path(d[freq].trimmed_data))
 
-  toggle_axis_button(d.udaman_name, axis)
+  #toggle_axis_button(d.udaman_name, axis)
 
 
 window.set_up_line_chart_paths = (data) ->

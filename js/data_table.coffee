@@ -73,7 +73,6 @@ click_cat = (d) ->
     cat.select(".glyphicon").classed({"glyphicon-chevron-down": true, "glyphicon-chevron-right": false})
     expand cat
 
-# also add in a way to switch to right axis here
 click_series = (d) ->
   series = d3.select(this)
   #if series.classed("selected") then clear_series(series) else add_series(series)
@@ -107,21 +106,73 @@ window.unhighlight_series_row = (d) ->
 # at most one series on the right axis
 ###
 set_primary_series = (series) ->
-  d = series.datum()
-  # remove selected class from all series
-  d3.selectAll(".series").classed("selected", false)
-  series.classed("selected", true);
-  series_to_remove = d3.selectAll(".series:not(.selected)")
-  series_to_remove.each((d) -> unhighlight_series_row(d))
+  new_series = series.datum()
+  old_series = d3.select(".series.selected").datum()
+  # only do stuff if this is not already the primary series
+  if new_series.udaman_name != old_series.udaman_name
+    # see if we are in multi_line mode or line_bar mode
+    # if we are in line_and_bar, should call clear_line_and_bar_chart and display_line_and_bar_chart
+    if (window.mode == "line_bar")
+      console.log("mode: line_bar")
+      unhighlight_series_row(old_series)
+      highlight_series_row(new_series)
+      clear_line_and_bar_chart(old_series)
+      display_line_and_bar_chart(new_series)
 
-  #highlight_series_row(d) # redundant next function calls this
-  line_and_bar_to_multi_line(d)
-  series_to_remove.each((d) -> multi_line_to_line_and_bar(d))
+
+
+
+  # if we are in multi_line, should call add_to_line_chart and clear_from_line_chart
+
+
+  # remove selected class from all series
+  #d3.selectAll(".series").classed("selected", false)
+  #series.classed("selected", true);
+  #series_to_remove = d3.selectAll(".series:not(.selected)")
+  #series_to_remove.each((d) -> unhighlight_series_row(d))
+
+  ##highlight_series_row(d) # redundant next function calls this
+  #line_and_bar_to_multi_line(d)
+  #series_to_remove.each((d) -> multi_line_to_line_and_bar(d))
   #series_to_remove.each((d) -> clear_line_and_bar_chart(d))
 
-set_secondary_axis = (series) ->
-    d = series.datum()
+set_secondary_series = (series) ->
+  console.log series
+  new_secondary_series = series.datum()
+  # make sure secondary is not the same as primary, if it is, do nothing here
+  primary_series = d3.select(".series.selected").datum()
+  if new_secondary_series.udaman_name == primary_series.udaman_name
+    # do nothine
+    console.log "don't select the same primary and second series!"
+  else
+    # this crazy line seems necessary due to lack of a parent selector in css
+    on_toggle = d3.select(".right_toggle.on").node()
+    if on_toggle?
+      console.log("switch secondary series")
+      old_secondary_series = d3.select(on_toggle.parentNode).datum()
+      console.log("old_secondary_series: #{old_secondary_series.udaman_name}")
+      # switch the secondary axis, no need to change mode
+      # add the new series and remove the old
+      add_to_line_chart(new_secondary_series, "right")
+      clear_from_line_chart(old_secondary_series)
+      #
+      # uncheck the old series
+      d3.select(on_toggle).classed({"off": true, "on": false, "glyphicon-unchecked": true, "glyphicon-check": false})
+    else
+      console.log("go from line_bar to multi_line")
+      line_and_bar_to_multi_line(new_secondary_series)
 
+    console.log("new_secondary_series: #{new_secondary_series.udaman_name}")
+    # check the current series
+    series.select(".right_toggle").classed({"off": false, "on": true, "glyphicon-unchecked": false, "glyphicon-check": true})
+    # see if we are already in multi_line
+    # if we are in multi_line, should call clear_from_line_chart and add_to_line_chart
+    # if we are in line_bar, should call line_and_bar_to_multi_line
+
+remove_secondary_series = (series) ->
+  d = series.datum()
+  # call multi_line_to_line_and_bar
+  multi_line_to_line_and_bar(d)
 
 add_series = (series) ->
   d = series.datum()
@@ -212,7 +263,8 @@ draw_sparklines = (extent, duration) ->
   dates = d3.select("#sparkline_slider_div").datum()
   trimmed_dates = dates.slice(start_i, end_i + 1)
 
-  d3.select("#sparkline_header").text trimmed_dates[end_i - start_i]
+  #d3.select("#sparkline_header").text trimmed_dates[end_i - start_i]
+  d3.select("#sparkline_header").html "&nbsp;"
   svg = cat_series.select("svg").datum((d) ->
     trimmed_data_object d[freq], start_i, end_i
   )
@@ -253,12 +305,12 @@ draw_spark_area = (svg, duration) ->
     .attr "d", spark_area_path
     
 window.slide_table = (event, ui) ->
-  text = d3.select("#datatable_slider_div a").style("left").split("px")
-  d3.select("h3#date_table").text(all_dates()[ui.value]).style("left", (parseInt(text) + 400) + "px")
+  #text = d3.select("#datatable_slider_div a").style("left").split("px")
+  #d3.select("h3#date_table").text(all_dates()[ui.value]).style("left", (parseInt(text) + 400) + "px")
   offset_val = ui.value+1
   offset= -(offset_val * cell_width - datatable_width)
   d3.selectAll(".container")
-    .transition()
+    #.transition()
     #.duration(200)
     .style("margin-left", offset+"px")
 
@@ -292,22 +344,30 @@ create_data_columns = (cat_series) ->
     .text((d) -> (+d).toFixed(3))
       
 create_axis_control = (cat_series, axis) ->
-  cat_series.append("div")
-    .attr("class", "#{axis}_toggle off")
+  #cat_series.append("div")
+  cat_series.append("span")
+    .attr("class", "#{axis}_toggle off glyphicon glyphicon-unchecked")
     #.text(".")
-    .text("+")
+    #.text("+")
     .on("click", (d) -> 
-      d3.event.stopPropagation
+      d3.event.stopPropagation()
       button = d3.select(this)
       if (button.classed("off"))
+        #button.classed({"off": false, "on": true, "glyphicon-unchecked": false, "glyphicon-check": true})
+        console.log("you clicked to add secondary")
+        set_secondary_series(d3.select(button.node().parentNode))
         #add_to_line_chart(d, axis)
       else
         #remove_from_line_chart(d, axis)
+        button.classed({"off": true, "on": false, "glyphicon-unchecked": true, "glyphicon-check": false})
+        console.log("you clicked to remove this secondary series")
+        remove_secondary_series(d3.select(button.node().parentNode))
+
 )
 
 create_axis_controls = (cat_series) ->
   cat_series
-    .call(create_axis_control, "left")
+    #.call(create_axis_control, "left")
     .call(create_axis_control, "right")
 
 create_sparklines = (cat_series) ->

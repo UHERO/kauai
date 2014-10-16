@@ -526,7 +526,8 @@ g#pie_chart_area text {
 /*********** General Div Alignment *****************/
 #controls {
   clear: both;
-  top: 67px; }
+  top: 67px;
+  height: 35px; }
 
 #series_display {
   clear: both; }
@@ -584,7 +585,8 @@ g#pie_chart_area text {
   clear: both; }
 
 .cat_label {
-  cursor: pointer; }
+  cursor: pointer;
+  border-bottom: 2px solid #3182bd; }
 
 #category_header {
   width: 150px; }
@@ -625,12 +627,13 @@ g#pie_chart_area text {
   line-height: normal; }
 
 #datatable_header {
-  width: 300px;
+  width: 319px;
   overflow: hidden;
-  height: 100%; }
+  height: 100%;
+  margin-left: 10px; }
 
 .data_cols {
-  width: 300px;
+  width: 319px;
   overflow: hidden;
   height: 100%; }
 
@@ -665,9 +668,10 @@ g#pie_chart_area text {
 .left_toggle, .right_toggle {
   width: 40px;
   text-align: center;
-  font-size: 12px;
+  font-size: 20px;
   line-height: 45px;
-  cursor: pointer; }
+  cursor: pointer;
+  margin-right: 50px; }
 
 #sparkline_header {
   font-weight: bold;
