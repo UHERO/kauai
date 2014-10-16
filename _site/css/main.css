@@ -665,7 +665,7 @@ g#pie_chart_area text {
 .left_toggle, .right_toggle {
   width: 40px;
   text-align: center;
-  font-size: 12px;
+  font-size: 20px;
   line-height: 45px;
   cursor: pointer; }
 

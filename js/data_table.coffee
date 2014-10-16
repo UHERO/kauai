@@ -73,7 +73,6 @@ click_cat = (d) ->
     cat.select(".glyphicon").classed({"glyphicon-chevron-down": true, "glyphicon-chevron-right": false})
     expand cat
 
-# also add in a way to switch to right axis here
 click_series = (d) ->
   series = d3.select(this)
   #if series.classed("selected") then clear_series(series) else add_series(series)
@@ -138,10 +137,27 @@ set_primary_series = (series) ->
   #series_to_remove.each((d) -> clear_line_and_bar_chart(d))
 
 set_secondary_series = (series) ->
-    d = series.datum()
-    # see if we are already in multi_line
-    # if we are in multi_line, should call clear_from_line_chart and add_to_line_chart
-    # if we are in line_bar, should call line_and_bar_to_multi_line
+  console.log series
+  new_secondary_series = series.datum()
+  # this crazy line seems necessary due to lack of a parent selector in css
+  on_toggle = d3.select(".right_toggle.on").node()
+  if on_toggle?
+    console.log("switch secondary series")
+    old_secondary_series = d3.select(on_toggle.parentNode).datum()
+    console.log("old_secondary_series: #{old_secondary_series.udaman_name}")
+    # switch the secondary axis, no need to change mode
+    # add the new series and remove the old
+    # uncheck the old series
+    d3.select(on_toggle).classed({"off": true, "on": false, "glyphicon-unchecked": true, "glyphicon-check": false})
+    
+  else
+    console.log("go from line_bar to multi_line")
+  console.log("new_secondary_series: #{new_secondary_series.udaman_name}")
+  # check the current series
+  series.select(".right_toggle").classed({"off": false, "on": true, "glyphicon-unchecked": false, "glyphicon-check": true})
+  # see if we are already in multi_line
+  # if we are in multi_line, should call clear_from_line_chart and add_to_line_chart
+  # if we are in line_bar, should call line_and_bar_to_multi_line
 
 remove_secondary_series = (series) ->
     d = series.datum()
@@ -299,17 +315,25 @@ create_data_columns = (cat_series) ->
     .text((d) -> (+d).toFixed(3))
       
 create_axis_control = (cat_series, axis) ->
-  cat_series.append("div")
-    .attr("class", "#{axis}_toggle off")
+  #cat_series.append("div")
+  cat_series.append("span")
+    .attr("class", "#{axis}_toggle off glyphicon glyphicon-unchecked")
     #.text(".")
-    .text("+")
+    #.text("+")
     .on("click", (d) -> 
-      d3.event.stopPropagation
+      d3.event.stopPropagation()
       button = d3.select(this)
       if (button.classed("off"))
+        #button.classed({"off": false, "on": true, "glyphicon-unchecked": false, "glyphicon-check": true})
+        console.log("you clicked to add secondary")
+        set_secondary_series(d3.select(button.node().parentNode))
         #add_to_line_chart(d, axis)
       else
         #remove_from_line_chart(d, axis)
+        button.classed({"off": true, "on": false, "glyphicon-unchecked": true, "glyphicon-check": false})
+        console.log("you clicked to remove this secondary series")
+        remove_secondary_series(d3.select(button.node().parentNode))
+
 )
 
 create_axis_controls = (cat_series) ->

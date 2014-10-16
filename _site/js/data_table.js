@@ -142,8 +142,30 @@
   };
 
   set_secondary_series = function(series) {
-    var d;
-    return d = series.datum();
+    var new_secondary_series, old_secondary_series, on_toggle;
+    console.log(series);
+    new_secondary_series = series.datum();
+    on_toggle = d3.select(".right_toggle.on").node();
+    if (on_toggle != null) {
+      console.log("switch secondary series");
+      old_secondary_series = d3.select(on_toggle.parentNode).datum();
+      console.log("old_secondary_series: " + old_secondary_series.udaman_name);
+      d3.select(on_toggle).classed({
+        "off": true,
+        "on": false,
+        "glyphicon-unchecked": true,
+        "glyphicon-check": false
+      });
+    } else {
+      console.log("go from line_bar to multi_line");
+    }
+    console.log("new_secondary_series: " + new_secondary_series.udaman_name);
+    return series.select(".right_toggle").classed({
+      "off": false,
+      "on": true,
+      "glyphicon-unchecked": false,
+      "glyphicon-check": true
+    });
   };
 
   remove_secondary_series = function(series) {
@@ -304,14 +326,22 @@
   };
 
   create_axis_control = function(cat_series, axis) {
-    return cat_series.append("div").attr("class", "" + axis + "_toggle off").text("+").on("click", function(d) {
+    return cat_series.append("span").attr("class", "" + axis + "_toggle off glyphicon glyphicon-unchecked").on("click", function(d) {
       var button;
-      d3.event.stopPropagation;
+      d3.event.stopPropagation();
       button = d3.select(this);
       if (button.classed("off")) {
-
+        console.log("you clicked to add secondary");
+        return set_secondary_series(d3.select(button.node().parentNode));
       } else {
-
+        button.classed({
+          "off": true,
+          "on": false,
+          "glyphicon-unchecked": true,
+          "glyphicon-check": false
+        });
+        console.log("you clicked to remove this secondary series");
+        return remove_secondary_series(d3.select(button.node().parentNode));
       }
     });
   };
