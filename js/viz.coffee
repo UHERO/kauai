@@ -74,7 +74,7 @@ set_single_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   
 set_up_sliders = (dates)->
   set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
-  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series #DT took this out
+  #set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series #DT took this out
   set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
   set_single_slider_in_div "datatable_slider_div", dates, 0, dates.length-1, slide_table
 
@@ -104,7 +104,7 @@ clear_data_table = ->
   
 clear_sliders = ->
   set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
-  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series #DT took this out
+  #set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series #DT took this out
   set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
   set_single_slider_in_div "datatable_slider_div", dates, 0, dates.length-1, slide_table
   

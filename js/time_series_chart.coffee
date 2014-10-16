@@ -49,7 +49,8 @@ y_height = (d)->
 
 
 all_dates = ->
-  d3.select("#line_chart_slider_div").datum()
+  #d3.select("#line_chart_slider_div").datum()
+  d3.select("#sparkline_slider_div").datum() #dt
     
 dates_extent = (extent) ->
   # debugging an issue with the line_chart not updating
@@ -215,6 +216,7 @@ window.redraw_line_chart = (extent, duration = 0) ->
     
 # change this
 #window.trim_time_series = (event, ui) ->
+  ###
 window.trim_time_series = (event) ->
   slider_extent =  $("#line_chart_slider_div").val().map (value) -> +value
   console.log JSON.stringify slider_extent 
@@ -234,7 +236,7 @@ window.trim_time_series = (event) ->
     when "line_bar" then redraw_line_and_bar_chart(slider_extent)
     else redraw_line_chart(slider_extent)
 ##
-
+###
 window.line_and_bar_to_multi_line = (d) ->
   hide_bars()
 
