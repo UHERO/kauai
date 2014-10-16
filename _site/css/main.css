@@ -576,6 +576,9 @@ g#pie_chart_area text {
   float: left;
   margin-left: 80px; }
 
+#line_chart_slider_div {
+  clear: both; }
+
 /*********** Flextable Stuff *****************/
 .category {
   clear: both; }
@@ -712,12 +715,10 @@ g#pie_chart_area text {
 
 #date_line_left {
   font-size: 12px;
-  position: absolute;
-  top: 500px;
-  left: 480px; }
+  position: relative;
+  float: left; }
 
 #date_line_right {
   font-size: 12px;
-  position: absolute;
-  top: 500px;
-  left: 810px; }
+  position: relative;
+  float: right; }
