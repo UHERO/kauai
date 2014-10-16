@@ -265,7 +265,9 @@ window.clear_from_line_chart = (d) ->
   
 window.clear_line_and_bar_chart = (d) ->
   hide_bars()
+  d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}").classed("with_bar", false)
   remove_from_line_chart(d,"left")
+
   
 window.display_line_and_bar_chart = (d) ->
   highlight_series_row(d)
