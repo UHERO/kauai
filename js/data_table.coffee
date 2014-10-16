@@ -107,21 +107,45 @@ window.unhighlight_series_row = (d) ->
 # at most one series on the right axis
 ###
 set_primary_series = (series) ->
-  d = series.datum()
-  # remove selected class from all series
-  d3.selectAll(".series").classed("selected", false)
-  series.classed("selected", true);
-  series_to_remove = d3.selectAll(".series:not(.selected)")
-  series_to_remove.each((d) -> unhighlight_series_row(d))
+  new_series = series.datum()
+  old_series = d3.select(".series.selected").datum()
+  # only do stuff if this is not already the primary series
+  if new_series.udaman_name != old_series.udaman_name
+    # see if we are in multi_line mode or line_bar mode
+    # if we are in line_and_bar, should call clear_line_and_bar_chart and display_line_and_bar_chart
+    if (window.mode == "line_bar")
+      console.log("mode: line_bar")
+      unhighlight_series_row(old_series)
+      highlight_series_row(new_series)
+      clear_line_and_bar_chart(old_series)
+      display_line_and_bar_chart(new_series)
 
-  #highlight_series_row(d) # redundant next function calls this
-  line_and_bar_to_multi_line(d)
-  series_to_remove.each((d) -> multi_line_to_line_and_bar(d))
+
+
+
+  # if we are in multi_line, should call add_to_line_chart and clear_from_line_chart
+
+
+  # remove selected class from all series
+  #d3.selectAll(".series").classed("selected", false)
+  #series.classed("selected", true);
+  #series_to_remove = d3.selectAll(".series:not(.selected)")
+  #series_to_remove.each((d) -> unhighlight_series_row(d))
+
+  ##highlight_series_row(d) # redundant next function calls this
+  #line_and_bar_to_multi_line(d)
+  #series_to_remove.each((d) -> multi_line_to_line_and_bar(d))
   #series_to_remove.each((d) -> clear_line_and_bar_chart(d))
 
-set_secondary_axis = (series) ->
+set_secondary_series = (series) ->
     d = series.datum()
+    # see if we are already in multi_line
+    # if we are in multi_line, should call clear_from_line_chart and add_to_line_chart
+    # if we are in line_bar, should call line_and_bar_to_multi_line
 
+remove_secondary_series = (series) ->
+    d = series.datum()
+    # call multi_line_to_line_and_bar
 
 add_series = (series) ->
   d = series.datum()
@@ -290,7 +314,7 @@ create_axis_control = (cat_series, axis) ->
 
 create_axis_controls = (cat_series) ->
   cat_series
-    .call(create_axis_control, "left")
+    #.call(create_axis_control, "left")
     .call(create_axis_control, "right")
 
 create_sparklines = (cat_series) ->

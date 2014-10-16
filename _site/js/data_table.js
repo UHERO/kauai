@@ -1,5 +1,5 @@
 (function() {
-  var add_parent, add_series, all_dates, cell_width, class_name_from_series_node, clear_series, click_cat, click_expander, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, populate_dates, s_row, series_height, series_row_class, set_primary_series, set_secondary_axis, spark_area_path, spark_line, trimmed_data_object, x, y;
+  var add_parent, add_series, all_dates, cell_width, class_name_from_series_node, clear_series, click_cat, click_expander, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, populate_dates, remove_secondary_series, s_row, series_height, series_row_class, set_primary_series, set_secondary_series, spark_area_path, spark_line, trimmed_data_object, x, y;
 
   cell_width = 50;
 
@@ -127,21 +127,26 @@
    */
 
   set_primary_series = function(series) {
-    var d, series_to_remove;
-    d = series.datum();
-    d3.selectAll(".series").classed("selected", false);
-    series.classed("selected", true);
-    series_to_remove = d3.selectAll(".series:not(.selected)");
-    series_to_remove.each(function(d) {
-      return unhighlight_series_row(d);
-    });
-    line_and_bar_to_multi_line(d);
-    return series_to_remove.each(function(d) {
-      return multi_line_to_line_and_bar(d);
-    });
+    var new_series, old_series;
+    new_series = series.datum();
+    old_series = d3.select(".series.selected").datum();
+    if (new_series.udaman_name !== old_series.udaman_name) {
+      if (window.mode === "line_bar") {
+        console.log("mode: line_bar");
+        unhighlight_series_row(old_series);
+        highlight_series_row(new_series);
+        clear_line_and_bar_chart(old_series);
+        return display_line_and_bar_chart(new_series);
+      }
+    }
   };
 
-  set_secondary_axis = function(series) {
+  set_secondary_series = function(series) {
+    var d;
+    return d = series.datum();
+  };
+
+  remove_secondary_series = function(series) {
     var d;
     return d = series.datum();
   };
@@ -312,7 +317,7 @@
   };
 
   create_axis_controls = function(cat_series) {
-    return cat_series.call(create_axis_control, "left").call(create_axis_control, "right");
+    return cat_series.call(create_axis_control, "right");
   };
 
   create_sparklines = function(cat_series) {
