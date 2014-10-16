@@ -223,13 +223,26 @@
   };
 
   window.trim_sparklines = function(event) {
-    var ui;
+    var slider_extent, ui;
     ui = {
       values: $("#sparkline_slider_div").val()
     };
+    console.log("ui -->" + ui.values);
+    slider_extent = $("#sparkline_slider_div").val().map(function(value) {
+      return +value;
+    });
+    console.log("slider_extent -> " + slider_extent);
     d3.select("h3#date_series_left").text(all_dates()[ui.values[0]]);
     d3.select("h3#date_series_right").text(all_dates()[ui.values[1]]);
-    return draw_sparklines(ui.values, 0);
+    draw_sparklines(ui.values, 0);
+    switch (window.mode) {
+      case "multi_line":
+        return redraw_line_chart(slider_extent);
+      case "line_bar":
+        return redraw_line_and_bar_chart(slider_extent);
+      default:
+        return redraw_line_chart(slider_extent);
+    }
   };
 
   draw_sparklines = function(extent, duration) {

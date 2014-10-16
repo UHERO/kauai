@@ -173,9 +173,17 @@ trimmed_data_object = (d, start_i, end_i) ->
 #window.trim_sparklines = (event, ui) ->
 window.trim_sparklines = (event) ->
   ui =
-    values: $("#sparkline_slider_div").val()
+    values: $("#sparkline_slider_div").val() #two object array
+
+  console.log("ui -->" + ui.values) #dt
+
+  slider_extent = $("#sparkline_slider_div").val().map (value) -> +value
+
+  console.log("slider_extent -> " + slider_extent) #dt
+
   d3.select("h3#date_series_left").text(all_dates()[ui.values[0]])
   d3.select("h3#date_series_right").text(all_dates()[ui.values[1]])
+
   #if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "left"
     #text = d3.select("#sparkline_slider_div a.ui-state-focus").style("left").split("px")
     #d3.select("h3#date_series_left").style("left", (parseInt(text[0]) - 20) + "px")
@@ -183,12 +191,21 @@ window.trim_sparklines = (event) ->
   #if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "right"
     #text = d3.select("#sparkline_slider_div a.ui-state-focus").style("left").split("px")
     #d3.select("h3#date_series_right").style("left", (parseInt(text[0]) - 20) + "px")
-  draw_sparklines ui.values, 0
-  
+  draw_sparklines ui.values, 0 #(extent, duration)
+
+  # time series
+
+  switch window.mode
+    when "multi_line" then redraw_line_chart(slider_extent)
+    when "line_bar" then redraw_line_and_bar_chart(slider_extent)
+    else redraw_line_chart(slider_extent)
+
+  # end time series
+
 draw_sparklines = (extent, duration) ->
   cat_series = d3.selectAll("div.series")
-  start_i = extent[0]
-  end_i = extent[1]
+  start_i = extent[0] #ui.values[0]
+  end_i = extent[1]   #ui.values[1]
   point = end_i - start_i
   x.domain([ 0, end_i - start_i ])
 
