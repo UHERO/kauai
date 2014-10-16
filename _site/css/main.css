@@ -526,7 +526,8 @@ g#pie_chart_area text {
 /*********** General Div Alignment *****************/
 #controls {
   clear: both;
-  top: 67px; }
+  top: 67px;
+  height: 35px; }
 
 #series_display {
   clear: both; }
@@ -626,10 +627,10 @@ g#pie_chart_area text {
   line-height: normal; }
 
 #datatable_header {
-  width: 300px;
+  width: 319px;
   overflow: hidden;
   height: 100%;
-  margin-left: 160px; }
+  margin-left: 10px; }
 
 .data_cols {
   width: 319px;

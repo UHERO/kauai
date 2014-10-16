@@ -246,7 +246,8 @@ draw_sparklines = (extent, duration) ->
   dates = d3.select("#sparkline_slider_div").datum()
   trimmed_dates = dates.slice(start_i, end_i + 1)
 
-  d3.select("#sparkline_header").text trimmed_dates[end_i - start_i]
+  #d3.select("#sparkline_header").text trimmed_dates[end_i - start_i]
+  d3.select("#sparkline_header").html "&nbsp;"
   svg = cat_series.select("svg").datum((d) ->
     trimmed_data_object d[freq], start_i, end_i
   )
@@ -287,12 +288,12 @@ draw_spark_area = (svg, duration) ->
     .attr "d", spark_area_path
     
 window.slide_table = (event, ui) ->
-  text = d3.select("#datatable_slider_div a").style("left").split("px")
-  d3.select("h3#date_table").text(all_dates()[ui.value]).style("left", (parseInt(text) + 400) + "px")
+  #text = d3.select("#datatable_slider_div a").style("left").split("px")
+  #d3.select("h3#date_table").text(all_dates()[ui.value]).style("left", (parseInt(text) + 400) + "px")
   offset_val = ui.value+1
   offset= -(offset_val * cell_width - datatable_width)
   d3.selectAll(".container")
-    .transition()
+    #.transition()
     #.duration(200)
     .style("margin-left", offset+"px")
 

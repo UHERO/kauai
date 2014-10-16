@@ -277,7 +277,7 @@
     x.domain([0, end_i - start_i]);
     dates = d3.select("#sparkline_slider_div").datum();
     trimmed_dates = dates.slice(start_i, end_i + 1);
-    d3.select("#sparkline_header").text(trimmed_dates[end_i - start_i]);
+    d3.select("#sparkline_header").html("&nbsp;");
     svg = cat_series.select("svg").datum(function(d) {
       return trimmed_data_object(d[freq], start_i, end_i);
     });
@@ -304,12 +304,10 @@
   };
 
   window.slide_table = function(event, ui) {
-    var offset, offset_val, text;
-    text = d3.select("#datatable_slider_div a").style("left").split("px");
-    d3.select("h3#date_table").text(all_dates()[ui.value]).style("left", (parseInt(text) + 400) + "px");
+    var offset, offset_val;
     offset_val = ui.value + 1;
     offset = -(offset_val * cell_width - datatable_width);
-    return d3.selectAll(".container").transition().style("margin-left", offset + "px");
+    return d3.selectAll(".container").style("margin-left", offset + "px");
   };
 
   populate_dates = function() {
