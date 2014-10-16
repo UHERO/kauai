@@ -32,8 +32,6 @@ set_up_nav = () ->
 set_headline = (text) ->
   d3.select("#headline").text(text)
 
-
-
 set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()
   # sneaky select of *_slider_container here

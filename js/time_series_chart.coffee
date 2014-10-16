@@ -196,7 +196,7 @@ hide_bars = ->
     .duration(duration)
     .call(y["right"].axis)
 
-redraw_line_and_bar_chart = (extent) ->
+window.redraw_line_and_bar_chart = (extent) ->
   update_x_domain(extent)
   path = d3.select("g#chart_area path.with_bar")
     .attr("d", (d) -> regenerate_path(d, extent, "left") )
@@ -204,7 +204,7 @@ redraw_line_and_bar_chart = (extent) ->
   regenerate_bars(path.datum(), extent)
   
     
-redraw_line_chart = (extent, duration = 0) ->
+window.redraw_line_chart = (extent, duration = 0) ->
   update_x_domain(extent)
 
   l_paths = d3.selectAll("g#chart_area path.s_left")
