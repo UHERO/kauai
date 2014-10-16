@@ -523,6 +523,11 @@ path.line_chart_path {
 g#pie_chart_area text {
   pointer-events: none; }
 
+.pie_chart_title {
+  font-size: 20px;
+  position: relative;
+  left: 20px; }
+
 /*********** General Div Alignment *****************/
 #controls {
   clear: both;
@@ -579,6 +584,34 @@ g#pie_chart_area text {
 
 #line_chart_slider_div {
   clear: both; }
+
+#date_series_left {
+  font-size: 12px;
+  position: absolute;
+  top: -20px;
+  left: -20px; }
+
+#date_series_right {
+  font-size: 12px;
+  position: absolute;
+  top: -20px;
+  left: 345px; }
+
+#date_table {
+  font-size: 12px;
+  position: absolute;
+  top: -20px;
+  left: 700px; }
+
+#date_line_left {
+  font-size: 12px;
+  position: relative;
+  float: left; }
+
+#date_line_right {
+  font-size: 12px;
+  position: relative;
+  float: right; }
 
 /*********** Flextable Stuff *****************/
 .category {
@@ -698,31 +731,3 @@ g#pie_chart_area text {
 
 #freq {
   width: 100px; }
-
-#date_series_left {
-  font-size: 12px;
-  position: absolute;
-  top: -20px;
-  left: -20px; }
-
-#date_series_right {
-  font-size: 12px;
-  position: absolute;
-  top: -20px;
-  left: 345px; }
-
-#date_table {
-  font-size: 12px;
-  position: absolute;
-  top: -20px;
-  left: 700px; }
-
-#date_line_left {
-  font-size: 12px;
-  position: relative;
-  float: left; }
-
-#date_line_right {
-  font-size: 12px;
-  position: relative;
-  float: right; }

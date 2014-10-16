@@ -80,6 +80,14 @@ set_slider_dates = (extent) ->
   $("#time_slice_slider_div").slider("option", "max", extent[1])
   set_date_shown()  
 
+set_up_pie_chart_title = (container) ->
+  container.selectAll("a").data(["Visitor Arrivals", "Visitor Spending"]).enter().append("a").attr("class", "pie_chart_title").attr("id", (d) -> d.replace(" ", "_"))
+  .html((d) -> 
+    if d is "Visitor Arrivals"
+      d + "&nbsp" + "&#124" + "&nbsp"
+    else
+      d + "&nbsp")
+
 window.pie_these_series = (series_data) ->
   data_extent = get_common_dates(series_data)
   set_slider_dates(data_extent)
@@ -111,6 +119,7 @@ window.pie_these_series = (series_data) ->
     .style('font-weight', "bold")
 
 window.visitor_pie_chart = (container) ->
+  set_up_pie_chart_title(container)
   slider_val = all_dates().length-1
   svg = set_up_svg(container)
 

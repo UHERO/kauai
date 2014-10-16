@@ -1,5 +1,5 @@
 (function() {
-  var all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_date, set_date_shown, set_slider_dates, slider_val, svg;
+  var all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_date, set_date_shown, set_slider_dates, set_up_pie_chart_title, slider_val, svg;
 
   slider_val = null;
 
@@ -102,6 +102,18 @@
     return set_date_shown();
   };
 
+  set_up_pie_chart_title = function(container) {
+    return container.selectAll("a").data(["Visitor Arrivals", "Visitor Spending"]).enter().append("a").attr("class", "pie_chart_title").attr("id", function(d) {
+      return d.replace(" ", "_");
+    }).html(function(d) {
+      if (d === "Visitor Arrivals") {
+        return d + "&nbsp" + "&#124" + "&nbsp";
+      } else {
+        return d + "&nbsp";
+      }
+    });
+  };
+
   window.pie_these_series = function(series_data) {
     var data_extent, sorted_array;
     data_extent = get_common_dates(series_data);
@@ -126,6 +138,7 @@
 
   window.visitor_pie_chart = function(container) {
     var center_x, center_y;
+    set_up_pie_chart_title(container);
     slider_val = all_dates().length - 1;
     svg = set_up_svg(container);
     center_x = svg.attr("width") / 2;
