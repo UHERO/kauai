@@ -139,29 +139,40 @@ set_primary_series = (series) ->
 set_secondary_series = (series) ->
   console.log series
   new_secondary_series = series.datum()
-  # this crazy line seems necessary due to lack of a parent selector in css
-  on_toggle = d3.select(".right_toggle.on").node()
-  if on_toggle?
-    console.log("switch secondary series")
-    old_secondary_series = d3.select(on_toggle.parentNode).datum()
-    console.log("old_secondary_series: #{old_secondary_series.udaman_name}")
-    # switch the secondary axis, no need to change mode
-    # add the new series and remove the old
-    # uncheck the old series
-    d3.select(on_toggle).classed({"off": true, "on": false, "glyphicon-unchecked": true, "glyphicon-check": false})
-    
+  # make sure secondary is not the same as primary, if it is, do nothing here
+  primary_series = d3.select(".series.selected").datum()
+  if new_secondary_series.udaman_name == primary_series.udaman_name
+    # do nothine
+    console.log "don't select the same primary and second series!"
   else
-    console.log("go from line_bar to multi_line")
-  console.log("new_secondary_series: #{new_secondary_series.udaman_name}")
-  # check the current series
-  series.select(".right_toggle").classed({"off": false, "on": true, "glyphicon-unchecked": false, "glyphicon-check": true})
-  # see if we are already in multi_line
-  # if we are in multi_line, should call clear_from_line_chart and add_to_line_chart
-  # if we are in line_bar, should call line_and_bar_to_multi_line
+    # this crazy line seems necessary due to lack of a parent selector in css
+    on_toggle = d3.select(".right_toggle.on").node()
+    if on_toggle?
+      console.log("switch secondary series")
+      old_secondary_series = d3.select(on_toggle.parentNode).datum()
+      console.log("old_secondary_series: #{old_secondary_series.udaman_name}")
+      # switch the secondary axis, no need to change mode
+      # add the new series and remove the old
+      add_to_line_chart(new_secondary_series, "right")
+      clear_from_line_chart(old_secondary_series)
+      #
+      # uncheck the old series
+      d3.select(on_toggle).classed({"off": true, "on": false, "glyphicon-unchecked": true, "glyphicon-check": false})
+    else
+      console.log("go from line_bar to multi_line")
+      line_and_bar_to_multi_line(new_secondary_series)
+
+    console.log("new_secondary_series: #{new_secondary_series.udaman_name}")
+    # check the current series
+    series.select(".right_toggle").classed({"off": false, "on": true, "glyphicon-unchecked": false, "glyphicon-check": true})
+    # see if we are already in multi_line
+    # if we are in multi_line, should call clear_from_line_chart and add_to_line_chart
+    # if we are in line_bar, should call line_and_bar_to_multi_line
 
 remove_secondary_series = (series) ->
-    d = series.datum()
-    # call multi_line_to_line_and_bar
+  d = series.datum()
+  # call multi_line_to_line_and_bar
+  multi_line_to_line_and_bar(d)
 
 add_series = (series) ->
   d = series.datum()

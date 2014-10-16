@@ -142,35 +142,44 @@
   };
 
   set_secondary_series = function(series) {
-    var new_secondary_series, old_secondary_series, on_toggle;
+    var new_secondary_series, old_secondary_series, on_toggle, primary_series;
     console.log(series);
     new_secondary_series = series.datum();
-    on_toggle = d3.select(".right_toggle.on").node();
-    if (on_toggle != null) {
-      console.log("switch secondary series");
-      old_secondary_series = d3.select(on_toggle.parentNode).datum();
-      console.log("old_secondary_series: " + old_secondary_series.udaman_name);
-      d3.select(on_toggle).classed({
-        "off": true,
-        "on": false,
-        "glyphicon-unchecked": true,
-        "glyphicon-check": false
-      });
+    primary_series = d3.select(".series.selected").datum();
+    if (new_secondary_series.udaman_name === primary_series.udaman_name) {
+      return console.log("don't select the same primary and second series!");
     } else {
-      console.log("go from line_bar to multi_line");
+      on_toggle = d3.select(".right_toggle.on").node();
+      if (on_toggle != null) {
+        console.log("switch secondary series");
+        old_secondary_series = d3.select(on_toggle.parentNode).datum();
+        console.log("old_secondary_series: " + old_secondary_series.udaman_name);
+        add_to_line_chart(new_secondary_series, "right");
+        clear_from_line_chart(old_secondary_series);
+        d3.select(on_toggle).classed({
+          "off": true,
+          "on": false,
+          "glyphicon-unchecked": true,
+          "glyphicon-check": false
+        });
+      } else {
+        console.log("go from line_bar to multi_line");
+        line_and_bar_to_multi_line(new_secondary_series);
+      }
+      console.log("new_secondary_series: " + new_secondary_series.udaman_name);
+      return series.select(".right_toggle").classed({
+        "off": false,
+        "on": true,
+        "glyphicon-unchecked": false,
+        "glyphicon-check": true
+      });
     }
-    console.log("new_secondary_series: " + new_secondary_series.udaman_name);
-    return series.select(".right_toggle").classed({
-      "off": false,
-      "on": true,
-      "glyphicon-unchecked": false,
-      "glyphicon-check": true
-    });
   };
 
   remove_secondary_series = function(series) {
     var d;
-    return d = series.datum();
+    d = series.datum();
+    return multi_line_to_line_and_bar(d);
   };
 
   add_series = function(series) {
