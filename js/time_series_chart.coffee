@@ -215,7 +215,6 @@ redraw_line_chart = (extent, duration = 0) ->
     
 # change this
 #window.trim_time_series = (event, ui) ->
-  ##
 window.trim_time_series = (event) ->
   slider_extent =  $("#line_chart_slider_div").val().map (value) -> +value
   console.log JSON.stringify slider_extent 
