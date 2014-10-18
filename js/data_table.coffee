@@ -228,12 +228,13 @@ window.trim_sparklines = (event) ->
 
   console.log("ui -->" + ui.values) #dt
 
-  slider_extent = $("#sparkline_slider_div").val().map (value) -> +value
+  slider_extent = $("#sparkline_slider_div").val().map (value) -> +value #is this a duplicate of ui.values
 
   console.log("slider_extent -> " + slider_extent) #dt
 
-  d3.select("h3#date_series_left").text(all_dates()[ui.values[0]])
+  d3.select("h3#date_series_left").text(all_dates()[ui.values[0]]) #wait what am I selecting here
   d3.select("h3#date_series_right").text(all_dates()[ui.values[1]])
+
 
   #if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "left"
     #text = d3.select("#sparkline_slider_div a.ui-state-focus").style("left").split("px")
