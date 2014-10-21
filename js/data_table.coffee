@@ -153,6 +153,7 @@ set_secondary_series = (series) ->
       console.log("old_secondary_series: #{old_secondary_series.udaman_name}")
       # switch the secondary axis, no need to change mode
       # add the new series and remove the old
+      add_series_label(new_secondary_series)
       add_to_line_chart(new_secondary_series, "right")
       clear_from_line_chart(old_secondary_series)
       #

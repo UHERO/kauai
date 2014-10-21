@@ -154,6 +154,7 @@
         console.log("switch secondary series");
         old_secondary_series = d3.select(on_toggle.parentNode).datum();
         console.log("old_secondary_series: " + old_secondary_series.udaman_name);
+        add_series_label(new_secondary_series);
         add_to_line_chart(new_secondary_series, "right");
         clear_from_line_chart(old_secondary_series);
         d3.select(on_toggle).classed({

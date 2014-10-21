@@ -291,7 +291,10 @@ window.display_line_and_bar_chart = (d) ->
     .attr("d", (d) -> y["left"].path(d[freq].trimmed_data))
     
   show_bars(d, slider_extent)
-    
+
+window.add_series_label = (d) ->
+  
+  
 window.add_to_line_chart = (d, axis) ->
   duration = 500
   trim_d d[freq], slider_extent

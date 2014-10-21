@@ -81,12 +81,30 @@ set_slider_dates = (extent) ->
   set_date_shown()  
 
 set_up_pie_chart_title = (container) ->
-  container.selectAll("a").data(["Visitor Arrivals", "Visitor Spending"]).enter().append("a").attr("class", "pie_chart_title").attr("id", (d) -> d.replace(" ", "_"))
-  .html((d) -> 
-    if d is "Visitor Arrivals"
-      d + "&nbsp" + "&#124" + "&nbsp"
-    else
-      d + "&nbsp")
+  container.selectAll("div#links")
+    .data(["Visitor Arrivals", "Visitor Spending"])
+    .enter()
+    .append("a")
+    .attr("class", "pie_chart_title")
+    .attr("id", (d) -> d.replace(" ", "_"))
+    .text((d) -> d)
+    .on("click", (d) ->
+      d3.selectAll(".pie_chart_title").style("font-weight", "normal")
+      d3.select(this).style("font-weight", "bold"))
+      
+  # container.selectAll("div#links")
+  #   .data(["Visitor Arrivals", "Visitor Spending"])
+  #   .enter()
+  #   .append("div")
+  #   .attr("id", (d) -> d.replace(" ", "_"))
+  #   .style("width", "150px")
+  #   .append("a")
+  #   .attr("class", "pie_chart_title")
+  #   .attr("id", (d) -> d.replace(" ", "_"))
+  #   .text((d) -> d)
+  #   .on("click", (d) ->
+  #     d3.selectAll(".pie_chart_title").style("font-weight", "normal")
+  #     d3.select(this).style("font-weight", "bold"))
 
 window.pie_these_series = (series_data) ->
   data_extent = get_common_dates(series_data)
