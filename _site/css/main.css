@@ -528,10 +528,13 @@ g#pie_chart_area text {
   position: relative;
   left: 20px; }
 
+<<<<<<< HEAD
 #Visitor_Arrivals {
   margin-right: 10px; }
 
 /*div#Visitor_Spending {position:relative; top:-30px; left:140px}*/
+=======
+>>>>>>> d03c16dd8e4be6f925ea7cd7eae4bb483478ebf4
 /*********** General Div Alignment *****************/
 #controls {
   clear: both;

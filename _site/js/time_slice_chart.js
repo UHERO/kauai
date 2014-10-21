@@ -103,6 +103,7 @@
   };
 
   set_up_pie_chart_title = function(container) {
+<<<<<<< HEAD
     return container.selectAll("div#links").data(["Visitor Arrivals", "Visitor Spending"]).enter().append("a").attr("class", "pie_chart_title").attr("id", function(d) {
       return d.replace(" ", "_");
     }).text(function(d) {
@@ -110,6 +111,16 @@
     }).on("click", function(d) {
       d3.selectAll(".pie_chart_title").style("font-weight", "normal");
       return d3.select(this).style("font-weight", "bold");
+=======
+    return container.selectAll("a").data(["Visitor Arrivals", "Visitor Spending"]).enter().append("a").attr("class", "pie_chart_title").attr("id", function(d) {
+      return d.replace(" ", "_");
+    }).html(function(d) {
+      if (d === "Visitor Arrivals") {
+        return d + "&nbsp" + "&#124" + "&nbsp";
+      } else {
+        return d + "&nbsp";
+      }
+>>>>>>> d03c16dd8e4be6f925ea7cd7eae4bb483478ebf4
     });
   };
 

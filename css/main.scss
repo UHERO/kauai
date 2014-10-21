@@ -81,10 +81,14 @@ path.line_chart_path { fill:none; stroke-width:2}
 /*********** Pie Chart Stuff *****************/
 g#pie_chart_area text { pointer-events: none; }
 
+<<<<<<< HEAD
 .pie_chart_title{ font-size:20px; position:relative; left:20px; }
 
 #Visitor_Arrivals{margin-right:10px}
 /*div#Visitor_Spending {position:relative; top:-30px; left:140px}*/
+=======
+.pie_chart_title{ font-size:20px; position:relative; left:20px;}
+>>>>>>> d03c16dd8e4be6f925ea7cd7eae4bb483478ebf4
 /*********** General Div Alignment *****************/
 #controls {clear:both; top:67px; height:35px }
 #series_display {clear:both;}

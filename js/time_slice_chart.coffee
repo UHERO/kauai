@@ -81,6 +81,7 @@ set_slider_dates = (extent) ->
   set_date_shown()  
 
 set_up_pie_chart_title = (container) ->
+<<<<<<< HEAD
   container.selectAll("div#links")
     .data(["Visitor Arrivals", "Visitor Spending"])
     .enter()
@@ -105,6 +106,14 @@ set_up_pie_chart_title = (container) ->
   #   .on("click", (d) ->
   #     d3.selectAll(".pie_chart_title").style("font-weight", "normal")
   #     d3.select(this).style("font-weight", "bold"))
+=======
+  container.selectAll("a").data(["Visitor Arrivals", "Visitor Spending"]).enter().append("a").attr("class", "pie_chart_title").attr("id", (d) -> d.replace(" ", "_"))
+  .html((d) -> 
+    if d is "Visitor Arrivals"
+      d + "&nbsp" + "&#124" + "&nbsp"
+    else
+      d + "&nbsp")
+>>>>>>> d03c16dd8e4be6f925ea7cd7eae4bb483478ebf4
 
 window.pie_these_series = (series_data) ->
   data_extent = get_common_dates(series_data)
