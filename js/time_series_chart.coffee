@@ -94,12 +94,18 @@ s_path = (udaman_name) ->
   d3.select("g#chart_area #path_#{window.series_to_class(udaman_name)}")
 
 trim_d = (d, extent) ->
+  console.log "trim_d d --> " + d.trimmed_data #dt diagnostic
+  console.log "trim_d extent" + extent #dt diagnostic
   d.trimmed_data = d.data.slice(extent[0], extent[1]+1)
+  console.log d.trimmed_data #dt diagnostic
+  console.log "trim_d d --> " + d.trimmed_data #dt diagnostic LOOKS OK
+  return d.trimmed_data #dt diagnostic
 
 trim_yoy = (d, extent) ->
   d.trimmed_yoy = d.yoy.slice(extent[0], extent[1] + 1)
   
 update_x_domain = (extent, duration=0) ->
+  console.log "update_x_domain extent " + extent #dt diagnostic
   x.domain(dates_extent(extent))
 
 update_domain = (axis, duration = 500) ->
@@ -132,8 +138,12 @@ update_y_domain_with_new = (axis, domain, duration = 500) ->
 
 
 regenerate_path = (d, extent, axis) ->
+  console.log "regenerate_path extent " + extent #dt diagnostic
   trim_d d[freq], extent
-  y[axis].path(d[freq].trimmed_data)
+  test = y[axis].path(d[freq].trimmed_data)
+  console.log "d[freq].trimmed_data -> " + d[freq].trimmed_data #dt diagnostic
+  console.log "regenerate_path y axis stuff --> " + test #dt diagnostic
+  return test #dt diagnostic
 
 show_bars = (d,extent) ->
   duration = 500
@@ -160,6 +170,7 @@ show_bars = (d,extent) ->
     .attr("height", y_height)
   
 regenerate_bars = (d,extent) ->
+  console.log "regenerate_bars extent " + extent #dt diagnostic
   trim_yoy d[freq], extent
   
   bars = d3.select("g#chart_area")
@@ -197,8 +208,10 @@ hide_bars = ->
     .duration(duration)
     .call(y["right"].axis)
 
+# redraws the line and bar chart. right.
 window.redraw_line_and_bar_chart = (extent) ->
-  update_x_domain(extent)
+  console.log "redraw_line_and_bar_chart extent " + extent #DT 
+  update_x_domain(extent) #update_x_domain with date_extent based on slider_extent 
   path = d3.select("g#chart_area path.with_bar")
     .attr("d", (d) -> regenerate_path(d, extent, "left") ) #there is a problem with d
   
