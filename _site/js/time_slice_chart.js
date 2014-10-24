@@ -103,13 +103,8 @@
   };
 
   set_up_pie_chart_title = function(container) {
-    return container.selectAll("div#links").data(["Visitor Arrivals", "Visitor Spending"]).enter().append("a").attr("class", "pie_chart_title").attr("id", function(d) {
-      return d.replace(" ", "_");
-    }).text(function(d) {
-      return d;
-    }).on("click", function(d) {
-      d3.selectAll(".pie_chart_title").style("font-weight", "normal");
-      return d3.select(this).style("font-weight", "bold");
+    return container.append("a").attr("class", "pie_chart_title").text(function(d) {
+      return "VIsitor Arrivals";
     });
   };
 

@@ -164,6 +164,7 @@
           "glyphicon-check": false
         });
       } else {
+        add_series_label(new_secondary_series);
         console.log("go from line_bar to multi_line");
         line_and_bar_to_multi_line(new_secondary_series);
       }
