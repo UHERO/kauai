@@ -62,24 +62,35 @@ mouseover_pie = (d,i) ->
     # .text(d.value.toPrecision(3)) # keep 3 significant digits
     .text(d.value.toFixed(1)) # keep one decimal place
     
-  if max_pie.value == d.value 
-    chart_area.select("text.in_pie_label").remove()
+  #if max_pie.value == d.value
+  chart_area.select("text.in_pie_label").remove()
 
 mouseout_pie = (d) ->
   slice = d3.select(this)
   slice.attr("fill-opacity", "1")
   chart_area.select("text.pie_label").remove()
-  if max_pie.value == d.value 
-    chart_area.selectAll("text")
-      .data([max_pie])
-      .enter()
-      .append("text")
-      .attr("class","in_pie_label")
-      .attr("text-anchor", "middle")
-      .attr("transform", (d) -> "translate( #{pie_arc.centroid(d)} )" )
-      .text((d) -> d.data.display_name)
-      .style("font-size", "9px")
-      .style('font-weight', "bold")
+  #if max_pie.value == d.value 
+  chart_area.selectAll("text")
+    #.data([max_pie])
+    .data([d])
+    .enter()
+    .append("text")
+    .attr("class","in_pie_label")
+    .attr("text-anchor", "middle")
+    .attr("transform", (d) -> "translate( #{pie_arc.centroid(d)} )" )
+    .append("tspan")
+    .attr("class", "pie_slice_name")
+    .attr("dy", 20)
+    .text(d.data.display_name)
+    .append("tspan")
+    .attr("class", "pie_slice_value")
+    .attr("dy", 20)
+    .attr("x", 0)
+    # .text(d.value.toPrecision(3)) # keep 3 significant digits
+    .text(d.value.toFixed(1)) # keep one decimal place
+    #.text((d) -> d.data.display_name)
+    #.style("font-size", "9px")
+    #.style('font-weight', "bold")
       
 set_slider_dates = (extent) ->
   slider_val = extent[1]
@@ -115,11 +126,17 @@ window.pie_these_series = (series_data) ->
     .attr("class","in_pie_label")
     .attr("text-anchor", "middle")
     .attr("transform", (d) -> "translate( #{pie_arc.centroid(d)} )" )
+    .append("tspan")
+    .attr("class", "pie_slice_name")
+    .attr("dy", 20)
     .text((d) -> d.data.display_name)
-    .style("font-size", "9px")
-    .style('font-weight', "bold")
+    .append("tspan")
+    .attr("class", "pie_slice_value")
+    .attr("dy", 20)
+    .attr("x", 0)
+    .text((d) -> d.value.toFixed(1)) # keep one decimal place
 
-  d3.select("#slice_heading").text($(".cat_label").first().text().trim().replace("Total ",""))
+  d3.select("#pie_heading").text($(".cat_label").first().text().trim().replace("Total ",""))
 
 
 # this is the main function that instantiates the time-slice chart
@@ -131,7 +148,7 @@ window.visitor_pie_chart = (container) ->
   center_y = svg.attr("height") / 2
 
   svg.append("text")
-    .attr("id", "slice_heading")
+    .attr("id", "pie_heading")
     .attr("text-anchor", "middle")
     .attr("x", center_x)
     .attr("y", 20)

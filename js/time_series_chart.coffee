@@ -35,7 +35,7 @@ time_axis = d3.svg.axis().scale(x).tickFormat((d,i) -> if i is 0 or i is (slider
 
 dummy_path = d3.svg.line()
   .x(x_from_slider)
-  .y(-20)
+  .y(-50)
   .defined((d) -> d isnt null)
 
 
@@ -242,6 +242,8 @@ window.line_and_bar_to_multi_line = (d) ->
     .classed("s_left", true)
   
   add_to_line_chart(d,"left")  
+  console.log "line and bar to multi"
+  console.log d
   window.mode = "multi_line"
   
 window.multi_line_to_line_and_bar = (d) ->
@@ -254,6 +256,9 @@ window.multi_line_to_line_and_bar = (d) ->
   update_y_domain_with_new("right", yoy_domain, duration)
   show_bars(kp_d, slider_extent)
   window.mode = "line_bar"
+
+  # update right axis label
+  d3.select("#right_axis_label").text("YOY%")
     
 window.clear_from_line_chart = (d) ->
   path = s_path d.udaman_name
@@ -286,11 +291,15 @@ window.display_line_and_bar_chart = (d) ->
     .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
 
   path
-    .transition()
-    .duration(duration)
+    #.transition()
+    #.duration(duration)
     .attr("d", (d) -> y["left"].path(d[freq].trimmed_data))
     
   show_bars(d, slider_extent)
+
+  # update left and right axis labels
+  d3.select("#left_axis_label").text(d.display_name)
+  d3.select("#right_axis_label").text("YOY%")
     
 window.add_to_line_chart = (d, axis) ->
   duration = 500
@@ -305,11 +314,15 @@ window.add_to_line_chart = (d, axis) ->
     .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
     
   d3.selectAll("g#chart_area path.#{y[axis].class}") 
-    .transition()
-    .duration(duration)
+    #.transition()
+    #.duration(duration)
     .attr("d", (d) -> y[axis].path(d[freq].trimmed_data))
   
   #toggle_axis_button(d.udaman_name, axis)
+
+  # update axis label
+  console.log d.display_name
+  d3.select("#right_axis_label").text(d.display_name)
 
 
 window.remove_from_line_chart = (d, axis) ->
@@ -318,15 +331,16 @@ window.remove_from_line_chart = (d, axis) ->
   path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
 
   path.classed("s_#{axis}", false)
-  path.transition()
-    .duration(500)
+  path
+    #.transition()
+    #.duration(500)
     .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
     
   update_domain(axis, duration)
 
   chart_area.selectAll("path.#{y[axis].class}")
-    .transition()
-    .duration(duration)
+    #.transition()
+    #.duration(duration)
     .attr("d", (d) -> y[axis].path(d[freq].trimmed_data))
 
   #toggle_axis_button(d.udaman_name, axis)
@@ -345,7 +359,7 @@ window.set_up_line_chart_paths = (data) ->
 window.line_chart = (container) ->
   svg = set_up_svg(container)
   margin = 
-    top: 10
+    top: 30
     bottom: 20
     left: 50
     right: 50
@@ -365,10 +379,26 @@ window.line_chart = (container) ->
     .attr("transform", "translate(#{margin.left},#{margin.top})")
     .call(y.left.axis)
   
+  # adding left axis label
+  svg.append("text")  
+    .attr("id", "left_axis_label")
+    .attr("text-anchor", "start")
+    .attr("y", 20)
+    .text("Left Label")
+
   svg.append("g")
     .attr("id", "right_axis")
     .attr("transform", "translate(#{margin.left+chart_area_width},#{margin.top})")
     .call(y.right.axis)
+
+  # adding right axis label
+  svg.append("text")
+    .attr("id", "right_axis_label")
+    .attr("text-anchor", "end")
+    .attr("x", chart_area_width + margin.left + margin.right)
+    .attr("y", 20)
+    .text("Right Label")
+    
 
   chart_area = svg.append("g")
     .attr("id", "chart_area")

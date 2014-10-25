@@ -417,7 +417,8 @@ window.create_data_table = (page_data)->
     .attr("class", "cat_label")
     .attr("id",(d)->"cat_#{window.series_to_class(d.group_name)}")
     .attr("state", "expanded")
-    .html((d) -> "<span class='glyphicon glyphicon-chevron-down'></span> #{d.group_name}")
+    .html((d) -> 
+      "<span class='glyphicon glyphicon-chevron-down'></span> #{d.group_name.replace('Total ','')}")
     #.text((d) -> d.group_name)
     .on("mouseover", (d) -> d3.select(this).style "background-color", "#999")
     .on("mouseout", (d) -> d3.selectAll('.cat_label').style "background-color", "#FFF")

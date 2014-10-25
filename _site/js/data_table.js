@@ -396,7 +396,7 @@
     cat_labels = cat_divs.append("div").attr("class", "cat_label").attr("id", function(d) {
       return "cat_" + (window.series_to_class(d.group_name));
     }).attr("state", "expanded").html(function(d) {
-      return "<span class='glyphicon glyphicon-chevron-down'></span> " + d.group_name;
+      return "<span class='glyphicon glyphicon-chevron-down'></span> " + (d.group_name.replace('Total ', ''));
     }).on("mouseover", function(d) {
       return d3.select(this).style("background-color", "#999");
     }).on("mouseout", function(d) {
