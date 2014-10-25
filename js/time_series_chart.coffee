@@ -54,10 +54,10 @@ all_dates = ->
     
 dates_extent = (extent) ->
   # debugging an issue with the line_chart not updating
-  console.log extent
+  #console.log extent
   date_extent = all_dates().slice(parseInt(parseInt(extent[0])), parseInt(extent[1])+1)
-  console.log "date_extent -> #{JSON.stringify date_extent}"
-  date_extent
+  #console.log "date_extent -> #{JSON.stringify date_extent}"
+  #date_extent
 
 slider_dates = ->
   extent = slider_extent
@@ -94,18 +94,12 @@ s_path = (udaman_name) ->
   d3.select("g#chart_area #path_#{window.series_to_class(udaman_name)}")
 
 trim_d = (d, extent) ->
-  console.log "trim_d d --> " + d.trimmed_data #dt diagnostic
-  console.log "trim_d extent" + extent #dt diagnostic
   d.trimmed_data = d.data.slice(extent[0], extent[1]+1)
-  console.log d.trimmed_data #dt diagnostic
-  console.log "trim_d d --> " + d.trimmed_data #dt diagnostic LOOKS OK
-  return d.trimmed_data #dt diagnostic
 
 trim_yoy = (d, extent) ->
   d.trimmed_yoy = d.yoy.slice(extent[0], extent[1] + 1)
   
 update_x_domain = (extent, duration=0) ->
-  console.log "update_x_domain extent " + extent #dt diagnostic
   x.domain(dates_extent(extent))
 
 update_domain = (axis, duration = 500) ->
@@ -136,14 +130,10 @@ update_y_domain_with_new = (axis, domain, duration = 500) ->
     .duration(duration)
     .call(y[axis].axis)
 
-
+# dt note: remove all/most of the console.log
 regenerate_path = (d, extent, axis) ->
-  console.log "regenerate_path extent " + extent #dt diagnostic
-  trim_d d[freq], extent
-  test = y[axis].path(d[freq].trimmed_data)
-  console.log "d[freq].trimmed_data -> " + d[freq].trimmed_data #dt diagnostic
-  console.log "regenerate_path y axis stuff --> " + test #dt diagnostic
-  return test #dt diagnostic
+  y[axis].path(d[freq].trimmed_data) #SOMETHING IS WRONG HERE! VERY WRONG???
+  # above is updating path attrib of y object's left object (ish)
 
 show_bars = (d,extent) ->
   duration = 500
@@ -170,7 +160,6 @@ show_bars = (d,extent) ->
     .attr("height", y_height)
   
 regenerate_bars = (d,extent) ->
-  console.log "regenerate_bars extent " + extent #dt diagnostic
   trim_yoy d[freq], extent
   
   bars = d3.select("g#chart_area")
@@ -210,11 +199,9 @@ hide_bars = ->
 
 # redraws the line and bar chart. right.
 window.redraw_line_and_bar_chart = (extent) ->
-  console.log "redraw_line_and_bar_chart extent " + extent #DT 
   update_x_domain(extent) #update_x_domain with date_extent based on slider_extent 
   path = d3.select("g#chart_area path.with_bar")
     .attr("d", (d) -> regenerate_path(d, extent, "left") ) #there is a problem with d
-  
   regenerate_bars(path.datum(), extent)
   
     
@@ -248,8 +235,8 @@ window.trim_time_series = (event) ->
     when "multi_line" then redraw_line_chart(slider_extent)
     when "line_bar" then redraw_line_and_bar_chart(slider_extent)
     else redraw_line_chart(slider_extent)
-##
 ###
+
 window.line_and_bar_to_multi_line = (d) ->
   hide_bars()
 

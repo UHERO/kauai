@@ -263,11 +263,9 @@
     ui = {
       values: $("#sparkline_slider_div").val()
     };
-    console.log("ui -->" + ui.values);
     slider_extent = $("#sparkline_slider_div").val().map(function(value) {
       return +value;
     });
-    console.log("slider_extent -> " + slider_extent);
     d3.select("h3#date_series_left").text(all_dates()[ui.values[0]]);
     d3.select("h3#date_series_right").text(all_dates()[ui.values[1]]);
     draw_sparklines(ui.values, 0);

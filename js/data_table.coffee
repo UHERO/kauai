@@ -226,11 +226,11 @@ window.trim_sparklines = (event) ->
   ui =
     values: $("#sparkline_slider_div").val() #two object array
 
-  console.log("ui -->" + ui.values) #dt
+  #console.log("ui -->" + ui.values) #dt
 
   slider_extent = $("#sparkline_slider_div").val().map (value) -> +value #is this a duplicate of ui.values
 
-  console.log("slider_extent -> " + slider_extent) #dt
+  #console.log("slider_extent -> " + slider_extent) #dt
 
   d3.select("h3#date_series_left").text(all_dates()[ui.values[0]]) #wait what am I selecting here
   d3.select("h3#date_series_right").text(all_dates()[ui.values[1]])
