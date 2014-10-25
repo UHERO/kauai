@@ -77,13 +77,11 @@ g.tick line {stroke: #777; stroke-width:1 }
 path.line_chart_path { fill:none; stroke-width:2}
 
 
-
 /*********** Pie Chart Stuff *****************/
 g#pie_chart_area text { pointer-events: none; }
 
-.pie_chart_title{ font-size:20px; position:relative; left:20px; }
+.pie_chart_title{ font-size:20px; position:relative; left:80px; top:20px}
 
-#Visitor_Arrivals{margin-right:10px}
 /*div#Visitor_Spending {position:relative; top:-30px; left:140px}*/
 
 /*********** General Div Alignment *****************/

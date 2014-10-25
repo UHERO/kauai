@@ -181,6 +181,7 @@
   remove_secondary_series = function(series) {
     var d;
     d = series.datum();
+    d3.selectAll("#series_label").remove();
     return multi_line_to_line_and_bar(d);
   };
 

@@ -173,6 +173,7 @@ set_secondary_series = (series) ->
 
 remove_secondary_series = (series) ->
   d = series.datum()
+  d3.selectAll("#series_label").remove()
   # call multi_line_to_line_and_bar
   multi_line_to_line_and_bar(d)
 

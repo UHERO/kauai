@@ -103,8 +103,8 @@
   };
 
   set_up_pie_chart_title = function(container) {
-    return container.append("a").attr("class", "pie_chart_title").text(function(d) {
-      return "VIsitor Arrivals";
+    return container.append("text").attr("class", "pie_chart_title").text(function(d) {
+      return "Visitor Arrivals";
     });
   };
 

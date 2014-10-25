@@ -293,7 +293,18 @@ window.display_line_and_bar_chart = (d) ->
   show_bars(d, slider_extent)
 
 window.add_series_label = (d) ->
-  
+    d3.selectAll("#series_label").remove()
+    trim_d d[freq], slider_extent
+    d[freq].trimmed_data = d[freq].trimmed_data.filter((d) -> 
+      return d isnt null)
+    first_val = d[freq].trimmed_data[0]
+    console.log(y["right"].scale(first_val))
+    d3.select("#line_chart svg g#chart_area")
+      .append("text")
+      .attr("id", "series_label")
+      .text(d.display_name)
+      .attr("transform", "translate(0," + (270 - 20) + ")")
+      .attr("text-anchor", "start")
   
 window.add_to_line_chart = (d, axis) ->
   duration = 500
@@ -355,7 +366,7 @@ window.line_chart = (container) ->
 
   chart_area_width = svg.attr("width") - margin.left-margin.right
   chart_area_height = svg.attr("height") - margin.top - margin.bottom
-
+  
   slider_extent = [0, all_dates().length-1]
   update_x_domain(slider_extent)
   x.rangePoints([0, chart_area_width])

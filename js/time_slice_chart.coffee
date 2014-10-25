@@ -81,9 +81,9 @@ set_slider_dates = (extent) ->
   set_date_shown()  
 
 set_up_pie_chart_title = (container) ->
-  container.append("a")
+  container.append("text")
     .attr("class", "pie_chart_title")
-    .text((d) -> "VIsitor Arrivals")
+    .text((d) -> "Visitor Arrivals")
       
 
 window.pie_these_series = (series_data) ->

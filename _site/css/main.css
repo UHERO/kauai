@@ -526,10 +526,8 @@ g#pie_chart_area text {
 .pie_chart_title {
   font-size: 20px;
   position: relative;
-  left: 20px; }
-
-#Visitor_Arrivals {
-  margin-right: 10px; }
+  left: 80px;
+  top: 20px; }
 
 /*div#Visitor_Spending {position:relative; top:-30px; left:140px}*/
 /*********** General Div Alignment *****************/
