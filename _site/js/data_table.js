@@ -259,13 +259,7 @@
   };
 
   window.trim_sparklines = function(event) {
-    var ui;
-    ui = {
-      values: $("#sparkline_slider_div").val()
-    };
-    d3.select("h3#date_series_left").text(all_dates()[ui.values[0]]);
-    d3.select("h3#date_series_right").text(all_dates()[ui.values[1]]);
-    return draw_sparklines(ui.values, 0);
+    return draw_sparklines($("#line_chart_slider_div").val(), 0);
   };
 
   draw_sparklines = function(extent, duration) {
@@ -275,9 +269,8 @@
     end_i = extent[1];
     point = end_i - start_i;
     x.domain([0, end_i - start_i]);
-    dates = d3.select("#sparkline_slider_div").datum();
+    dates = d3.select("#line_chart_slider_div").datum();
     trimmed_dates = dates.slice(start_i, end_i + 1);
-    d3.select("#sparkline_header").html("&nbsp;");
     svg = cat_series.select("svg").datum(function(d) {
       return trimmed_data_object(d[freq], start_i, end_i);
     });
@@ -360,7 +353,7 @@
   create_sparklines = function(cat_series) {
     var spark_paths, spark_range;
     spark_paths = cat_series.append("svg").attr("class", "sparkline").attr("height", series_height).attr("width", 150);
-    spark_range = $("#sparkline_slider_div").val();
+    spark_range = $("#line_chart_slider_div").val();
     return draw_sparklines(spark_range, 0);
   };
 

@@ -220,21 +220,8 @@ trimmed_data_object = (d, start_i, end_i) ->
   new_d.scaled_data = new_d.spark_data.map((e) -> (if e is null then null else y(e)))
   new_d
 
-#change this
-#window.trim_sparklines = (event, ui) ->
 window.trim_sparklines = (event) ->
-  ui =
-    values: $("#sparkline_slider_div").val()
-  d3.select("h3#date_series_left").text(all_dates()[ui.values[0]])
-  d3.select("h3#date_series_right").text(all_dates()[ui.values[1]])
-  #if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "left"
-    #text = d3.select("#sparkline_slider_div a.ui-state-focus").style("left").split("px")
-    #d3.select("h3#date_series_left").style("left", (parseInt(text[0]) - 20) + "px")
-  
-  #if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "right"
-    #text = d3.select("#sparkline_slider_div a.ui-state-focus").style("left").split("px")
-    #d3.select("h3#date_series_right").style("left", (parseInt(text[0]) - 20) + "px")
-  draw_sparklines ui.values, 0
+  draw_sparklines $("#line_chart_slider_div").val(), 0
   
 draw_sparklines = (extent, duration) ->
   cat_series = d3.selectAll("div.series")
@@ -243,11 +230,11 @@ draw_sparklines = (extent, duration) ->
   point = end_i - start_i
   x.domain([ 0, end_i - start_i ])
 
-  dates = d3.select("#sparkline_slider_div").datum()
+  dates = d3.select("#line_chart_slider_div").datum()
   trimmed_dates = dates.slice(start_i, end_i + 1)
 
   #d3.select("#sparkline_header").text trimmed_dates[end_i - start_i]
-  d3.select("#sparkline_header").html "&nbsp;"
+  #d3.select("#sparkline_header").html "&nbsp;"
   svg = cat_series.select("svg").datum((d) ->
     trimmed_data_object d[freq], start_i, end_i
   )
@@ -360,7 +347,7 @@ create_sparklines = (cat_series) ->
     .attr("width", 150)
 
 #this line seems to throw an error about slider initialization
-  spark_range = $("#sparkline_slider_div").val()
+  spark_range = $("#line_chart_slider_div").val()
   draw_sparklines spark_range, 0
     
 create_series_label = (cat_series) ->

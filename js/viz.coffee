@@ -68,10 +68,15 @@ set_single_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).datum(dates)
   
 set_up_sliders = (dates)->
-  set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
-  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
+  #set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
+  #set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
+  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, left_slider_func
   set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
   set_single_slider_in_div "datatable_slider_div", dates, 0, dates.length-2, slide_table
+
+left_slider_func = (event)->
+  window.trim_sparklines(event)
+  window.trim_time_series(event)
 
 set_up_div = (elem) ->
   d3.select("#charts_area")
@@ -98,8 +103,9 @@ clear_data_table = ->
   d3.selectAll("#series_display .category").remove()
   
 clear_sliders = ->
-  set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
-  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
+  #set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
+  #set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
+  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, left_slider_func
   set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
   set_single_slider_in_div "datatable_slider_div", dates, 0, dates.length-1, slide_table
   
