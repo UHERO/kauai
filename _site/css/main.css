@@ -488,7 +488,7 @@ pre {
 #data {
   clear: both;
   position: relative;
-  top: 50px; }
+  /*top:50px */ }
 
 #source_links {
   clear: both;
@@ -519,9 +519,28 @@ path.line_chart_path {
   fill: none;
   stroke-width: 2; }
 
+#left_axis_label {
+  fill: #ff9847;
+  stroke: #ff9847; }
+
+.s_left, path.line_chart_path.with_bar {
+  stroke: #ff9847; }
+
+#right_axis_label {
+  fill: #3182bd;
+  stroke: #3182bd; }
+
+.s_right {
+  stroke: #3182bd; }
+
+.yoy {
+  stroke: #3182bd;
+  fill: #3182bd; }
+
 /*********** Pie Chart Stuff *****************/
 g#pie_chart_area text {
-  pointer-events: none; }
+  pointer-events: none;
+  stroke: black; }
 
 /*********** General Div Alignment *****************/
 #controls {
@@ -575,10 +594,14 @@ g#pie_chart_area text {
 #time_slice_slider_container {
   width: 250px;
   float: left;
-  margin-left: 80px; }
+  margin-left: 80px;
+  margin-top: 28px; }
 
 #line_chart_slider_div {
   clear: both; }
+
+.noUi-connect {
+  background: #3182bd; }
 
 /*********** Flextable Stuff *****************/
 .category {

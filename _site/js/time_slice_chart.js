@@ -34,16 +34,30 @@
   };
 
   window.redraw_slice = function(event, ui) {
-    var pie_data, pie_slices;
-    slider_val = ui.value;
+    var pie_data, pie_slices, sorted_array;
+    console.log("window.redraw_slice called");
+    slider_val = +$("#time_slice_slider_div").val();
     set_date_shown();
     pie_slices = chart_area.selectAll("path");
     pie_data = pie_slices.data().map(function(d) {
       return d.data;
     });
-    return pie_slices.data(pie_layout(pie_data), function(d) {
+    pie_slices.data(pie_layout(pie_data), function(d) {
       return d.data.display_name;
     }).attr("d", pie_arc);
+    chart_area.select("text.in_pie_label").remove();
+    sorted_array = pie_slices.data().sort(function(a, b) {
+      return a.value - b.value;
+    });
+    max_pie = sorted_array.pop();
+    console.log(max_pie);
+    return chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
+      return "translate( " + (pie_arc.centroid(d)) + " )";
+    }).append("tspan").attr("class", "pie_slice_name").attr("dy", 20).text(function(d) {
+      return d.data.display_name;
+    }).append("tspan").attr("class", "pie_slice_value").attr("dy", 20).attr("x", 0).text(function(d) {
+      return d.value.toFixed(1);
+    });
   };
 
   get_data_index_extent = function(data) {
@@ -91,8 +105,6 @@
 
   set_slider_dates = function(extent) {
     slider_val = extent[1];
-    $("#time_slice_slider_div").slider("option", "min", extent[0]);
-    $("#time_slice_slider_div").slider("option", "max", extent[1]);
     return set_date_shown();
   };
 
@@ -104,7 +116,6 @@
     sorted_array = pie_layout(series_data).sort(function(a, b) {
       return a.value - b.value;
     });
-    console.log(sorted_array);
     max_pie = sorted_array.pop();
     chart_area.selectAll("path").data(pie_layout(series_data), function(d) {
       return d.data.display_name;

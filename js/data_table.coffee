@@ -8,7 +8,7 @@ y = d3.scale.linear().range([ series_height, 5 ])
 window.mode = "line_bar"
 
 all_dates = ->
-  d3.select("#datatable_slider_div").datum()
+  d3.select("#time_slice_slider_div").datum()
   
 spark_line = d3.svg.line()
   .x((d, i) -> x i)
@@ -277,8 +277,9 @@ draw_spark_area = (svg, duration) ->
 window.slide_table = (event, ui) ->
   #text = d3.select("#datatable_slider_div a").style("left").split("px")
   #d3.select("h3#date_table").text(all_dates()[ui.value]).style("left", (parseInt(text) + 400) + "px")
-  offset_val = ui.value+1
+  offset_val = +$("#time_slice_slider_div").val() + 1
   offset= -(offset_val * cell_width - datatable_width)
+  console.log offset_val
   d3.selectAll(".container")
     #.transition()
     #.duration(200)

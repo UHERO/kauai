@@ -26,13 +26,43 @@ set_date_shown = ->
   d3.select("#slice_slider_selection").text(selected_date())
     
 window.redraw_slice = (event, ui) ->
-  slider_val = ui.value
+  console.log "window.redraw_slice called"
+  #slider_val = ui.value
+  slider_val = +$("#time_slice_slider_div").val()
   set_date_shown()
   pie_slices = chart_area.selectAll("path")
   pie_data = pie_slices.data().map((d) -> d.data)
   pie_slices
     .data(pie_layout(pie_data), (d) -> d.data.display_name)
     .attr("d", pie_arc)
+
+  chart_area.select("text.in_pie_label").remove()
+
+  sorted_array = pie_slices.data().sort((a,b) -> a.value - b.value)
+  #console.log(sorted_array)
+  max_pie = sorted_array.pop()
+
+  console.log max_pie
+  chart_area.selectAll("text")
+    #.data([pie_slices.data()[0]])
+    .data([max_pie])
+    ##.data([d])
+    .enter()
+    .append("text")
+    .attr("class","in_pie_label")
+    .attr("text-anchor", "middle")
+    .attr("transform", (d) -> "translate( #{pie_arc.centroid(d)} )" )
+    .append("tspan")
+    .attr("class", "pie_slice_name")
+    .attr("dy", 20)
+    .text((d) -> d.data.display_name)
+    .append("tspan")
+    .attr("class", "pie_slice_value")
+    .attr("dy", 20)
+    .attr("x", 0)
+    # .text(d.value.toPrecision(3)) # keep 3 significant digits
+    .text((d) -> d.value.toFixed(1)) # keep one decimal place
+
 
 get_data_index_extent = (data) ->
   start_i = data.findIndex((d) -> d != null)
@@ -96,17 +126,18 @@ set_slider_dates = (extent) ->
   slider_val = extent[1]
   # no need to change the dates, slider indices are still relative
   # to full date / data arrays
-  $("#time_slice_slider_div").slider("option", "min", extent[0])
-  $("#time_slice_slider_div").slider("option", "max", extent[1])
+  # this causes problems when sharing the slider
+  #$("#time_slice_slider_div").noUiSlider({ range: {min: extent[0], max: extent[1]} }, true)
   set_date_shown()  
 
 window.pie_these_series = (series_data) ->
+  #console.log "window.pie_these_series was called"
   data_extent = get_common_dates(series_data)
   set_slider_dates(data_extent)
   chart_area.selectAll("path").remove()
 
   sorted_array = pie_layout(series_data).sort((a,b) -> a.value - b.value)
-  console.log(sorted_array)
+  #console.log(sorted_array)
   max_pie = sorted_array.pop()
   chart_area.selectAll("path")
     .data(pie_layout(series_data), (d) -> d.data.display_name)

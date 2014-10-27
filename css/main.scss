@@ -65,7 +65,12 @@ $on-laptop:        800px;
 #supplemental_chart { }
 #pie_chart { }
 
-#data { clear:both; position:relative; top:50px }
+#data { 
+  clear:both; 
+  position:relative; 
+  /*top:50px */
+}
+
 #source_links { clear: both; position:relative; top:50px; margin-top:100px; text-align:right; font-size:10px;}
 
 h2#headline { padding: 10px 0 0 0; }
@@ -75,11 +80,16 @@ path.domain { fill:none; stroke: #777; stroke-width:1 }
 g.tick text { font-size: 10px; fill: #777}
 g.tick line {stroke: #777; stroke-width:1 }
 path.line_chart_path { fill:none; stroke-width:2}
+#left_axis_label { fill: rgb(255, 152, 71); stroke: rgb(255, 152, 71) }
+.s_left, path.line_chart_path.with_bar{ stroke: rgb(255, 152, 71) }
+#right_axis_label { fill: rgb(49, 130, 189); stroke: rgb(49, 130, 189) }
+.s_right { stroke: rgb(49, 130, 189) }
+.yoy { stroke: rgb(49, 130, 189); fill: rgb(49, 130, 189) }
 
 
 
 /*********** Pie Chart Stuff *****************/
-g#pie_chart_area text { pointer-events: none; }
+g#pie_chart_area text { pointer-events: none; stroke: black}
 
 
 /*********** General Div Alignment *****************/
@@ -109,10 +119,11 @@ g#pie_chart_area text { pointer-events: none; }
 
 /* should probably set in code when setting the rectangle sizes */
 #line_chart_slider_container{ width:330px; float:left; margin-left:50px; }
-#time_slice_slider_container{ width:250px; float:left; margin-left:80px; }
+#time_slice_slider_container{ width:250px; float:left; margin-left:80px; margin-top: 28px }
 
 #line_chart_slider_div { clear:both }
 
+.noUi-connect { background: rgb(49, 130, 189)}
 /*********** Flextable Stuff *****************/
 
 .category { clear:both;}

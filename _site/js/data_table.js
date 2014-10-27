@@ -14,7 +14,7 @@
   window.mode = "line_bar";
 
   all_dates = function() {
-    return d3.select("#datatable_slider_div").datum();
+    return d3.select("#time_slice_slider_div").datum();
   };
 
   spark_line = d3.svg.line().x(function(d, i) {
@@ -298,8 +298,9 @@
 
   window.slide_table = function(event, ui) {
     var offset, offset_val;
-    offset_val = ui.value + 1;
+    offset_val = +$("#time_slice_slider_div").val() + 1;
     offset = -(offset_val * cell_width - datatable_width);
+    console.log(offset_val);
     return d3.selectAll(".container").style("margin-left", offset + "px");
   };
 

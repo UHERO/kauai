@@ -241,7 +241,7 @@ window.line_and_bar_to_multi_line = (d) ->
     .classed("with_bar",false)
     .classed("s_left", true)
   
-  add_to_line_chart(d,"left")  
+  add_to_line_chart(d,"right")  
   console.log "line and bar to multi"
   console.log d
   window.mode = "multi_line"
