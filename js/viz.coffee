@@ -141,8 +141,14 @@ render_page = (page_data) ->
   set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
   
   # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
-  display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
-  pie_these_series(page_data.series_groups[0].series_list[0].children)
+  window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
+  # identify the first series with children
+  pied = false
+  for series_group in page_data.series_groups
+    do (series_group)->
+      if series_group.series_list[0].children? and pied == false
+        window.pie_these_series series_group.series_list[0].children
+  #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
   
 window.load_page = (data_category) ->
   # this takes some time to load, so put in page loading graphic

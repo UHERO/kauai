@@ -297,6 +297,7 @@ window.display_line_and_bar_chart = (d) ->
     
   show_bars(d, slider_extent)
 
+  console.log(d)
   # update left and right axis labels
   d3.select("#left_axis_label").text(d.display_name)
   d3.select("#right_axis_label").text("YOY%")
