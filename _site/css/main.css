@@ -542,6 +542,29 @@ g#pie_chart_area text {
   pointer-events: none;
   stroke: black; }
 
+/*********** Treemap Stuff ******************/
+#treemap_tooltip {
+  position: absolute;
+  width: 220px;
+  height: auto;
+  padding: 10px;
+  background-color: white;
+  pointer-events: none;
+  background-color: #3182bd;
+  color: white; }
+
+#treemap_tooltip.hidden {
+  display: none; }
+
+#treemap_tooltip_heading {
+  font-weight: bolder; }
+
+#treemap_tooltip p {
+  margin: 0;
+  /*font-family: sans-serif;*/
+  font-size: 16px;
+  line-height: 20px; }
+
 /*********** General Div Alignment *****************/
 #controls {
   clear: both;

@@ -152,6 +152,8 @@ render_page = (page_data) ->
   
 window.load_page = (data_category) ->
   # this takes some time to load, so put in page loading graphic
+  console.log "slug: #{data_category.slug}"
+  console.log "title: #{data_category.title}"
   load_page_data(data_category.slug, (data) ->
     set_headline(data_category.title)
     render_page(data)
