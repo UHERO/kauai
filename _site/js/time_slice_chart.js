@@ -129,7 +129,7 @@
     }).append("tspan").attr("class", "pie_slice_value").attr("dy", 20).attr("x", 0).text(function(d) {
       return d.value.toFixed(1);
     });
-    return d3.select("#pie_heading").text($(".cat_label").first().text().trim().replace("Total ", ""));
+    return d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", ""));
   };
 
   window.visitor_pie_chart = function(container) {

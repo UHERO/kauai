@@ -167,7 +167,7 @@ window.pie_these_series = (series_data) ->
     .attr("x", 0)
     .text((d) -> d.value.toFixed(1)) # keep one decimal place
 
-  d3.select("#pie_heading").text($(".cat_label").first().text().trim().replace("Total ",""))
+  d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", ""))
 
 
 # this is the main function that instantiates the time-slice chart
