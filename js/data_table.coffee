@@ -108,8 +108,8 @@ window.unhighlight_series_row = (d) ->
 set_primary_series = (series) ->
   new_series = series.datum()
   old_series = d3.select(".series.selected").datum()
-  # only do stuff if this is not already the primary series
-  if new_series.udaman_name != old_series.udaman_name
+  # only do stuff if this is not already the primary series and if it is not the secondary series
+  if new_series.udaman_name != old_series.udaman_name and !d3.select("g#chart_area #path_#{window.series_to_class(new_series.udaman_name)}").classed("s_right")
     # see if we are in multi_line mode or line_bar mode
     # if we are in line_and_bar, should call clear_line_and_bar_chart and display_line_and_bar_chart
     if (window.mode == "line_bar")
@@ -118,11 +118,13 @@ set_primary_series = (series) ->
       highlight_series_row(new_series)
       clear_line_and_bar_chart(old_series)
       display_line_and_bar_chart(new_series)
+    # if we are in multi_line, should call add_to_line_chart and clear_from_line_chart
+    else
+      unhighlight_series_row(old_series)
+      highlight_series_row(new_series)
+      window.add_to_line_chart(new_series, "left")
+      window.clear_from_line_chart(old_series)
 
-
-
-
-  # if we are in multi_line, should call add_to_line_chart and clear_from_line_chart
 
 
   # remove selected class from all series

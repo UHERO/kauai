@@ -263,6 +263,7 @@ window.multi_line_to_line_and_bar = (d) ->
 window.clear_from_line_chart = (d) ->
   path = s_path d.udaman_name
   axis = if path.classed("s_left") then "left" else "right"
+  console.log "Remove from #{axis} axis:"
   console.log(d.udaman_name)
   console.log(path.classed("s_left"))
   console.log(path.classed("s_right"))
@@ -330,12 +331,15 @@ window.remove_from_line_chart = (d, axis) ->
   duration = 500
   chart_area = d3.select("g#chart_area")  
   path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
+  #console.log(path)
 
   path.classed("s_#{axis}", false)
+  #console.log("dummy path:")
+  #console.log(dummy_path(d[freq].trimmed_data))
   path
+    .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
     #.transition()
     #.duration(500)
-    .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
     
   update_domain(axis, duration)
 

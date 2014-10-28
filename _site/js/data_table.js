@@ -130,13 +130,18 @@
     var new_series, old_series;
     new_series = series.datum();
     old_series = d3.select(".series.selected").datum();
-    if (new_series.udaman_name !== old_series.udaman_name) {
+    if (new_series.udaman_name !== old_series.udaman_name && !d3.select("g#chart_area #path_" + (window.series_to_class(new_series.udaman_name))).classed("s_right")) {
       if (window.mode === "line_bar") {
         console.log("mode: line_bar");
         unhighlight_series_row(old_series);
         highlight_series_row(new_series);
         clear_line_and_bar_chart(old_series);
         return display_line_and_bar_chart(new_series);
+      } else {
+        unhighlight_series_row(old_series);
+        highlight_series_row(new_series);
+        window.add_to_line_chart(new_series, "left");
+        return window.clear_from_line_chart(old_series);
       }
     }
   };
