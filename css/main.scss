@@ -49,11 +49,21 @@ $on-laptop:        800px;
 .site-footer{ position:relative; top:50px}
 #county_revenue.nav_link { margin:0 }
 
-.nav_link { text-align:center; margin: 0 5px 0 0; padding: 5px 0; background-color:#AAA; color: black; text-transform:uppercase; float:left; font-size:11px}
+.nav_link { 
+  text-align:center; 
+  margin: 0 5px 0 0; 
+  padding: 5px 0; 
+  background-color:#cccccc; 
+  color: #5d5d5d; 
+  text-transform:uppercase; 
+  float:left; 
+  font-size:11px; 
+  font-weight: bold;
+}
 
 .nav_link:hover {
-	background-color: black;
-	color: #AAA;
+	background-color: #c4def5;
+    color: #5d5d5d;
 	cursor: pointer;
 }
 #dashboard { clear:both; }
@@ -150,6 +160,7 @@ g#pie_chart_area text { pointer-events: none; stroke: black}
 #line_chart_slider_div { clear:both }
 
 .noUi-connect { background: rgb(49, 130, 189)}
+.noUi-handle::before, .noUi-handle::after { background: rgba(49, 130, 189, 0.5)}
 /*********** Flextable Stuff *****************/
 
 .category { clear:both;}

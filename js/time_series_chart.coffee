@@ -300,7 +300,7 @@ window.display_line_and_bar_chart = (d) ->
 
   console.log(d)
   # update left and right axis labels
-  d3.select("#left_axis_label").text(d.display_name)
+  d3.select("#left_axis_label").text("#{d.display_name} (#{d.units})")
   d3.select("#right_axis_label").text("YOY%")
     
 window.add_to_line_chart = (d, axis) ->
@@ -324,7 +324,7 @@ window.add_to_line_chart = (d, axis) ->
 
   # update axis label
   console.log d.display_name
-  d3.select("#right_axis_label").text(d.display_name)
+  d3.select("#right_axis_label").text("#{d.display_name} (#{d.units})")
 
 
 window.remove_from_line_chart = (d, axis) ->
@@ -385,7 +385,7 @@ window.line_chart = (container) ->
     .call(y.left.axis)
   
   # adding left axis label
-  svg.append("text")  
+  svg.append("text")
     .attr("id", "left_axis_label")
     .attr("text-anchor", "start")
     .attr("y", 20)
@@ -400,7 +400,7 @@ window.line_chart = (container) ->
   svg.append("text")
     .attr("id", "right_axis_label")
     .attr("text-anchor", "end")
-    .attr("x", chart_area_width + margin.left + margin.right)
+    .attr("x", chart_area_width + margin.left + margin.right - 2)
     .attr("y", 20)
     .text("Right Label")
     

@@ -211,8 +211,8 @@ treemap_mousemove = (d) ->
     .text d.display_name
   d3.select("#treemap_tooltip #treemap_tooltip_percentage")
     .text( ((300*300)/d.area).toFixed(1) + "%")
-  #d3.select("#tooltip #revenue")
-    #.text("£" + d["revenue"].toFixed(0));
+  d3.select("#treemap_tooltip #treemap_tooltip_value")
+    .text(d.value.toFixed(3))
   d3.select("#treemap_tooltip").classed "hidden", false
 
 treemap_mouseout = (d) ->
