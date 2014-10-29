@@ -14,7 +14,7 @@
   window.mode = "line_bar";
 
   all_dates = function() {
-    return d3.select("#datatable_slider_div").datum();
+    return d3.select("#time_slice_slider_div").datum();
   };
 
   spark_line = d3.svg.line().x(function(d, i) {
@@ -130,13 +130,18 @@
     var new_series, old_series;
     new_series = series.datum();
     old_series = d3.select(".series.selected").datum();
-    if (new_series.udaman_name !== old_series.udaman_name) {
+    if (new_series.udaman_name !== old_series.udaman_name && !d3.select("g#chart_area #path_" + (window.series_to_class(new_series.udaman_name))).classed("s_right")) {
       if (window.mode === "line_bar") {
         console.log("mode: line_bar");
         unhighlight_series_row(old_series);
         highlight_series_row(new_series);
         clear_line_and_bar_chart(old_series);
         return display_line_and_bar_chart(new_series);
+      } else {
+        unhighlight_series_row(old_series);
+        highlight_series_row(new_series);
+        window.add_to_line_chart(new_series, "left");
+        return window.clear_from_line_chart(old_series);
       }
     }
   };
@@ -259,24 +264,7 @@
   };
 
   window.trim_sparklines = function(event) {
-    var slider_extent, ui;
-    ui = {
-      values: $("#sparkline_slider_div").val()
-    };
-    slider_extent = $("#sparkline_slider_div").val().map(function(value) {
-      return +value;
-    });
-    d3.select("h3#date_series_left").text(all_dates()[ui.values[0]]);
-    d3.select("h3#date_series_right").text(all_dates()[ui.values[1]]);
-    draw_sparklines(ui.values, 0);
-    switch (window.mode) {
-      case "multi_line":
-        return redraw_line_chart(slider_extent);
-      case "line_bar":
-        return redraw_line_and_bar_chart(slider_extent);
-      default:
-        return redraw_line_chart(slider_extent);
-    }
+    return draw_sparklines($("#line_chart_slider_div").val(), 0);
   };
 
   draw_sparklines = function(extent, duration) {
@@ -286,9 +274,8 @@
     end_i = extent[1];
     point = end_i - start_i;
     x.domain([0, end_i - start_i]);
-    dates = d3.select("#sparkline_slider_div").datum();
+    dates = d3.select("#line_chart_slider_div").datum();
     trimmed_dates = dates.slice(start_i, end_i + 1);
-    d3.select("#sparkline_header").html("&nbsp;");
     svg = cat_series.select("svg").datum(function(d) {
       return trimmed_data_object(d[freq], start_i, end_i);
     });
@@ -316,8 +303,9 @@
 
   window.slide_table = function(event, ui) {
     var offset, offset_val;
-    offset_val = ui.value + 1;
+    offset_val = +$("#time_slice_slider_div").val() + 1;
     offset = -(offset_val * cell_width - datatable_width);
+    console.log(offset_val);
     return d3.selectAll(".container").style("margin-left", offset + "px");
   };
 
@@ -371,7 +359,7 @@
   create_sparklines = function(cat_series) {
     var spark_paths, spark_range;
     spark_paths = cat_series.append("svg").attr("class", "sparkline").attr("height", series_height).attr("width", 150);
-    spark_range = $("#sparkline_slider_div").val();
+    spark_range = $("#line_chart_slider_div").val();
     return draw_sparklines(spark_range, 0);
   };
 
@@ -407,7 +395,7 @@
     cat_labels = cat_divs.append("div").attr("class", "cat_label").attr("id", function(d) {
       return "cat_" + (window.series_to_class(d.group_name));
     }).attr("state", "expanded").html(function(d) {
-      return "<span class='glyphicon glyphicon-chevron-down'></span> " + d.group_name;
+      return "<span class='glyphicon glyphicon-chevron-down'></span> " + (d.group_name.replace('Total ', ''));
     }).on("mouseover", function(d) {
       return d3.select(this).style("background-color", "#999");
     }).on("mouseout", function(d) {
