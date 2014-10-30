@@ -324,7 +324,7 @@ window.add_to_line_chart = (d, axis) ->
 
   # update axis label
   console.log d.display_name
-  d3.select("#right_axis_label").text("#{d.display_name} (#{d.units})")
+  d3.select("#" + axis + "_axis_label").text("#{d.display_name} (#{d.units})")
 
 
 window.remove_from_line_chart = (d, axis) ->
