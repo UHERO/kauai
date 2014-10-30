@@ -119,6 +119,12 @@
 
   set_slider_dates = function(extent) {
     slider_val = extent[1];
+    $("#time_slice_slider_div").noUiSlider({
+      range: {
+        min: extent[0],
+        max: extent[1]
+      }
+    }, true);
     return set_date_shown();
   };
 

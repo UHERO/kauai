@@ -142,7 +142,7 @@ set_slider_dates = (extent) ->
   # no need to change the dates, slider indices are still relative
   # to full date / data arrays
   # this causes problems when sharing the slider
-  #$("#time_slice_slider_div").noUiSlider({ range: {min: extent[0], max: extent[1]} }, true)
+  $("#time_slice_slider_div").noUiSlider({ range: {min: extent[0], max: extent[1]} }, true)
   set_date_shown()  
 
 window.pie_these_series = (series_data) ->
