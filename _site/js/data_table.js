@@ -327,7 +327,11 @@
     return container.selectAll("div.cell").data(function(d) {
       return d[freq].data;
     }).enter().append("div").attr("class", "cell").text(function(d) {
-      return (+d).toFixed(3);
+      if (d != null) {
+        return (+d).toFixed(3);
+      } else {
+        return "";
+      }
     });
   };
 

@@ -314,7 +314,7 @@ create_data_columns = (cat_series) ->
     .enter()
     .append("div")
     .attr("class", "cell")
-    .text((d) -> (+d).toFixed(3))
+    .text((d) -> if d? then (+d).toFixed(3) else "")
       
 create_axis_control = (cat_series, axis) ->
   #cat_series.append("div")
