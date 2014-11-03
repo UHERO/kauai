@@ -162,7 +162,14 @@
       window.node = chart_area.datum({
         children: series_data
       }).selectAll("rect").data(treemap_layout.nodes).enter().append("rect").call(treemap_position).attr("fill", function(d) {
-        return color(d.display_name);
+        switch (d.depth) {
+          case 2:
+            return color(d.parent.display_name);
+          case 3:
+            return color(d.parent.parent.display_name);
+          default:
+            return color(d.display_name);
+        }
       }).on("mouseover", treemap_mousemove).on("mouseout", treemap_mouseout);
     }
     return d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", ""));
@@ -174,8 +181,17 @@
     yPosition = d3.event.pageY + 5;
     console.log(d);
     d3.select("#treemap_tooltip").style("left", xPosition + "px").style("top", yPosition + "px");
-    d3.select("#treemap_tooltip #treemap_tooltip_heading").text(d.display_name);
-    d3.select("#treemap_tooltip #treemap_tooltip_percentage").text(((300 * 300) / d.area).toFixed(1) + "%");
+    d3.select("#treemap_tooltip #treemap_tooltip_heading").text(function() {
+      switch (d.depth) {
+        case 2:
+          return "" + d.display_name + " (" + d.parent.display_name + ")";
+        case 3:
+          return "" + d.display_name + " (" + d.parent.display_name + "-" + d.parent.parent.display_name + ")";
+        default:
+          return d.display_name;
+      }
+    });
+    d3.select("#treemap_tooltip #treemap_tooltip_percentage").text((d.area / (300 * 300) * 100).toFixed(1) + "%");
     d3.select("#treemap_tooltip #treemap_tooltip_value").text(d.value.toFixed(3));
     return d3.select("#treemap_tooltip").classed("hidden", false);
   };

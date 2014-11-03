@@ -18,7 +18,10 @@
       {"display_name": "Manufacturing", "udaman_name": "EMN@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
       {"display_name": "Trade, Transport, & Utility", "udaman_name": "E_TTU@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children" : [
         {"display_name": "Transportation & Utilities", "udaman_name": "E_TU@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
-        {"display_name": "Total Trade Jobs", "udaman_name": "E_TRADE@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
+        {"display_name": "Total Trade Jobs", "udaman_name": "E_TRADE@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children" : [
+            {"display_name": "Retail Trade Jobs", "udaman_name": "ERT@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
+            {"display_name": "Wholesale Trade Jobs", "udaman_name": "EWT@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
+        ]}
       ]},
       {"display_name": "Information Jobs", "udaman_name": "EIF@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
       {"display_name": "Financial Activities", "udaman_name": "E_FIR@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children": [
@@ -45,16 +48,7 @@
       {"display_name": "Total Government Jobs", "udaman_name": "EGV@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children": [
         {"display_name": "Federal Government Jobs", "udaman_name": "EGVFD@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
         {"display_name": "State & Local Government Jobs", "udaman_name": "E_GVSL@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
-      ]},       
-      {"display_name": "Retail Trade Jobs", "udaman_name": "ERT@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
-      {"display_name": "Admin & Waste Management", "udaman_name": "EAD@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
-      {"display_name": "Transportation & Utilities", "udaman_name": "E_TU@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
-      {"display_name": "Accom & Food Services", "udaman_name": "EAF@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children":[
-        {"display_name":"Accomodation Jobs", "udaman_name": "EAFAC@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
-        {"display_name":"Food Svc. & Drinking Place Jobs", "udaman_name":"EAFFD@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
-      ]},
-      {"display_name": "Healthcare & Social Asst", "udaman_name": "EHC@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
-      {"display_name": "Other service jobs", "udaman_name": "EOS@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
+      ]}
     ]
     }
   ]

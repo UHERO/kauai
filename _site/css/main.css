@@ -544,6 +544,10 @@ g#pie_chart_area text {
   stroke: black; }
 
 /*********** Treemap Stuff ******************/
+g#pie_chart_area rect {
+  stroke: white;
+  stroke-width: 1; }
+
 #treemap_tooltip {
   position: absolute;
   width: 220px;

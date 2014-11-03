@@ -193,7 +193,12 @@ window.pie_these_series = (series_data) ->
       .data(treemap_layout.nodes)
       .enter().append("rect")
       .call treemap_position
-      .attr("fill", (d) -> color(d.display_name))
+      .attr("fill", (d) ->
+        switch d.depth
+          when 2 then color(d.parent.display_name)
+          when 3 then color(d.parent.parent.display_name)
+          else color(d.display_name)
+      )
       .on "mouseover", treemap_mousemove
       .on "mouseout", treemap_mouseout
 
@@ -208,9 +213,13 @@ treemap_mousemove = (d) ->
     .style "left", xPosition + "px"
     .style "top", yPosition + "px"
   d3.select "#treemap_tooltip #treemap_tooltip_heading"
-    .text d.display_name
+    .text () ->
+      switch d.depth
+        when 2 then "#{d.display_name} (#{d.parent.display_name})"
+        when 3 then "#{d.display_name} (#{d.parent.display_name}-#{d.parent.parent.display_name})"
+        else d.display_name
   d3.select("#treemap_tooltip #treemap_tooltip_percentage")
-    .text( ((300*300)/d.area).toFixed(1) + "%")
+    .text( (d.area/(300*300) * 100).toFixed(1) + "%")
   d3.select("#treemap_tooltip #treemap_tooltip_value")
     .text(d.value.toFixed(3))
   d3.select("#treemap_tooltip").classed "hidden", false
