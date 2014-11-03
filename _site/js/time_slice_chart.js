@@ -186,7 +186,7 @@
         case 2:
           return "" + d.display_name + " (" + d.parent.display_name + ")";
         case 3:
-          return "" + d.display_name + " (" + d.parent.display_name + "-" + d.parent.parent.display_name + ")";
+          return "" + d.display_name + " (" + d.parent.display_name + " - " + d.parent.parent.display_name + ")";
         default:
           return d.display_name;
       }

@@ -216,7 +216,7 @@ treemap_mousemove = (d) ->
     .text () ->
       switch d.depth
         when 2 then "#{d.display_name} (#{d.parent.display_name})"
-        when 3 then "#{d.display_name} (#{d.parent.display_name}-#{d.parent.parent.display_name})"
+        when 3 then "#{d.display_name} (#{d.parent.display_name} - #{d.parent.parent.display_name})"
         else d.display_name
   d3.select("#treemap_tooltip #treemap_tooltip_percentage")
     .text( (d.area/(300*300) * 100).toFixed(1) + "%")
