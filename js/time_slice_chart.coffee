@@ -207,7 +207,8 @@ window.pie_these_series = (series_data) ->
       .attr("text-anchor", "start")
       .attr("x", 0)
       .attr("y", svg.attr("height") - 40)
-    pie_notes.append("tspan").attr("dy", 0).text("The area of each box represents the number of employees in each sector.")
+    pie_notes.append("tspan").attr("dy", 0).text("The area of each box represents the number of jobs in each category.")
+    pie_notes.append("tspan").attr("dy", 10).text("Colors indicate top-level categories (e.g., Total Government Jobs).").attr("x", 0)
 
 
   d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series.parent").first().next()).datum().units + ")")
