@@ -6,14 +6,14 @@ svg = null
 chart_area = null
 max_pie = null
 
-treemap_props = 
+treemap_props =
   width: null
   height: null
 color = d3.scale.category20c()
 
 window.treemap_layout = d3.layout.treemap()
   #.size([])
-  .size([300, 300])
+  .size([300, 200])
   .sticky(true)
   .value((d) -> d[freq].data[slider_val])
 
@@ -143,7 +143,7 @@ set_slider_dates = (extent) ->
   # to full date / data arrays
   # this causes problems when sharing the slider
   $("#time_slice_slider_div").noUiSlider({ range: {min: extent[0], max: extent[1]} }, true)
-  set_date_shown()  
+  set_date_shown()
 
 window.pie_these_series = (series_data) ->
   console.log "window.pie_these_series was called"
@@ -188,21 +188,29 @@ window.pie_these_series = (series_data) ->
       .attr("x", 0)
       .text((d) -> d.value.toFixed(1)) # keep one decimal place
   else
-    chart_area.attr("transform", "translate(0,0)")
+    chart_area.attr("transform", "translate(0,50)")
     window.node = chart_area.datum({children: series_data}).selectAll("rect")
       .data(treemap_layout.nodes)
       .enter().append("rect")
       .call treemap_position
       .attr("fill", (d) ->
         switch d.depth
-          when 2 then color(d.parent.display_name)
-          when 3 then color(d.parent.parent.display_name)
-          else color(d.display_name)
+          when 2 then color d.parent.display_name
+          when 3 then color d.parent.parent.display_name
+          else color d.display_name
       )
-      .on "mouseover", treemap_mousemove
+      .on "mousemove", treemap_mousemove
       .on "mouseout", treemap_mouseout
+    # add subtitle
+    pie_notes = svg.append("text")
+      .attr("id", "pie_notes")
+      .attr("text-anchor", "start")
+      .attr("x", 0)
+      .attr("y", svg.attr("height") - 40)
+    pie_notes.append("tspan").attr("dy", 0).text("The area of each box represents the number of employees in each sector.")
 
-  d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", ""))
+
+  d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series.parent").first().next()).datum().units + ")")
 
 treemap_mousemove = (d) ->
   xPosition = d3.event.pageX + 5
@@ -219,7 +227,9 @@ treemap_mousemove = (d) ->
         when 3 then "#{d.display_name} (#{d.parent.display_name} - #{d.parent.parent.display_name})"
         else d.display_name
   d3.select("#treemap_tooltip #treemap_tooltip_percentage")
-    .text( (d.area/(300*300) * 100).toFixed(1) + "%")
+    .text () ->
+      "YOY: " + d[freq].yoy[slider_val].toFixed(1) + "%"
+    #.text( (d.area/(300*300) * 100).toFixed(1) + "%")
   d3.select("#treemap_tooltip #treemap_tooltip_value")
     .text(d.value.toFixed(3))
   d3.select("#treemap_tooltip").classed "hidden", false
@@ -251,8 +261,7 @@ window.visitor_pie_chart = (container) ->
     .attr("text-anchor", "middle")
     .attr("x", center_x)
     .attr("y", 20)
-    .text($(".cat_label").first().text().trim())
-
+    #.text($(".cat_label").first().text().trim())
 
   #if window.slice_type == "pie" 
   chart_area = svg.append("g")

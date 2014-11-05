@@ -18,7 +18,7 @@
 
   color = d3.scale.category20c();
 
-  window.treemap_layout = d3.layout.treemap().size([300, 300]).sticky(true).value(function(d) {
+  window.treemap_layout = d3.layout.treemap().size([300, 200]).sticky(true).value(function(d) {
     return d[freq].data[slider_val];
   });
 
@@ -129,7 +129,7 @@
   };
 
   window.pie_these_series = function(series_data) {
-    var data_extent, sorted_array;
+    var data_extent, pie_notes, sorted_array;
     console.log("window.pie_these_series was called");
     console.log(series_data);
     if (series_data[0].display_name === "Construction & Mining") {
@@ -158,7 +158,7 @@
         return d.value.toFixed(1);
       });
     } else {
-      chart_area.attr("transform", "translate(0,0)");
+      chart_area.attr("transform", "translate(0,50)");
       window.node = chart_area.datum({
         children: series_data
       }).selectAll("rect").data(treemap_layout.nodes).enter().append("rect").call(treemap_position).attr("fill", function(d) {
@@ -170,9 +170,11 @@
           default:
             return color(d.display_name);
         }
-      }).on("mouseover", treemap_mousemove).on("mouseout", treemap_mouseout);
+      }).on("mousemove", treemap_mousemove).on("mouseout", treemap_mouseout);
+      pie_notes = svg.append("text").attr("id", "pie_notes").attr("text-anchor", "start").attr("x", 0).attr("y", svg.attr("height") - 40);
+      pie_notes.append("tspan").attr("dy", 0).text("The area of each box represents the number of employees in each sector.");
     }
-    return d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", ""));
+    return d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series.parent").first().next()).datum().units + ")");
   };
 
   treemap_mousemove = function(d) {
@@ -191,7 +193,9 @@
           return d.display_name;
       }
     });
-    d3.select("#treemap_tooltip #treemap_tooltip_percentage").text((d.area / (300 * 300) * 100).toFixed(1) + "%");
+    d3.select("#treemap_tooltip #treemap_tooltip_percentage").text(function() {
+      return "YOY: " + d[freq].yoy[slider_val].toFixed(1) + "%";
+    });
     d3.select("#treemap_tooltip #treemap_tooltip_value").text(d.value.toFixed(3));
     return d3.select("#treemap_tooltip").classed("hidden", false);
   };
@@ -225,7 +229,7 @@
     center_y = svg.attr("height") / 2;
     treemap_props.width = svg.attr("width");
     treemap_props.height = svg.attr("height");
-    svg.append("text").attr("id", "pie_heading").attr("text-anchor", "middle").attr("x", center_x).attr("y", 20).text($(".cat_label").first().text().trim());
+    svg.append("text").attr("id", "pie_heading").attr("text-anchor", "middle").attr("x", center_x).attr("y", 20);
     chart_area = svg.append("g").attr("id", "pie_chart_area").attr("transform", "translate(" + center_x + "," + center_y + ")");
     return svg.append("text").attr("id", "slice_slider_selection").attr("text-anchor", "middle").attr("x", center_x).attr("y", svg.attr("height") - 10).text("2013");
   };

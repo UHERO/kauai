@@ -544,6 +544,9 @@ g#pie_chart_area text {
   stroke: black; }
 
 /*********** Treemap Stuff ******************/
+#pie_notes {
+  font-size: 9px; }
+
 g#pie_chart_area rect {
   stroke: white;
   stroke-width: 1; }

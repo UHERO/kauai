@@ -102,6 +102,7 @@ path.line_chart_path { fill:none; stroke-width:2}
 g#pie_chart_area text { pointer-events: none; stroke: black}
 
 /*********** Treemap Stuff ******************/
+#pie_notes { font-size: 9px}
 g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #treemap_tooltip {
   position: absolute;

@@ -2,7 +2,7 @@
   "series_groups": [{
     "group_name": "Labor Overview",
     "series_list": [
-      {"display_name": "Employment", "udaman_name": "EMPL@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
+      {"display_name": "Employment", "udaman_name": "EMPL@KAU", "a": true, "q": true, "m": true, "units": "Thou", "scale_factor": 0.001},
       {"display_name": "Unemployment Rate", "udaman_name": "UR@KAU", "a": true, "q": true, "m": true, "units": "%"}
     ]
   }, {
