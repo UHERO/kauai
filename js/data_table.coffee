@@ -8,7 +8,7 @@ y = d3.scale.linear().range([ series_height, 5 ])
 window.mode = "line_bar"
 
 all_dates = ->
-  d3.select("#datatable_slider_div").datum()
+  d3.select("#time_slice_slider_div").datum()
   
 spark_line = d3.svg.line()
   .x((d, i) -> x i)
@@ -108,8 +108,8 @@ window.unhighlight_series_row = (d) ->
 set_primary_series = (series) ->
   new_series = series.datum()
   old_series = d3.select(".series.selected").datum()
-  # only do stuff if this is not already the primary series
-  if new_series.udaman_name != old_series.udaman_name
+  # only do stuff if this is not already the primary series and if it is not the secondary series
+  if new_series.udaman_name != old_series.udaman_name and !d3.select("g#chart_area #path_#{window.series_to_class(new_series.udaman_name)}").classed("s_right")
     # see if we are in multi_line mode or line_bar mode
     # if we are in line_and_bar, should call clear_line_and_bar_chart and display_line_and_bar_chart
     if (window.mode == "line_bar")
@@ -118,11 +118,13 @@ set_primary_series = (series) ->
       highlight_series_row(new_series)
       clear_line_and_bar_chart(old_series)
       display_line_and_bar_chart(new_series)
+    # if we are in multi_line, should call add_to_line_chart and clear_from_line_chart
+    else
+      unhighlight_series_row(old_series)
+      highlight_series_row(new_series)
+      window.add_to_line_chart(new_series, "left")
+      window.clear_from_line_chart(old_series)
 
-
-
-
-  # if we are in multi_line, should call add_to_line_chart and clear_from_line_chart
 
 
   # remove selected class from all series
@@ -153,14 +155,12 @@ set_secondary_series = (series) ->
       console.log("old_secondary_series: #{old_secondary_series.udaman_name}")
       # switch the secondary axis, no need to change mode
       # add the new series and remove the old
-      add_series_label(new_secondary_series)
       add_to_line_chart(new_secondary_series, "right")
       clear_from_line_chart(old_secondary_series)
       #
       # uncheck the old series
       d3.select(on_toggle).classed({"off": true, "on": false, "glyphicon-unchecked": true, "glyphicon-check": false})
     else
-      add_series_label(new_secondary_series)
       console.log("go from line_bar to multi_line")
       line_and_bar_to_multi_line(new_secondary_series)
 
@@ -173,7 +173,6 @@ set_secondary_series = (series) ->
 
 remove_secondary_series = (series) ->
   d = series.datum()
-  d3.selectAll("#series_label").remove()
   # call multi_line_to_line_and_bar
   multi_line_to_line_and_bar(d)
 
@@ -223,21 +222,8 @@ trimmed_data_object = (d, start_i, end_i) ->
   new_d.scaled_data = new_d.spark_data.map((e) -> (if e is null then null else y(e)))
   new_d
 
-#change this
-#window.trim_sparklines = (event, ui) ->
 window.trim_sparklines = (event) ->
-  ui =
-    values: $("#sparkline_slider_div").val()
-  d3.select("h3#date_series_left").text(all_dates()[ui.values[0]])
-  d3.select("h3#date_series_right").text(all_dates()[ui.values[1]])
-  #if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "left"
-    #text = d3.select("#sparkline_slider_div a.ui-state-focus").style("left").split("px")
-    #d3.select("h3#date_series_left").style("left", (parseInt(text[0]) - 20) + "px")
-  
-  #if d3.select("#sparkline_slider_div a.ui-state-focus").attr("slider") == "right"
-    #text = d3.select("#sparkline_slider_div a.ui-state-focus").style("left").split("px")
-    #d3.select("h3#date_series_right").style("left", (parseInt(text[0]) - 20) + "px")
-  draw_sparklines ui.values, 0
+  draw_sparklines $("#line_chart_slider_div").val(), 0
   
 draw_sparklines = (extent, duration) ->
   cat_series = d3.selectAll("div.series")
@@ -246,11 +232,11 @@ draw_sparklines = (extent, duration) ->
   point = end_i - start_i
   x.domain([ 0, end_i - start_i ])
 
-  dates = d3.select("#sparkline_slider_div").datum()
+  dates = d3.select("#line_chart_slider_div").datum()
   trimmed_dates = dates.slice(start_i, end_i + 1)
 
   #d3.select("#sparkline_header").text trimmed_dates[end_i - start_i]
-  d3.select("#sparkline_header").html "&nbsp;"
+  #d3.select("#sparkline_header").html "&nbsp;"
   svg = cat_series.select("svg").datum((d) ->
     trimmed_data_object d[freq], start_i, end_i
   )
@@ -293,8 +279,9 @@ draw_spark_area = (svg, duration) ->
 window.slide_table = (event, ui) ->
   #text = d3.select("#datatable_slider_div a").style("left").split("px")
   #d3.select("h3#date_table").text(all_dates()[ui.value]).style("left", (parseInt(text) + 400) + "px")
-  offset_val = ui.value+1
+  offset_val = +$("#time_slice_slider_div").val() + 1
   offset= -(offset_val * cell_width - datatable_width)
+  console.log offset_val
   d3.selectAll(".container")
     #.transition()
     #.duration(200)
@@ -327,7 +314,7 @@ create_data_columns = (cat_series) ->
     .enter()
     .append("div")
     .attr("class", "cell")
-    .text((d) -> (+d).toFixed(3))
+    .text((d) -> if d? then (+d).toFixed(3) else "")
       
 create_axis_control = (cat_series, axis) ->
   #cat_series.append("div")
@@ -363,7 +350,7 @@ create_sparklines = (cat_series) ->
     .attr("width", 150)
 
 #this line seems to throw an error about slider initialization
-  spark_range = $("#sparkline_slider_div").val()
+  spark_range = $("#line_chart_slider_div").val()
   draw_sparklines spark_range, 0
     
 create_series_label = (cat_series) ->
@@ -420,7 +407,8 @@ window.create_data_table = (page_data)->
     .attr("class", "cat_label")
     .attr("id",(d)->"cat_#{window.series_to_class(d.group_name)}")
     .attr("state", "expanded")
-    .html((d) -> "<span class='glyphicon glyphicon-chevron-down'></span> #{d.group_name}")
+    .html((d) -> 
+      "<span class='glyphicon glyphicon-chevron-down'></span> #{d.group_name.replace('Total ','')}")
     #.text((d) -> d.group_name)
     .on("mouseover", (d) -> d3.select(this).style "background-color", "#999")
     .on("mouseout", (d) -> d3.selectAll('.cat_label').style "background-color", "#FFF")

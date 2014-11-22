@@ -19,11 +19,13 @@ yoy = (d,i,array,f) ->
   if last is null then null else (d-last) / last * 100
   
   
-spark_data = (name, data) ->
-  data.map((row) -> if row[name] == "" then null else +row[name] )
+spark_data = (name, data, scale_factor) ->
+  if !scale_factor? then scale_factor = 1
+  data.map((row) -> if row[name] == "" then null else +row[name] * scale_factor )
 
 set_data_for = (f, series, data) ->
-  series_data = spark_data("#{series.udaman_name}.#{f.toUpperCase()}", data[f])
+  #series_data = spark_data("#{series.udaman_name}.#{f.toUpperCase()}", data[f])
+  series_data = spark_data("#{series.udaman_name}.#{f.toUpperCase()}", data[f], series.scale_factor)
   peak = d3.max(series_data)
   trough = d3.min(series_data)
   last_i = series_data.length-1

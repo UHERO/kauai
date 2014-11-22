@@ -49,11 +49,21 @@ $on-laptop:        800px;
 .site-footer{ position:relative; top:50px}
 #county_revenue.nav_link { margin:0 }
 
-.nav_link { text-align:center; margin: 0 5px 0 0; padding: 5px 0; background-color:#AAA; color: black; text-transform:uppercase; float:left; font-size:11px}
+.nav_link { 
+  text-align:center; 
+  margin: 0 5px 0 0; 
+  padding: 5px 0; 
+  background-color:#cccccc; 
+  color: #5d5d5d; 
+  text-transform:uppercase; 
+  float:left; 
+  font-size:11px; 
+  font-weight: bold;
+}
 
 .nav_link:hover {
-	background-color: black;
-	color: #AAA;
+	background-color: #c4def5;
+    color: #5d5d5d;
 	cursor: pointer;
 }
 #dashboard { clear:both; }
@@ -65,7 +75,12 @@ $on-laptop:        800px;
 #supplemental_chart { }
 #pie_chart { }
 
-#data { clear:both; position:relative; top:50px }
+#data { 
+  clear:both; 
+  position:relative; 
+  /*top:50px */
+}
+
 #source_links { clear: both; position:relative; top:50px; margin-top:100px; text-align:right; font-size:10px;}
 
 h2#headline { padding: 10px 0 0 0; }
@@ -75,14 +90,45 @@ path.domain { fill:none; stroke: #777; stroke-width:1 }
 g.tick text { font-size: 10px; fill: #777}
 g.tick line {stroke: #777; stroke-width:1 }
 path.line_chart_path { fill:none; stroke-width:2}
+#left_axis_label { fill: rgb(255, 152, 71); stroke: rgb(255, 152, 71) }
+.s_left, path.line_chart_path.with_bar{ stroke: rgb(255, 152, 71) }
+#right_axis_label { fill: rgb(49, 130, 189); stroke: rgb(49, 130, 189) }
+.s_right { stroke: rgb(49, 130, 189) }
+.yoy { stroke: rgb(49, 130, 189); fill: rgb(49, 130, 189) }
+
 
 
 /*********** Pie Chart Stuff *****************/
-g#pie_chart_area text { pointer-events: none; }
+g#pie_chart_area text { pointer-events: none; stroke: black}
 
-.pie_chart_title{ font-size:20px; position:relative; left:80px; top:20px}
+/*********** Treemap Stuff ******************/
+#pie_notes { font-size: 9px}
+g#pie_chart_area rect { stroke: white; stroke-width: 1}
+#treemap_tooltip {
+  position: absolute;
+  width: 220px;
+  height: auto;
+  padding: 10px;
+  background-color: white;
+  pointer-events: none;
+  background-color: rgb(49, 130, 189);
+  color: white
+}
 
-/*div#Visitor_Spending {position:relative; top:-30px; left:140px}*/
+#treemap_tooltip.hidden {
+  display: none;
+}
+
+#treemap_tooltip_heading {
+  font-weight: bolder
+}
+
+#treemap_tooltip p {
+  margin: 0;
+  /*font-family: sans-serif;*/
+  font-size: 16px;
+  line-height: 20px;
+}
 
 /*********** General Div Alignment *****************/
 #controls {clear:both; top:67px; height:35px }
@@ -111,16 +157,12 @@ g#pie_chart_area text { pointer-events: none; }
 
 /* should probably set in code when setting the rectangle sizes */
 #line_chart_slider_container{ width:330px; float:left; margin-left:50px; }
-#time_slice_slider_container{ width:250px; float:left; margin-left:80px; }
+#time_slice_slider_container{ width:250px; float:left; margin-left:80px; margin-top: 28px }
 
 #line_chart_slider_div { clear:both }
 
-#date_series_left{ font-size:12px; position:absolute; top:-20px; left:-20px}
-#date_series_right{font-size:12px; position:absolute; top:-20px; left:345px}
-#date_table{font-size:12px; position:absolute; top:-20px; left:700px}
-#date_line_left{ font-size:12px; position:relative; float:left}
-#date_line_right{font-size:12px; position:relative; float:right}
-
+.noUi-connect { background: rgb(49, 130, 189)}
+.noUi-handle::before, .noUi-handle::after { background: rgba(49, 130, 189, 0.5)}
 /*********** Flextable Stuff *****************/
 
 .category { clear:both;}
@@ -179,4 +221,10 @@ g#pie_chart_area text { pointer-events: none; }
 #geo, #freq { float:left; margin-top:10px;}
 #geo { width :300px; }
 #freq {width :100px; }
+#date_series_left{ font-size:12px; position:absolute; top:-20px; left:-20px}
+#date_series_right{font-size:12px; position:absolute; top:-20px; left:345px}
+#date_table{font-size:12px; position:absolute; top:-20px; left:700px}
+#date_line_left{ font-size:12px; position:relative; float:left}
+#date_line_right{font-size:12px; position:relative; float:right}
+
 

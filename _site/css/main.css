@@ -466,15 +466,16 @@ pre {
   text-align: center;
   margin: 0 5px 0 0;
   padding: 5px 0;
-  background-color: #AAA;
-  color: black;
+  background-color: #cccccc;
+  color: #5d5d5d;
   text-transform: uppercase;
   float: left;
-  font-size: 11px; }
+  font-size: 11px;
+  font-weight: bold; }
 
 .nav_link:hover {
-  background-color: black;
-  color: #AAA;
+  background-color: #c4def5;
+  color: #5d5d5d;
   cursor: pointer; }
 
 #dashboard {
@@ -488,7 +489,7 @@ pre {
 #data {
   clear: both;
   position: relative;
-  top: 50px; }
+  /*top:50px */ }
 
 #source_links {
   clear: both;
@@ -519,17 +520,59 @@ path.line_chart_path {
   fill: none;
   stroke-width: 2; }
 
+#left_axis_label {
+  fill: #ff9847;
+  stroke: #ff9847; }
+
+.s_left, path.line_chart_path.with_bar {
+  stroke: #ff9847; }
+
+#right_axis_label {
+  fill: #3182bd;
+  stroke: #3182bd; }
+
+.s_right {
+  stroke: #3182bd; }
+
+.yoy {
+  stroke: #3182bd;
+  fill: #3182bd; }
+
 /*********** Pie Chart Stuff *****************/
 g#pie_chart_area text {
-  pointer-events: none; }
+  pointer-events: none;
+  stroke: black; }
 
-.pie_chart_title {
-  font-size: 20px;
-  position: relative;
-  left: 80px;
-  top: 20px; }
+/*********** Treemap Stuff ******************/
+#pie_notes {
+  font-size: 9px; }
 
-/*div#Visitor_Spending {position:relative; top:-30px; left:140px}*/
+g#pie_chart_area rect {
+  stroke: white;
+  stroke-width: 1; }
+
+#treemap_tooltip {
+  position: absolute;
+  width: 220px;
+  height: auto;
+  padding: 10px;
+  background-color: white;
+  pointer-events: none;
+  background-color: #3182bd;
+  color: white; }
+
+#treemap_tooltip.hidden {
+  display: none; }
+
+#treemap_tooltip_heading {
+  font-weight: bolder; }
+
+#treemap_tooltip p {
+  margin: 0;
+  /*font-family: sans-serif;*/
+  font-size: 16px;
+  line-height: 20px; }
+
 /*********** General Div Alignment *****************/
 #controls {
   clear: both;
@@ -582,38 +625,17 @@ g#pie_chart_area text {
 #time_slice_slider_container {
   width: 250px;
   float: left;
-  margin-left: 80px; }
+  margin-left: 80px;
+  margin-top: 28px; }
 
 #line_chart_slider_div {
   clear: both; }
 
-#date_series_left {
-  font-size: 12px;
-  position: absolute;
-  top: -20px;
-  left: -20px; }
+.noUi-connect {
+  background: #3182bd; }
 
-#date_series_right {
-  font-size: 12px;
-  position: absolute;
-  top: -20px;
-  left: 345px; }
-
-#date_table {
-  font-size: 12px;
-  position: absolute;
-  top: -20px;
-  left: 700px; }
-
-#date_line_left {
-  font-size: 12px;
-  position: relative;
-  float: left; }
-
-#date_line_right {
-  font-size: 12px;
-  position: relative;
-  float: right; }
+.noUi-handle::before, .noUi-handle::after {
+  background: rgba(49, 130, 189, 0.5); }
 
 /*********** Flextable Stuff *****************/
 .category {
@@ -733,3 +755,31 @@ g#pie_chart_area text {
 
 #freq {
   width: 100px; }
+
+#date_series_left {
+  font-size: 12px;
+  position: absolute;
+  top: -20px;
+  left: -20px; }
+
+#date_series_right {
+  font-size: 12px;
+  position: absolute;
+  top: -20px;
+  left: 345px; }
+
+#date_table {
+  font-size: 12px;
+  position: absolute;
+  top: -20px;
+  left: 700px; }
+
+#date_line_left {
+  font-size: 12px;
+  position: relative;
+  float: left; }
+
+#date_line_right {
+  font-size: 12px;
+  position: relative;
+  float: right; }

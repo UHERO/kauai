@@ -39,6 +39,7 @@ set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   # instantiate the noUISlider
   $("#" + div_id).noUiSlider
     start: [ pos1,pos2 ]
+    behaviour: "tap-drag"
     range:
       min: 0
       max: dates.length-1
@@ -59,19 +60,33 @@ set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
 set_single_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()
   d3.select("#" + div_id.replace("div", "container")).insert("div", "div#buttons").attr("id", div_id).attr "class", "slider"
-  $("#" + div_id).slider
-    min: 5
-    max: dates.length-2
-    value: dates.length-2
-    slide: slide_func
+  # instantiate the noUiSlider
+  $("#" + div_id).noUiSlider
+    start: dates.length-2
+    range:
+      min: 5
+      max: dates.length-2
+    step:1
 
+  $("#" + div_id).on "slide", slide_func
+  
   d3.select("#" + div_id).datum(dates)
   
 set_up_sliders = (dates)->
-  set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
-  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
-  set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
-  set_single_slider_in_div "datatable_slider_div", dates, 0, dates.length-2, slide_table
+  #set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
+  #set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
+  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, left_slider_func
+  #set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
+  #set_single_slider_in_div "datatable_slider_div", dates, 0, dates.length-2, slide_table
+  set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-2, right_slider_func
+
+left_slider_func = (event)->
+  window.trim_sparklines(event)
+  window.trim_time_series(event)
+
+right_slider_func = (event)->
+  window.redraw_slice(event)
+  window.slide_table(event)
 
 set_up_div = (elem) ->
   d3.select("#charts_area")
@@ -98,8 +113,9 @@ clear_data_table = ->
   d3.selectAll("#series_display .category").remove()
   
 clear_sliders = ->
-  set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
-  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
+  #set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
+  #set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
+  set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, left_slider_func
   set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
   set_single_slider_in_div "datatable_slider_div", dates, 0, dates.length-1, slide_table
   
@@ -125,11 +141,19 @@ render_page = (page_data) ->
   set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
   
   # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
-  display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
-  pie_these_series(page_data.series_groups[0].series_list[0].children)
+  window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
+  # identify the first series with children
+  pied = false
+  for series_group in page_data.series_groups
+    do (series_group)->
+      if series_group.series_list[0].children? and pied == false
+        window.pie_these_series series_group.series_list[0].children
+  #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
   
 window.load_page = (data_category) ->
   # this takes some time to load, so put in page loading graphic
+  console.log "slug: #{data_category.slug}"
+  console.log "title: #{data_category.title}"
   load_page_data(data_category.slug, (data) ->
     set_headline(data_category.title)
     render_page(data)
