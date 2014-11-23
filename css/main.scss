@@ -24,7 +24,8 @@ $grey-color-dark:  darken($grey-color, 25%);
 $on-palm:          600px;
 $on-laptop:        800px;
 
-
+$uhero_blue:        rgb(49, 130, 189);
+$uhero_orange:      rgb(255, 152, 71);
 
 // Using media queries with like this:
 // @include media-query($palm) {
@@ -164,6 +165,21 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 .noUi-connect { background: rgb(49, 130, 189)}
 .noUi-handle::before, .noUi-handle::after { background: rgba(49, 130, 189, 0.5)}
 /*********** Flextable Stuff *****************/
+
+// new styles
+.header_cell {
+    float: left;
+    margin-right: 10px;
+}
+.cell_value, .cell_yoy {
+    display: block;
+}
+.cell_yoy.pos {
+    color: $uhero_blue;
+}
+.cell_yoy.neg {
+    color: $uhero_orange;
+}
 
 .category { clear:both;}
 .cat_label { cursor:pointer; border-bottom:2px solid rgb(49, 130, 189)}

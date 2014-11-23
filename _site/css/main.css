@@ -638,6 +638,19 @@ g#pie_chart_area rect {
   background: rgba(49, 130, 189, 0.5); }
 
 /*********** Flextable Stuff *****************/
+.header_cell {
+  float: left;
+  margin-right: 10px; }
+
+.cell_value, .cell_yoy {
+  display: block; }
+
+.cell_yoy.pos {
+  color: #3182bd; }
+
+.cell_yoy.neg {
+  color: #ff9847; }
+
 .category {
   clear: both; }
 

@@ -55,7 +55,7 @@ window.redraw_slice = (event, ui) ->
     #console.log(sorted_array)
     max_pie = sorted_array.pop()
 
-    console.log max_pie
+    #console.log max_pie
     chart_area.selectAll("text")
       #.data([pie_slices.data()[0]])
       .data([max_pie])
@@ -146,8 +146,8 @@ set_slider_dates = (extent) ->
   set_date_shown()
 
 window.pie_these_series = (series_data) ->
-  console.log "window.pie_these_series was called"
-  console.log(series_data)
+  #console.log "window.pie_these_series was called"
+  #console.log(series_data)
   if series_data[0].display_name is "Construction & Mining"
     window.slice_type = "treemap"
   else
@@ -216,7 +216,7 @@ window.pie_these_series = (series_data) ->
 treemap_mousemove = (d) ->
   xPosition = d3.event.pageX + 5
   yPosition = d3.event.pageY + 5
-  console.log(d)
+  #console.log(d)
 
   d3.select "#treemap_tooltip"
     .style "left", xPosition + "px"

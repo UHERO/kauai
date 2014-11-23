@@ -61,7 +61,6 @@
         return a.value - b.value;
       });
       max_pie = sorted_array.pop();
-      console.log(max_pie);
       return chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
         return "translate( " + (pie_arc.centroid(d)) + " )";
       }).append("tspan").attr("class", "pie_slice_name").attr("dy", 20).text(function(d) {
@@ -130,8 +129,6 @@
 
   window.pie_these_series = function(series_data) {
     var data_extent, pie_notes, sorted_array;
-    console.log("window.pie_these_series was called");
-    console.log(series_data);
     if (series_data[0].display_name === "Construction & Mining") {
       window.slice_type = "treemap";
     } else {
@@ -182,7 +179,6 @@
     var xPosition, yPosition;
     xPosition = d3.event.pageX + 5;
     yPosition = d3.event.pageY + 5;
-    console.log(d);
     d3.select("#treemap_tooltip").style("left", xPosition + "px").style("top", yPosition + "px");
     d3.select("#treemap_tooltip #treemap_tooltip_heading").text(function() {
       switch (d.depth) {
