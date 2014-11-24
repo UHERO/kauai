@@ -83,6 +83,7 @@ set_up_sliders = (dates)->
 left_slider_func = (event)->
   window.trim_sparklines(event)
   window.trim_time_series(event)
+  window.update_ytd_column(event)
 
 right_slider_func = (event)->
   window.redraw_slice(event)

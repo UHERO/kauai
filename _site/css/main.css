@@ -651,6 +651,23 @@ g#pie_chart_area rect {
 .cell_yoy.neg {
   color: #ff9847; }
 
+.ytd_cell {
+  width: 99px;
+  float: left;
+  text-align: center; }
+
+.ytd_cell span {
+  display: block; }
+
+.ytd_cell .last_date {
+  opacity: 0.5; }
+
+.ytd_cell .ytd_change.pos {
+  color: #3182bd; }
+
+.ytd_cell .ytd_change.neg {
+  color: #ff9847; }
+
 .category {
   clear: both; }
 
@@ -663,7 +680,7 @@ g#pie_chart_area rect {
 
 .series_label, .sparkline, .selected_value, .selected_perc,
 #category_header, #series_header, #sparkline_header, #level_header, #yoy_header,
-#line_left_header, #line_right_header, #pie_header, #datatable_header,
+#line_left_header, #ytd_header, #pie_header, #datatable_header,
 .left_toggle, .right_toggle, .data_cols, .container, .cell {
   float: left; }
 
@@ -697,13 +714,13 @@ g#pie_chart_area rect {
   line-height: normal; }
 
 #datatable_header {
-  width: 319px;
+  width: 270px;
   overflow: hidden;
   height: 100%;
   margin-left: 10px; }
 
 .data_cols {
-  width: 319px;
+  width: 270px;
   overflow: hidden;
   height: 100%; }
 
@@ -729,8 +746,8 @@ g#pie_chart_area rect {
 #line_left_header {
   width: 40px; }
 
-#line_right_header {
-  width: 40px; }
+#ytd_header {
+  width: 90px; }
 
 #pie_header {
   width: 40px; }
@@ -741,14 +758,14 @@ g#pie_chart_area rect {
   font-size: 20px;
   line-height: 45px;
   cursor: pointer;
-  margin-right: 50px; }
+  /*margin-right:50px;*/ }
 
 #sparkline_header {
   font-weight: bold;
   font-size: 11px; }
 
 #table_header {
-  height: 20px;
+  height: 48px;
   text-align: center;
   font-size: 11px; }
 

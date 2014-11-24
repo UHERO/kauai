@@ -305,6 +305,35 @@ populate_dates = ->
   dates.text((d) -> d)
   dates.exit().remove()
     
+create_ytd_column = (cat_series) ->
+    container = cat_series.append("div").attr("class", "ytd_cell")
+      .html((d) ->
+        #console.log d
+        last_obs = if d[freq].last? then (+d[freq].last).toFixed(3) else ""
+        last_date = if d[freq].last? then d[freq].date[d[freq].last_i] else ""
+        last_ytd_change_num = +d[freq].ytd_change[d[freq].last_i]
+        last_ytd_change = (last_ytd_change_num).toFixed(2) + "%"
+        sign = if last_ytd_change_num > 0 then " pos" else " neg"
+        "<span class=\"last_obs\">#{last_obs}</span><span class=\"last_date\">#{last_date}</span><span class=\"ytd_change#{sign}\">#{last_ytd_change}</span>"
+      )
+
+window.update_ytd_column = (event) ->
+    last_index = ($("#line_chart_slider_div").val().map (value) -> +value)[1]
+    d3.selectAll(".ytd_cell").html((d) ->
+        last_obs = if d[freq].data[last_index]? then (+d[freq].data[last_index]).toFixed(3) else ""
+        last_date = if d[freq].data[last_index]? then d[freq].date[last_index] else ""
+        if not d[freq].data[last_index]? or isNaN d[freq].ytd_change[last_index]
+          last_ytd_change = "&nbsp;"
+          sign = ""
+        else
+          last_ytd_change = (+d[freq].ytd_change[last_index]).toFixed(2) + "%"
+          sign = if +d[freq].ytd_change[last_index] > 0 then " pos" else " neg"
+        #last_ytd_change_num = if d[freq].ytd_change[last_index]? then +
+        #last_ytd_change = (last_ytd_change_num).toFixed(2) + "%"
+        #sign = if last_ytd_change_num > 0 then " pos" else " neg"
+        "<span class=\"last_obs\">#{last_obs}</span><span class=\"last_date\">#{last_date}</span><span class=\"ytd_change#{sign}\">#{last_ytd_change}</span>"
+    )
+    
 
 create_data_columns = (cat_series) ->
   container = cat_series.append("div")
@@ -384,7 +413,7 @@ create_sparklines = (cat_series) ->
     .attr("height", series_height)
     .attr("width", 150)
 
-#this line seems to throw an error about slider initialization
+  #this line seems to throw an error about slider initialization
   spark_range = $("#line_chart_slider_div").val()
   draw_sparklines spark_range, 0
     
@@ -427,6 +456,7 @@ create_series_rows = (cat_divs)->
     .call(create_series_label)
     .call(create_sparklines)
     .call(create_axis_controls)
+    .call(create_ytd_column)
     .call(create_data_columns)
     
 window.create_data_table = (page_data)->

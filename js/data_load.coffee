@@ -18,14 +18,25 @@ yoy = (d,i,array,f) ->
   last = array[i-offset]
   if last is null then null else (d-last) / last * 100
   
-  
 spark_data = (name, data, scale_factor) ->
   if !scale_factor? then scale_factor = 1
   data.map((row) -> if row[name] == "" then null else +row[name] * scale_factor )
 
+ytd = (series_data, year) ->
+  series_data.map (d, i, array) ->
+    # create ytd sum
+    ytd_sum = d
+    j = i - 1
+    while year[i] == year[j]
+      ytd_sum = ytd_sum + array[j]
+      j = j - 1
+    ytd_sum
+
 set_data_for = (f, series, data) ->
   #series_data = spark_data("#{series.udaman_name}.#{f.toUpperCase()}", data[f])
   series_data = spark_data("#{series.udaman_name}.#{f.toUpperCase()}", data[f], series.scale_factor)
+  year = data[f].map (d) -> d.date.slice(0,4)
+  ytd_data = ytd(series_data, year)
   peak = d3.max(series_data)
   trough = d3.min(series_data)
   last_i = series_data.length-1
@@ -33,6 +44,10 @@ set_data_for = (f, series, data) ->
 
   series[f] =
     data: series_data
+    year: year
+    ytd: ytd_data
+    date: data[f].map (d) -> format_d d.date, f
+    ytd_change: ytd_data.map((d, i, array) -> yoy(d, i, array, f))
     yoy: series_data.map((d,i,array) -> yoy(d,i,array,f))
     peak: peak
     trough: trough

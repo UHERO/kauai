@@ -217,7 +217,6 @@ redraw_line_chart = (extent, duration = 0) ->
 #window.trim_time_series = (event, ui) ->
 window.trim_time_series = (event) ->
   slider_extent =  $("#line_chart_slider_div").val().map (value) -> +value
-  console.log JSON.stringify slider_extent 
   d3.select("h3#date_line_left").text(all_dates()[slider_extent[0]])
   d3.select("h3#date_line_right").text(all_dates()[slider_extent[1]])
   #if d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") == "left"
@@ -237,11 +236,11 @@ window.trim_time_series = (event) ->
 window.line_and_bar_to_multi_line = (d) ->
   hide_bars()
 
-  d3.select("g#chart_area path.with_bar")    
+  d3.select("g#chart_area path.with_bar")
     .classed("with_bar",false)
     .classed("s_left", true)
   
-  add_to_line_chart(d,"right")  
+  add_to_line_chart(d,"right")
   console.log "line and bar to multi"
   console.log d
   window.mode = "multi_line"

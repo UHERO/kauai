@@ -1,5 +1,5 @@
 (function() {
-  var add_parent, add_series, all_dates, cell_width, class_name_from_series_node, clear_series, click_cat, click_expander, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, populate_dates, remove_secondary_series, s_row, selected_data, selected_dates, series_height, series_row_class, set_primary_series, set_secondary_series, slider_val, spark_area_path, spark_line, trimmed_data_object, update_data_columns, x, y;
+  var add_parent, add_series, all_dates, cell_width, class_name_from_series_node, clear_series, click_cat, click_expander, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, create_ytd_column, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, populate_dates, remove_secondary_series, s_row, selected_data, selected_dates, series_height, series_row_class, set_primary_series, set_secondary_series, slider_val, spark_area_path, spark_line, trimmed_data_object, update_data_columns, x, y;
 
   cell_width = 50;
 
@@ -333,6 +333,39 @@
     return dates.exit().remove();
   };
 
+  create_ytd_column = function(cat_series) {
+    var container;
+    return container = cat_series.append("div").attr("class", "ytd_cell").html(function(d) {
+      var last_date, last_obs, last_ytd_change, last_ytd_change_num, sign;
+      last_obs = d[freq].last != null ? (+d[freq].last).toFixed(3) : "";
+      last_date = d[freq].last != null ? d[freq].date[d[freq].last_i] : "";
+      last_ytd_change_num = +d[freq].ytd_change[d[freq].last_i];
+      last_ytd_change = last_ytd_change_num.toFixed(2) + "%";
+      sign = last_ytd_change_num > 0 ? " pos" : " neg";
+      return "<span class=\"last_obs\">" + last_obs + "</span><span class=\"last_date\">" + last_date + "</span><span class=\"ytd_change" + sign + "\">" + last_ytd_change + "</span>";
+    });
+  };
+
+  window.update_ytd_column = function(event) {
+    var last_index;
+    last_index = ($("#line_chart_slider_div").val().map(function(value) {
+      return +value;
+    }))[1];
+    return d3.selectAll(".ytd_cell").html(function(d) {
+      var last_date, last_obs, last_ytd_change, sign;
+      last_obs = d[freq].data[last_index] != null ? (+d[freq].data[last_index]).toFixed(3) : "";
+      last_date = d[freq].data[last_index] != null ? d[freq].date[last_index] : "";
+      if ((d[freq].data[last_index] == null) || isNaN(d[freq].ytd_change[last_index])) {
+        last_ytd_change = "&nbsp;";
+        sign = "";
+      } else {
+        last_ytd_change = (+d[freq].ytd_change[last_index]).toFixed(2) + "%";
+        sign = +d[freq].ytd_change[last_index] > 0 ? " pos" : " neg";
+      }
+      return "<span class=\"last_obs\">" + last_obs + "</span><span class=\"last_date\">" + last_date + "</span><span class=\"ytd_change" + sign + "\">" + last_ytd_change + "</span>";
+    });
+  };
+
   create_data_columns = function(cat_series) {
     var container;
     container = cat_series.append("div").attr("class", "data_cols");
@@ -418,7 +451,7 @@
     }).enter().append("div").attr("id", function(d) {
       return "s_row_" + (window.series_to_class(d.udaman_name));
     }).attr("class", series_row_class).attr("state", "expanded").style("height", series_height + "px").style("cursor", "pointer").on("mouseover", mouseover_series).on("mouseout", mouseout_series).on("click", click_series);
-    return cat_series.call(create_series_label).call(create_sparklines).call(create_axis_controls).call(create_data_columns);
+    return cat_series.call(create_series_label).call(create_sparklines).call(create_axis_controls).call(create_ytd_column).call(create_data_columns);
   };
 
   window.create_data_table = function(page_data) {
