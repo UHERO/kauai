@@ -2,6 +2,7 @@
 ---
 # ------- overal context variables ------------
 window.freq = "q"
+current_data_category = {}
 #-------- used by several modules -------------  
 
 window.series_to_class = (series_name) ->
@@ -73,11 +74,7 @@ set_single_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).datum(dates)
   
 set_up_sliders = (dates)->
-  #set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
-  #set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
   set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, left_slider_func
-  #set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
-  #set_single_slider_in_div "datatable_slider_div", dates, 0, dates.length-2, slide_table
   set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-2, right_slider_func
 
 left_slider_func = (event)->
@@ -126,13 +123,13 @@ clear_previous_page = ->
   clear_data_table()
   # don't need to clear sliders because they already clear themselves. 
   # Possibly move that in here if it doesn't break things
-  
+
 render_page = (page_data) ->
   clear_previous_page()
   #maybe fix sliders so they correspond to panel sizes
   set_up_sliders(page_data.dates[freq])
 
-  dashboard_elements = [ 
+  dashboard_elements = [
     { id: "line_chart", width: 425, height: 300, type_function: line_chart },
     { id: "pie_chart", width: 300, height: 300, type_function: visitor_pie_chart }
   ]
@@ -155,6 +152,7 @@ window.load_page = (data_category) ->
   # this takes some time to load, so put in page loading graphic
   console.log "slug: #{data_category.slug}"
   console.log "title: #{data_category.title}"
+  current_data_category = data_category
   load_page_data(data_category.slug, (data) ->
     set_headline(data_category.title)
     render_page(data)
@@ -163,6 +161,25 @@ window.load_page = (data_category) ->
 #-------- main run code -------------  
 set_up_nav()
 load_page(data_categories["visitor industry"])
+$("#frequency_controls span").addClass("enabled")
+$("#freq_q").removeClass("enabled").addClass("selected")
 
+# event listener for switching frequency
+$("#frequency_controls span").on("click", () ->
+    if $(this).hasClass("enabled")
+      $("#frequency_controls span.selected").removeClass("selected")
+      window.freq = $(this).text().toLowerCase()
+      load_page(current_data_category)
+      $("#frequency_controls span").addClass("enabled")
+      $(this).removeClass("enabled")
+      $(this).addClass("selected")
+)
 
-
+# event listener for export link
+$("#export").on("click", () ->
+  window.location.href = "export_data/#{current_data_category.slug}_#{window.freq}_export.csv"
+)
+# event listener for reset link
+$("#reset").on("click", () ->
+  load_page(current_data_category)
+)

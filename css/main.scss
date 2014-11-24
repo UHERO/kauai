@@ -170,6 +170,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 .header_cell {
     float: left;
     margin-right: 10px;
+    width: 42px;
 }
 .cell_value, .cell_yoy {
     display: block;
@@ -196,6 +197,37 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 }
 .ytd_cell .ytd_change.neg {
     color: $uhero_orange;
+}
+#frequency_controls {
+    display: inline;
+}
+#frequency_controls span.enabled {
+    padding: 2px 5px;
+    color: $uhero_blue;
+    font-weight: bolder;
+    cursor: pointer;
+}
+#frequency_controls span.enabled:hover {
+    border-bottom: 2px solid $uhero_blue;
+}
+#frequency_controls span.selected {
+    padding: 2px 5px;
+    color: white;
+    background-color: $uhero_orange;
+    font-weight: bolder;
+}
+#export, #reset {
+    padding: 2px 5px;
+    color: $uhero_blue;
+    font-weight: bolder;
+    cursor: pointer;
+    float: right;
+}
+#export:hover, #reset:hover {
+    border-bottom: 2px solid $uhero_blue;
+}
+#secondary_controls {
+    margin-top: 380px;
 }
 
 .category { clear:both;}

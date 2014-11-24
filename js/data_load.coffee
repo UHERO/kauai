@@ -89,7 +89,7 @@ window.load_page_data = (page_slug, callback) ->
   q.defer(d3.csv, data_file_a)
   q.defer(d3.csv, data_file_q)
   q.defer(d3.csv, data_file_m)
-  q.awaitAll((error, results) -> 
+  q.awaitAll((error, results) ->
     meta = results[0]
     data = { a: results[1], q: results[2], m: results[3] }
     prepared_data = prepare_all_data(meta, data)

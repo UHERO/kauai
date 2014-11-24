@@ -640,7 +640,8 @@ g#pie_chart_area rect {
 /*********** Flextable Stuff *****************/
 .header_cell {
   float: left;
-  margin-right: 10px; }
+  margin-right: 10px;
+  width: 42px; }
 
 .cell_value, .cell_yoy {
   display: block; }
@@ -667,6 +668,37 @@ g#pie_chart_area rect {
 
 .ytd_cell .ytd_change.neg {
   color: #ff9847; }
+
+#frequency_controls {
+  display: inline; }
+
+#frequency_controls span.enabled {
+  padding: 2px 5px;
+  color: #3182bd;
+  font-weight: bolder;
+  cursor: pointer; }
+
+#frequency_controls span.enabled:hover {
+  border-bottom: 2px solid #3182bd; }
+
+#frequency_controls span.selected {
+  padding: 2px 5px;
+  color: white;
+  background-color: #ff9847;
+  font-weight: bolder; }
+
+#export, #reset {
+  padding: 2px 5px;
+  color: #3182bd;
+  font-weight: bolder;
+  cursor: pointer;
+  float: right; }
+
+#export:hover, #reset:hover {
+  border-bottom: 2px solid #3182bd; }
+
+#secondary_controls {
+  margin-top: 380px; }
 
 .category {
   clear: both; }
