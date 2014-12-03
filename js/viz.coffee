@@ -27,7 +27,7 @@ set_up_nav = () ->
     .attr("class", "nav_link")
     .attr("id", (d) -> d.key.replace(" ", "_"))
     .style("width", (d) -> d.value.width+"px")
-    .text((d) -> d.key)
+    .text((d) -> d.value.title)
     .on("click", (d) -> load_page(d.value))
 
 set_headline = (text) ->
@@ -167,12 +167,18 @@ $("#freq_q").removeClass("enabled").addClass("selected")
 # event listener for switching frequency
 $("#frequency_controls span").on("click", () ->
     if $(this).hasClass("enabled")
+      # grab the currently selected primary series and secondary series
+      #primary_series = window.primary_series if window.primary_series?
+      #secondary_series = window.secondary_series if window.secondary_series?
       $("#frequency_controls span.selected").removeClass("selected")
       window.freq = $(this).text().toLowerCase()
       load_page(current_data_category)
       $("#frequency_controls span").addClass("enabled")
       $(this).removeClass("enabled")
       $(this).addClass("selected")
+      # set the currently selected primary series and secondary series
+      #window.set_primary_series(primary_series) if primary_series?
+      #window.set_secondary_series(secondary_series) if secondary_series?
 )
 
 # event listener for export link

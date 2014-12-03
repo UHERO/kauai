@@ -327,8 +327,8 @@
     data = selected_dates();
     dates = d3.select("#datatable_header").selectAll(".header_cell").data(data);
     dates.enter().append("div").attr("class", "header_cell");
-    dates.text(function(d) {
-      return d;
+    dates.html(function(d) {
+      return "" + d + "<br/>YOY%";
     });
     return dates.exit().remove();
   };

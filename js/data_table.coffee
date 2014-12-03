@@ -116,7 +116,10 @@ window.unhighlight_series_row = (d) ->
 # a separate button will allow them to select 
 # at most one series on the right axis
 ###
+#window.set_primary_series = (series) ->
+    #set_primary_series(series)
 set_primary_series = (series) ->
+  #window.primary_series = series
   new_series = series.datum()
   old_series = d3.select(".series.selected").datum()
   # only do stuff if this is not already the primary series and if it is not the secondary series
@@ -148,7 +151,11 @@ set_primary_series = (series) ->
   #series_to_remove.each((d) -> multi_line_to_line_and_bar(d))
   #series_to_remove.each((d) -> clear_line_and_bar_chart(d))
 
+#window.set_secondary_series = (series) ->
+    #set_secondary_series(series)
+
 set_secondary_series = (series) ->
+  #window.secondary_series = series
   new_secondary_series = series.datum()
   # make sure secondary is not the same as primary, if it is, do nothing here
   primary_series = d3.select(".series.selected").datum()
@@ -302,7 +309,7 @@ populate_dates = ->
   dates.enter()
     .append("div")
     .attr("class", "header_cell")
-  dates.text((d) -> d)
+  dates.html((d) -> "#{d}<br/>YOY%")
   dates.exit().remove()
     
 create_ytd_column = (cat_series) ->

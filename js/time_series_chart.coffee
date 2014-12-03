@@ -11,11 +11,11 @@ y_left = d3.scale.linear()
 y_right = d3.scale.linear()
 
 x = d3.scale.ordinal()
-window.x_scale = x  
+window.x_scale = x
 y =
   left:
     class:"s_left"
-    scale: y_left 
+    scale: y_left
     axis: d3.svg.axis().scale(y_left).orient("left")
     path: d3.svg.line()
             .x(x_from_slider)
@@ -53,9 +53,9 @@ all_dates = ->
     
 dates_extent = (extent) ->
   # debugging an issue with the line_chart not updating
-  console.log extent
+  #console.log extent
   date_extent = all_dates().slice(parseInt(parseInt(extent[0])), parseInt(extent[1])+1)
-  console.log "date_extent -> #{JSON.stringify date_extent}"
+  #console.log "date_extent -> #{JSON.stringify date_extent}"
   date_extent
 
 slider_dates = ->
@@ -241,8 +241,8 @@ window.line_and_bar_to_multi_line = (d) ->
     .classed("s_left", true)
   
   add_to_line_chart(d,"right")
-  console.log "line and bar to multi"
-  console.log d
+  #console.log "line and bar to multi"
+  #console.log d
   window.mode = "multi_line"
   
 window.multi_line_to_line_and_bar = (d) ->
@@ -262,10 +262,10 @@ window.multi_line_to_line_and_bar = (d) ->
 window.clear_from_line_chart = (d) ->
   path = s_path d.udaman_name
   axis = if path.classed("s_left") then "left" else "right"
-  console.log "Remove from #{axis} axis:"
-  console.log(d.udaman_name)
-  console.log(path.classed("s_left"))
-  console.log(path.classed("s_right"))
+  #console.log "Remove from #{axis} axis:"
+  #console.log(d.udaman_name)
+  #console.log(path.classed("s_left"))
+  #console.log(path.classed("s_right"))
   remove_from_line_chart(d,axis)
   
 window.clear_line_and_bar_chart = (d) ->
@@ -297,7 +297,7 @@ window.display_line_and_bar_chart = (d) ->
     
   show_bars(d, slider_extent)
 
-  console.log(d)
+  #console.log(d)
   # update left and right axis labels
   d3.select("#left_axis_label").text("#{d.display_name} (#{d.units})")
   d3.select("#right_axis_label").text("YOY%")
@@ -322,7 +322,7 @@ window.add_to_line_chart = (d, axis) ->
   #toggle_axis_button(d.udaman_name, axis)
 
   # update axis label
-  console.log d.display_name
+  #console.log d.display_name
   d3.select("#" + axis + "_axis_label").text("#{d.display_name} (#{d.units})")
 
 
@@ -362,7 +362,7 @@ window.set_up_line_chart_paths = (data) ->
     
 window.line_chart = (container) ->
   svg = set_up_svg(container)
-  margin = 
+  margin =
     top: 30
     bottom: 20
     left: 50
@@ -372,6 +372,8 @@ window.line_chart = (container) ->
   chart_area_height = svg.attr("height") - margin.top - margin.bottom
 
   slider_extent = [0, all_dates().length-1]
+  d3.select("h3#date_line_left").text(all_dates()[slider_extent[0]])
+  d3.select("h3#date_line_right").text(all_dates()[slider_extent[1]])
   update_x_domain(slider_extent)
   x.rangePoints([0, chart_area_width])
   y.left.scale.range([chart_area_height,0])

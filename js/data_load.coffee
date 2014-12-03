@@ -3,13 +3,13 @@
 
 dates = { a: [], q:[] , m:[] }
 
-window.data_categories = 
+window.data_categories =
   "major indicators": { width: 130, slug: "major", title: "Major Indicators" }
   "visitor industry": { width: 140, slug: "vis", title: "Visitor Industry" }
-  "labor": { width: 100, slug: "jobs", title: "Employment and Labor" }
+  "labor": { width: 100, slug: "jobs", title: "Labor Market" }
   "personal income": { width: 120, slug: "income", title: "Personal Income" }
-  "construction": { width: 100, slug: "const", title: "Construction Industry" }
-  "county revenue": { width: 120, slug: "county_rev", title: "County Revenue" }
+  "construction": { width: 100, slug: "const", title: "Construction" }
+  "county revenue": { width: 120, slug: "county_rev", title: "County Budget" }
 
 
 yoy = (d,i,array,f) ->
