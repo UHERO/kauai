@@ -119,6 +119,7 @@ clear_sliders = ->
   
   
 clear_previous_page = ->
+  window.remove_secondary_series(window.secondary_series) if window.secondary_series? and window.secondary_series.datum? and window.mode == 'multi_line'
   clear_dashboard_elements()
   clear_data_table()
   # don't need to clear sliders because they already clear themselves. 
@@ -187,5 +188,6 @@ $("#export").on("click", () ->
 )
 # event listener for reset link
 $("#reset").on("click", () ->
+  window.remove_secondary_series(window.secondary_series) if window.secondary_series? and window.secondary_series.datum? and window.mode == 'multi_line'
   load_page(current_data_category)
 )

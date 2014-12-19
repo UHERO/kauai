@@ -1,5 +1,5 @@
 (function() {
-  var add_parent, add_series, all_dates, cell_width, class_name_from_series_node, clear_series, click_cat, click_expander, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, create_ytd_column, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, populate_dates, remove_secondary_series, s_row, selected_data, selected_dates, series_height, series_row_class, set_primary_series, set_secondary_series, slider_val, spark_area_path, spark_line, trimmed_data_object, update_data_columns, x, y;
+  var add_parent, add_series, all_dates, cell_width, class_name_from_series_node, clear_series, click_cat, click_expander, click_series, create_axis_control, create_axis_controls, create_data_columns, create_series_label, create_series_rows, create_sparklines, create_ytd_column, datatable_width, draw_spark_area, draw_spark_path, draw_sparklines, flatten, flatten_children, mouseout_series, mouseover_series, populate_dates, s_row, selected_data, selected_dates, series_height, series_row_class, set_primary_series, slider_val, spark_area_path, spark_line, trimmed_data_object, update_data_columns, x, y;
 
   cell_width = 50;
 
@@ -162,8 +162,9 @@
     }
   };
 
-  set_secondary_series = function(series) {
+  window.set_secondary_series = function(series) {
     var new_secondary_series, old_secondary_series, on_toggle, primary_series;
+    window.secondary_series = series;
     new_secondary_series = series.datum();
     primary_series = d3.select(".series.selected").datum();
     if (new_secondary_series.udaman_name === primary_series.udaman_name) {
@@ -192,7 +193,7 @@
     }
   };
 
-  remove_secondary_series = function(series) {
+  window.remove_secondary_series = function(series) {
     var d;
     d = series.datum();
     return multi_line_to_line_and_bar(d);

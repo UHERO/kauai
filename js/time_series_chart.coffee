@@ -148,7 +148,7 @@ show_bars = (d,extent) ->
     .attr("fill", "gray")
     .attr("fill-opacity", 0.5)
     .attr("y", y_right(0))
-    .attr("x", x_from_slider) 
+    .attr("x", x_from_slider)
     .attr("height", 0)
     .attr("width", 1)
      
@@ -278,7 +278,7 @@ window.display_line_and_bar_chart = (d) ->
   highlight_series_row(d)
   duration = 500
   trim_d d[freq], slider_extent
-  domain = chart_extent(d[freq].data) 
+  domain = chart_extent(d[freq].data)
   yoy_domain = yoy_chart_extent(d[freq].yoy)
    
   path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
@@ -314,7 +314,7 @@ window.add_to_line_chart = (d, axis) ->
     .classed("#{y[axis].class}", true)
     .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
     
-  d3.selectAll("g#chart_area path.#{y[axis].class}") 
+  d3.selectAll("g#chart_area path.#{y[axis].class}")
     #.transition()
     #.duration(duration)
     .attr("d", (d) -> y[axis].path(d[freq].trimmed_data))
@@ -328,7 +328,7 @@ window.add_to_line_chart = (d, axis) ->
 
 window.remove_from_line_chart = (d, axis) ->
   duration = 500
-  chart_area = d3.select("g#chart_area")  
+  chart_area = d3.select("g#chart_area")
   path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
   #console.log(path)
 

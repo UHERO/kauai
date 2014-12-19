@@ -154,7 +154,8 @@ set_primary_series = (series) ->
 #window.set_secondary_series = (series) ->
     #set_secondary_series(series)
 
-set_secondary_series = (series) ->
+window.set_secondary_series = (series) ->
+  window.secondary_series = series
   #window.secondary_series = series
   new_secondary_series = series.datum()
   # make sure secondary is not the same as primary, if it is, do nothing here
@@ -182,7 +183,7 @@ set_secondary_series = (series) ->
     # if we are in multi_line, should call clear_from_line_chart and add_to_line_chart
     # if we are in line_bar, should call line_and_bar_to_multi_line
 
-remove_secondary_series = (series) ->
+window.remove_secondary_series = (series) ->
   d = series.datum()
   # call multi_line_to_line_and_bar
   multi_line_to_line_and_bar(d)

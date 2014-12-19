@@ -539,6 +539,9 @@ path.line_chart_path {
   fill: #3182bd; }
 
 /*********** Pie Chart Stuff *****************/
+#pie_chart_svg {
+  overflow: visible; }
+
 g#pie_chart_area text {
   pointer-events: none;
   stroke: black; }

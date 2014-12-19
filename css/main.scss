@@ -100,6 +100,7 @@ path.line_chart_path { fill:none; stroke-width:2}
 
 
 /*********** Pie Chart Stuff *****************/
+#pie_chart_svg {overflow: visible}
 g#pie_chart_area text { pointer-events: none; stroke: black}
 
 /*********** Treemap Stuff ******************/
