@@ -4,12 +4,12 @@
 dates = { a: [], q:[] , m:[] }
 
 window.data_categories =
-  "major indicators": { width: 130, slug: "major", title: "Major Indicators" }
-  "visitor industry": { width: 140, slug: "vis", title: "Visitor Industry" }
-  "labor": { width: 100, slug: "jobs", title: "Labor Market" }
-  "personal income": { width: 120, slug: "income", title: "Personal Income" }
-  "construction": { width: 100, slug: "const", title: "Construction" }
-  "county revenue": { width: 120, slug: "county_rev", title: "County Budget" }
+  "major indicators": { width: 130, slug: "major", title: "Major Indicators", default_freq: "a"}
+  "visitor industry": { width: 140, slug: "vis", title: "Visitor Industry", default_freq: "q" }
+  "labor": { width: 100, slug: "jobs", title: "Labor Market", default_freq: "q" }
+  "personal income": { width: 120, slug: "income", title: "Personal Income", default_freq: "a"}
+  "construction": { width: 100, slug: "const", title: "Construction", default_freq: "a" }
+  "county revenue": { width: 120, slug: "county_rev", title: "County Budget", default_freq: "a" }
 
 
 yoy = (d,i,array,f) ->

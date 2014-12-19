@@ -28,7 +28,7 @@ set_up_nav = () ->
     .attr("id", (d) -> d.key.replace(" ", "_"))
     .style("width", (d) -> d.value.width+"px")
     .text((d) -> d.value.title)
-    .on("click", (d) -> load_page(d.value))
+    .on("click", (d) -> load_page(d.value, true))
 
 set_headline = (text) ->
   d3.select("#headline").text(text)
@@ -128,7 +128,8 @@ clear_previous_page = ->
 render_page = (page_data) ->
   clear_previous_page()
   #maybe fix sliders so they correspond to panel sizes
-  set_up_sliders(page_data.dates[freq])
+  console.log("render page at frequency: #{window.freq}")
+  set_up_sliders(page_data.dates[window.freq])
 
   dashboard_elements = [
     { id: "line_chart", width: 425, height: 300, type_function: line_chart },
@@ -149,12 +150,18 @@ render_page = (page_data) ->
         window.pie_these_series series_group.series_list[0].children
   #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
   
-window.load_page = (data_category) ->
+load_page = (data_category, use_default_freq) ->
+  if use_default_freq
+    window.freq = data_category.default_freq
+    $("#frequency_controls span.selected").removeClass("selected")
+    $("#frequency_controls span").addClass("enabled")
+    $("#freq_#{window.freq}").removeClass("enabled")
+    $("#freq_#{window.freq}").addClass("selected")
   # this takes some time to load, so put in page loading graphic
   console.log "slug: #{data_category.slug}"
   console.log "title: #{data_category.title}"
   current_data_category = data_category
-  load_page_data(data_category.slug, (data) ->
+  window.load_page_data(data_category.slug, (data) ->
     set_headline(data_category.title)
     render_page(data)
   )
