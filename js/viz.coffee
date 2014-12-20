@@ -138,6 +138,8 @@ render_page = (page_data) ->
   
   if make_slice
     # include pie_chart
+    d3.select("#time_slice_slider_container").style("float", "left").style("margin-right", 0).style("margin-bottom", 0)
+    d3.select("#line_chart_slider_container").style("width", "330px")
     dashboard_elements = [
       { id: "line_chart", width: 425, height: 300, type_function: line_chart },
       { id: "pie_chart", width: 300, height: 300, type_function: visitor_pie_chart }
