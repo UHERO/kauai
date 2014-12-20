@@ -255,7 +255,9 @@
     new_list = [];
     for (_i = 0, _len = series_list.length; _i < _len; _i++) {
       series = series_list[_i];
-      new_list = new_list.concat(flatten_children(series));
+      if (series[window.freq] !== false) {
+        new_list = new_list.concat(flatten_children(series));
+      }
     }
     return new_list;
   };
@@ -432,9 +434,13 @@
 
   create_series_label = function(cat_series) {
     var label;
-    label = cat_series.append("div").attr("class", "series_label").style("line-height", series_height + "px");
-    return label.append("span").text(function(d) {
+    label = cat_series.append("div").attr("class", "series_label");
+    label.append("span").text(function(d) {
       return d.display_name;
+    });
+    label.append("br");
+    return label.append("span").text(function(d) {
+      return "(" + d.units + ")";
     });
   };
 

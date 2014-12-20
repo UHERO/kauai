@@ -738,7 +738,9 @@ g#pie_chart_area rect {
   background-color: #EEE; }
 
 .series_label {
-  padding-left: 20px; }
+  padding-left: 20px;
+  padding-top: 1em;
+  line-height: 1em; }
 
 .child .series_label span {
   padding-left: 10px; }

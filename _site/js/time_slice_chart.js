@@ -48,28 +48,30 @@
     var pie_data, pie_slices, sorted_array;
     slider_val = +$("#time_slice_slider_div").val();
     set_date_shown();
-    if (window.slice_type === "pie") {
-      pie_slices = chart_area.selectAll("path");
-      pie_data = pie_slices.data().map(function(d) {
-        return d.data;
-      });
-      pie_slices.data(pie_layout(pie_data), function(d) {
-        return d.data.display_name;
-      }).attr("d", pie_arc);
-      chart_area.select("text.in_pie_label").remove();
-      sorted_array = pie_slices.data().sort(function(a, b) {
-        return a.value - b.value;
-      });
-      max_pie = sorted_array.pop();
-      return chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
-        return "translate( " + (pie_arc.centroid(d)) + " )";
-      }).append("tspan").attr("class", "pie_slice_name").attr("dy", 20).text(function(d) {
-        return d.data.display_name;
-      }).append("tspan").attr("class", "pie_slice_value").attr("dy", 20).attr("x", 0).text(function(d) {
-        return d.value.toFixed(1);
-      });
-    } else {
-      return window.node.data(treemap_layout.nodes).call(treemap_position);
+    if (window.pied === true) {
+      if (window.slice_type === "pie") {
+        pie_slices = chart_area.selectAll("path");
+        pie_data = pie_slices.data().map(function(d) {
+          return d.data;
+        });
+        pie_slices.data(pie_layout(pie_data), function(d) {
+          return d.data.display_name;
+        }).attr("d", pie_arc);
+        chart_area.select("text.in_pie_label").remove();
+        sorted_array = pie_slices.data().sort(function(a, b) {
+          return a.value - b.value;
+        });
+        max_pie = sorted_array.pop();
+        return chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
+          return "translate( " + (pie_arc.centroid(d)) + " )";
+        }).append("tspan").attr("class", "pie_slice_name").attr("dy", 20).text(function(d) {
+          return d.data.display_name;
+        }).append("tspan").attr("class", "pie_slice_value").attr("dy", 20).attr("x", 0).text(function(d) {
+          return d.value.toFixed(1);
+        });
+      } else {
+        return window.node.data(treemap_layout.nodes).call(treemap_position);
+      }
     }
   };
 

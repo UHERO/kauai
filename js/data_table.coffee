@@ -224,7 +224,7 @@ flatten_children = (series_data) ->
   
 flatten = (series_list) ->
   new_list = []
-  new_list = new_list.concat(flatten_children series) for series in series_list
+  new_list = new_list.concat(flatten_children series) for series in series_list when series[window.freq] != false
   new_list
 
 trimmed_data_object = (d, start_i, end_i) ->
@@ -428,7 +428,7 @@ create_sparklines = (cat_series) ->
 create_series_label = (cat_series) ->
   label = cat_series.append("div")
     .attr("class", "series_label")
-    .style("line-height", series_height + "px")
+    #.style("line-height", series_height + "px")
 
   #parents = label.filter((d) -> d.children_sum)
     #.append("a")
@@ -439,6 +439,9 @@ create_series_label = (cat_series) ->
   label
     .append("span")
     .text((d) -> d.display_name)
+  label.append("br")
+  label.append("span")
+    .text((d) -> "(#{d.units})")
       
 series_row_class = (d)->
   child_class = if d.series_parent != "" then " child child_of_#{window.series_to_class(d.series_parent)}" else ""

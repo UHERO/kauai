@@ -131,23 +131,65 @@ render_page = (page_data) ->
   console.log("render page at frequency: #{window.freq}")
   set_up_sliders(page_data.dates[window.freq])
 
-  dashboard_elements = [
-    { id: "line_chart", width: 425, height: 300, type_function: line_chart },
-    { id: "pie_chart", width: 300, height: 300, type_function: visitor_pie_chart }
-  ]
-  
-  set_up_dashboard_elements(dashboard_elements)
-  create_data_table(page_data)
-  set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
-  
-  # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
-  window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
-  # identify the first series with children
-  pied = false
+  make_slice = false
   for series_group in page_data.series_groups
-    do (series_group)->
-      if series_group.series_list[0].children? and pied == false
-        window.pie_these_series series_group.series_list[0].children
+    do (series_group) ->
+      make_slice = true if series_group.series_list[0].children?
+  
+  if make_slice
+    # include pie_chart
+    dashboard_elements = [
+      { id: "line_chart", width: 425, height: 300, type_function: line_chart },
+      { id: "pie_chart", width: 300, height: 300, type_function: visitor_pie_chart }
+    ]
+    set_up_dashboard_elements(dashboard_elements)
+    create_data_table(page_data)
+    set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
+    
+    # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
+    window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
+    # identify the first series with children
+    window.pied = false
+    for series_group in page_data.series_groups
+      do (series_group)->
+        if series_group.series_list[0].children? and window.pied == false
+          window.pie_these_series series_group.series_list[0].children
+          window.pied= true
+    #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
+  else
+    # update css for sliders
+    d3.select("#time_slice_slider_container").style("float", "right").style("margin-right", "20px").style("margin-bottom", "20px")
+    d3.select("#line_chart_slider_container").style("width", "648px")
+    # make line chart take up entire width
+    dashboard_elements = [{id: "line_chart", width: 740, height: 300, type_function: line_chart}]
+    set_up_dashboard_elements(dashboard_elements)
+    create_data_table(page_data)
+    set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
+    
+    # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
+    window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
+    # identify the first series with children
+    #window.pied = false
+    #for series_group in page_data.series_groups
+      #do (series_group)->
+        #if series_group.series_list[0].children? and window.pied == false
+          #window.pie_these_series series_group.series_list[0].children
+          #window.pied= true
+    #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
+
+  #set_up_dashboard_elements(dashboard_elements)
+  #create_data_table(page_data)
+  #set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
+  
+  ## add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
+  #window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
+  ## identify the first series with children
+  #window.pied = false
+  #for series_group in page_data.series_groups
+    #do (series_group)->
+      #if series_group.series_list[0].children? and window.pied == false
+        #window.pie_these_series series_group.series_list[0].children
+        #window.pied= true
   #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
   
 load_page = (data_category, use_default_freq) ->

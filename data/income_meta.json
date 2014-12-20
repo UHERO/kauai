@@ -2,16 +2,16 @@
 "series_groups": [ { 
     "group_name": "Personal Income", 
     "series_list": [ 
-      { "display_name": "Personal Income", "udaman_name": "Y@KAU", "a": true, "q": false, "m": false, "units": "$Mil"},
-      { "display_name": "Labor Income", "udaman_name": "YL@KAU", "a": true, "q": false, "m": false, "units": "$Mil"},
-      { "display_name": "Farm Earnings", "udaman_name": "YLAGFA@KAU", "a": true, "q": false, "m": false, "units": "$Mil"},
-      { "display_name": "Nonfarm Earnings", "udaman_name": "YL_NF@KAU", "a": true, "q": false, "m": false, "units": "$Mil"},
-      { "display_name": "Social Security", "udaman_name": "YSOCSEC@KAU", "a": true, "q": false, "m": false, "units": "$Mil"},
-      { "display_name": "Dividends, Interest and Rent", "udaman_name": "YDIV@KAU", "a": true, "q": false, "m": false, "units": "$Mil"},
-      { "display_name": "Transfer Payments", "udaman_name": "YTRNSF@KAU", "a": true, "q": false, "m": false, "units": "$Mil"},
-      { "display_name": "Real Personal Income", "udaman_name": "Y_R@KAU", "a": true, "q": false, "m": false, "units": "$Mil"},
-      { "display_name": "Resident Population", "udaman_name": "NR@KAU", "a": true, "q": false, "m": false, "units": "$Mil"},
-      { "display_name": "Real Per Capita Income", "udaman_name": "YPC_R@KAU", "a": true, "q": false, "m": false, "units": "$Mil"}
+      { "display_name": "Personal Income", "udaman_name": "Y@KAU", "a": true, "q": false, "m": false, "units": "$Mil", "scale_factor": 0.001},
+      { "display_name": "Labor Income", "udaman_name": "YL@KAU", "a": true, "q": false, "m": false, "units": "$Mil", "scale_factor": 0.001},
+      { "display_name": "Farm Earnings", "udaman_name": "YLAGFA@KAU", "a": true, "q": false, "m": false, "units": "$Mil", "scale_factor": 0.001},
+      { "display_name": "Nonfarm Earnings", "udaman_name": "YL_NF@KAU", "a": true, "q": false, "m": false, "units": "$Mil", "scale_factor": 0.001},
+      { "display_name": "Social Security", "udaman_name": "YSOCSEC@KAU", "a": true, "q": false, "m": false, "units": "$Mil", "scale_factor": 0.001},
+      { "display_name": "Dividends, Interest and Rent", "udaman_name": "YDIV@KAU", "a": true, "q": false, "m": false, "units": "$Mil", "scale_factor": 0.001},
+      { "display_name": "Transfer Payments", "udaman_name": "YTRNSF@KAU", "a": true, "q": false, "m": false, "units": "$Mil", "scale_factor": 0.001},
+      { "display_name": "Real Personal Income", "udaman_name": "Y_R@KAU", "a": true, "q": false, "m": false, "units": "1982-1984 $Mil", "scale_factor": 0.001},
+      { "display_name": "Resident Population", "udaman_name": "NR@KAU", "a": true, "q": false, "m": false, "units": "Thou"},
+      { "display_name": "Real Per Capita Income", "udaman_name": "YPC_R@KAU", "a": true, "q": false, "m": false, "units": "1982-1984 $Thou", "scale_factor": 0.001}
     ]
   }
 ]
