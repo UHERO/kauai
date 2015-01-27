@@ -131,10 +131,14 @@ path.line_chart_path { fill:none; stroke-width:2}
 
 /*********** Pie Chart Stuff *****************/
 #pie_chart_svg {overflow: visible}
-g#pie_chart_area text { pointer-events: none; stroke: black}
+g#pie_chart_area text { 
+  pointer-events: none; 
+  stroke: black;
+}
 .in_pie_label, .pie_label { //dt why are there two?
   text-transform: uppercase;
-  font-size:.75em;
+  font-size:.65em; //dt might be too small
+  font-weight: 300;
 }
 
 /*********** Treemap Stuff ******************/
@@ -275,8 +279,19 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
     margin-top: 380px;
 }
 
+/* Sparkline Row stuff */
+
 .category { clear:both;}
-.cat_label { cursor:pointer; border-bottom:2px solid rgb(49, 130, 189)}
+.cat_label { 
+  cursor:pointer; 
+  border-bottom:2px solid $uhero_blue;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  //letter-spacing: 1px;
+  //font-kerning: auto;
+  font-weight: bold;
+  color: $grey-color-dark;
+}
 #category_header { width:150px; }
 
 .series_label, .sparkline, .selected_value, .selected_perc,
@@ -290,19 +305,26 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
     /*width:450px; text-align:center;*/ 
     font-size:10px; 
     overflow:hidden;
-    border-left: 1px solid white;
+    text-transform: uppercase;
+    font-weight: bolder; //seems to have weird results normal/bold/bolder
+    //letter-spacing: 1px;
+    //border-left: 1px solid white;
+    border-bottom: 1px dashed rgba(54,130,153,.3);
 }
 
 .series_label, #series_header { 
   width: 180px; 
 }
 .series.selected { 
-    border-left: 1px solid rgb(49, 130, 189);
+    //border-left: 1px solid rgb(49, 130, 189);
     background-color: #F0F0F0
 }
 .series.hovered  { 
-    border-left: 1px solid rgb(107, 174, 214);
+    //border-left: 1px solid rgb(107, 174, 214);
     background-color: #EEE;
+}
+.series:collapsed {
+  border: 0px;
 }
 
 .series_label {padding-left: 20px; padding-top: 1em; line-height: 1em}
@@ -312,7 +334,15 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #datatable_header { width: 270px; overflow:hidden; height:100%; margin-left: 10px;}
 .data_cols { width: 270px; overflow:hidden; height:100%}
 .container { height:100%; }
-.cell { float: left; height:100%; border:0px solid red; width:50px; text-align:center }
+.cell { 
+  float: left; 
+  height:100%; 
+  //border:0px solid red; 
+  border-left: 1px dashed rgba(54,130,153,.3);
+  //border-right: 1px dashed rgba(54,130,153,.3);
+  width:50px; 
+  text-align:center;
+}
 
 .sparkline, #sparkline_header { width:150px; }
 .selected_value, #level_header { width:70px; }

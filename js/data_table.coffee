@@ -63,6 +63,7 @@ window.collapse_series = (series) ->
   d3.selectAll(".child_of_#{class_name_from_series_node(series)}")
     .transition()
     .style("height", "0px")
+    .style("border", "0px") #dt 
     .attr("state", "collapsed")
     
 window.expand_series = (series) ->
@@ -78,10 +79,10 @@ s_row = (udaman_name) ->
 click_cat = (d) ->
   cat = d3.select(this)
   if cat.attr("state") is "expanded"
-    cat.select(".glyphicon").classed({"glyphicon-chevron-down": false, "glyphicon-chevron-right": true})
+    cat.select(".glyphicon").classed({"glyphicon-minus": false, "glyphicon-plus": true})
     collapse cat
   else
-    cat.select(".glyphicon").classed({"glyphicon-chevron-down": true, "glyphicon-chevron-right": false})
+    cat.select(".glyphicon").classed({"glyphicon-minus": true, "glyphicon-plus": false})
     expand cat
 
 click_series = (d) ->
@@ -485,7 +486,7 @@ window.create_data_table = (page_data)->
     .attr("id",(d)->"cat_#{window.series_to_class(d.group_name)}")
     .attr("state", "expanded")
     .html((d) -> 
-      "<span class='glyphicon glyphicon-chevron-down'></span> #{d.group_name.replace('Total ','')}")
+      "<span class='glyphicon glyphicon-minus'></span> #{d.group_name.replace('Total ','')}")
     #.text((d) -> d.group_name)
     .on("mouseover", (d) -> d3.select(this).style "background-color", "#999")
     .on("mouseout", (d) -> d3.selectAll('.cat_label').style "background-color", "#FFF")
