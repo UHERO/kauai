@@ -9,7 +9,8 @@ max_pie = null
 treemap_props =
   width: null
   height: null
-color = d3.scale.category20c()
+color = d3.scale.category20c() #dt -- not using default scale anymore (might remove)
+uhero_color = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579fb3", "#88c2d3"]) #can define domain later?? D:
 
 window.treemap_layout = d3.layout.treemap()
   #.size([])
@@ -89,7 +90,8 @@ get_common_dates = (series_data) ->
   
 mouseover_pie = (d,i) ->
   slice = d3.select(this)
-  slice.attr("fill-opacity", ".3")
+  #slice.attr("fill-opacity", ".3")
+  slice.attr("fill", "#F0FFD3")
 
   chart_area.append("text")
     .attr("class","pie_label")
@@ -112,6 +114,8 @@ mouseover_pie = (d,i) ->
 mouseout_pie = (d) ->
   slice = d3.select(this)
   slice.attr("fill-opacity", "1")
+    .attr("fill", (d) -> uhero_color(d.data.display_name))
+
   chart_area.select("text.pie_label").remove()
   #if max_pie.value == d.value 
   chart_area.selectAll("text")
@@ -164,7 +168,8 @@ window.pie_these_series = (series_data) ->
       .enter()
       .append("path")
       .attr("d", pie_arc)
-      .attr("fill", (d) -> color(d.data.display_name))
+      #.attr("fill", "green") 
+      .attr("fill", (d) -> uhero_color(d.data.display_name)) #dt changed color scale to custom
       .attr("stroke", "white")
       .attr("stroke-width", 2)
       .on("mouseover", mouseover_pie)
@@ -257,7 +262,7 @@ window.visitor_pie_chart = (container) ->
   treemap_props.height = svg.attr("height")
 
   svg.append("text")
-    .attr("id", "pie_heading")
+    .attr("id", "pie_heading") #dt may want to change this to "pie_header" for consistency
     .attr("text-anchor", "middle")
     .attr("x", center_x)
     .attr("y", 20)
