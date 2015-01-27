@@ -19,13 +19,15 @@ $brand-color:      #2a7ae2;
 
 $grey-color:       #828282;
 $grey-color-light: lighten($grey-color, 40%);
-$grey-color-dark:  darken($grey-color, 25%);
+$grey-color-dark:  darken($grey-color, 25%); //instead of #5d5d5d, looks ok
 
 $on-palm:          600px;
 $on-laptop:        800px;
 
-$uhero_blue:        rgb(49, 130, 189);
+//$uhero_blue:        rgb(49, 130, 189);
+$uhero_blue:        rgb(54,130,153);
 $uhero_orange:      rgb(255, 152, 71);
+$neon_green:        rgb(240,255,211);
 
 // Using media queries with like this:
 // @include media-query($palm) {
@@ -52,10 +54,10 @@ $uhero_orange:      rgb(255, 152, 71);
 
 .nav_link { 
   text-align:center; 
-  margin: 0 5px 0 0; 
-  padding: 5px 0; 
+  margin: 0 5px 0 0; // not sure if this does anything
+  padding: 5px 0; // not sure if this does anything
   background-color:#cccccc; 
-  color: #5d5d5d; 
+  color: $grey-color-dark; 
   text-transform:uppercase; 
   float:left; 
   font-size:11px; 
@@ -63,8 +65,8 @@ $uhero_orange:      rgb(255, 152, 71);
 }
 
 .nav_link:hover {
-	background-color: #c4def5;
-    color: #5d5d5d;
+	background-color: #F0FFD3; //c4def5;
+  color: $grey-color-dark;
 	cursor: pointer;
 }
 #dashboard { clear:both; }
@@ -84,24 +86,53 @@ $uhero_orange:      rgb(255, 152, 71);
 
 #source_links { clear: both; position:relative; top:50px; margin-top:100px; text-align:right; font-size:10px;}
 
-h2#headline { padding: 10px 0 0 0; }
+h2#headline { 
+  padding: 10px 0 0 0; 
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: bold;
+  color: $grey-color-dark;
+  box-shadow: // dt not sure if this works in all browsers. may fail gracefully anyway
+    0px 3px $uhero_blue,
+    0px 4px #fff,
+    0px 7px $uhero_orange;
+}
 
 /*********** Line Chart *****************/
 path.domain { fill:none; stroke: #777; stroke-width:1 }
 g.tick text { font-size: 10px; fill: #777}
 g.tick line {stroke: #777; stroke-width:1 }
 path.line_chart_path { fill:none; stroke-width:2}
-#left_axis_label { fill: rgb(255, 152, 71); stroke: rgb(255, 152, 71) }
+#left_axis_label { 
+  fill: rgb(255, 152, 71); 
+  stroke: rgb(255, 152, 71); 
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: .8em;
+  } // can use var here?
 .s_left, path.line_chart_path.with_bar{ stroke: rgb(255, 152, 71) }
-#right_axis_label { fill: rgb(49, 130, 189); stroke: rgb(49, 130, 189) }
+#right_axis_label { 
+  fill: $uhero_blue; 
+  stroke: $uhero_blue;
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: .8em;
+}
 .s_right { stroke: rgb(49, 130, 189) }
 .yoy { stroke: rgb(49, 130, 189); fill: rgb(49, 130, 189) }
-
+#left_axis{
+}
+#right_axis{
+}
 
 
 /*********** Pie Chart Stuff *****************/
 #pie_chart_svg {overflow: visible}
 g#pie_chart_area text { pointer-events: none; stroke: black}
+.in_pie_label, .pie_label { //dt why are there two?
+  text-transform: uppercase;
+  font-size:.75em;
+}
 
 /*********** Treemap Stuff ******************/
 #pie_notes { font-size: 9px}
@@ -201,6 +232,10 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 }
 #frequency_controls {
     display: inline;
+    text-transform: uppercase;
+    font-size: .8em;
+    color: $grey-color-dark;
+    font-weight: bolder;
 }
 #frequency_controls span.enabled {
     padding: 2px 5px;
@@ -213,8 +248,8 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 }
 #frequency_controls span.selected {
     padding: 2px 5px;
-    color: white;
-    background-color: $uhero_orange;
+    color: $uhero_blue;
+    background-color: $neon_green;
     font-weight: bolder;
 }
 #export, #reset {
@@ -223,6 +258,8 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
     font-weight: bolder;
     cursor: pointer;
     float: right;
+    font-size: .8em;
+    text-transform: uppercase;
 }
 #export:hover, #reset:hover {
     border-bottom: 2px solid $uhero_blue;
@@ -277,6 +314,13 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #line_left_header { width: 40px }
 #ytd_header { width: 90px }
 #pie_header { width: 40px }
+#pie_heading { //dt had to add this, might need to change to "pie_header" in d3 code
+  fill: #000; 
+  stroke: #000; 
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: .8em;
+}
 .left_toggle, .right_toggle { 
     width: 40px; 
     text-align:center; 
