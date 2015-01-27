@@ -6,9 +6,20 @@ datatable_width= 300
 x = d3.scale.linear().clamp(true).range([ 0, 145 ])
 y = d3.scale.linear().range([ series_height, 5 ])
 window.mode = "line_bar"
+slider_val = null #new value
 
 all_dates = ->
   d3.select("#time_slice_slider_div").datum()
+
+# new implementation
+selected_dates = ->
+    all_dates()[(slider_val-4)..slider_val]
+
+# new implementation
+selected_data = (d) ->
+    yoy = d[freq].yoy[(slider_val-4)..slider_val]
+    d[freq].data[(slider_val-4)..slider_val].map (d, i) ->
+      {data: d, yoy: yoy[i]}
   
 spark_line = d3.svg.line()
   .x((d, i) -> x i)
@@ -105,7 +116,10 @@ window.unhighlight_series_row = (d) ->
 # a separate button will allow them to select 
 # at most one series on the right axis
 ###
+#window.set_primary_series = (series) ->
+    #set_primary_series(series)
 set_primary_series = (series) ->
+  #window.primary_series = series
   new_series = series.datum()
   old_series = d3.select(".series.selected").datum()
   # only do stuff if this is not already the primary series and if it is not the secondary series
@@ -113,7 +127,6 @@ set_primary_series = (series) ->
     # see if we are in multi_line mode or line_bar mode
     # if we are in line_and_bar, should call clear_line_and_bar_chart and display_line_and_bar_chart
     if (window.mode == "line_bar")
-      console.log("mode: line_bar")
       unhighlight_series_row(old_series)
       highlight_series_row(new_series)
       clear_line_and_bar_chart(old_series)
@@ -138,21 +151,22 @@ set_primary_series = (series) ->
   #series_to_remove.each((d) -> multi_line_to_line_and_bar(d))
   #series_to_remove.each((d) -> clear_line_and_bar_chart(d))
 
-set_secondary_series = (series) ->
-  console.log series
+#window.set_secondary_series = (series) ->
+    #set_secondary_series(series)
+
+window.set_secondary_series = (series) ->
+  window.secondary_series = series
+  #window.secondary_series = series
   new_secondary_series = series.datum()
   # make sure secondary is not the same as primary, if it is, do nothing here
   primary_series = d3.select(".series.selected").datum()
   if new_secondary_series.udaman_name == primary_series.udaman_name
     # do nothine
-    console.log "don't select the same primary and second series!"
   else
     # this crazy line seems necessary due to lack of a parent selector in css
     on_toggle = d3.select(".right_toggle.on").node()
     if on_toggle?
-      console.log("switch secondary series")
       old_secondary_series = d3.select(on_toggle.parentNode).datum()
-      console.log("old_secondary_series: #{old_secondary_series.udaman_name}")
       # switch the secondary axis, no need to change mode
       # add the new series and remove the old
       add_to_line_chart(new_secondary_series, "right")
@@ -161,17 +175,15 @@ set_secondary_series = (series) ->
       # uncheck the old series
       d3.select(on_toggle).classed({"off": true, "on": false, "glyphicon-unchecked": true, "glyphicon-check": false})
     else
-      console.log("go from line_bar to multi_line")
       line_and_bar_to_multi_line(new_secondary_series)
 
-    console.log("new_secondary_series: #{new_secondary_series.udaman_name}")
     # check the current series
     series.select(".right_toggle").classed({"off": false, "on": true, "glyphicon-unchecked": false, "glyphicon-check": true})
     # see if we are already in multi_line
     # if we are in multi_line, should call clear_from_line_chart and add_to_line_chart
     # if we are in line_bar, should call line_and_bar_to_multi_line
 
-remove_secondary_series = (series) ->
+window.remove_secondary_series = (series) ->
   d = series.datum()
   # call multi_line_to_line_and_bar
   multi_line_to_line_and_bar(d)
@@ -212,7 +224,7 @@ flatten_children = (series_data) ->
   
 flatten = (series_list) ->
   new_list = []
-  new_list = new_list.concat(flatten_children series) for series in series_list
+  new_list = new_list.concat(flatten_children series) for series in series_list when series[window.freq] != false
   new_list
 
 trimmed_data_object = (d, start_i, end_i) ->
@@ -279,42 +291,104 @@ draw_spark_area = (svg, duration) ->
 window.slide_table = (event, ui) ->
   #text = d3.select("#datatable_slider_div a").style("left").split("px")
   #d3.select("h3#date_table").text(all_dates()[ui.value]).style("left", (parseInt(text) + 400) + "px")
+
+  # new implementation
+  slider_val = +$("#time_slice_slider_div").val()
+  populate_dates()
+  update_data_columns()
+
   offset_val = +$("#time_slice_slider_div").val() + 1
   offset= -(offset_val * cell_width - datatable_width)
-  console.log offset_val
   d3.selectAll(".container")
     #.transition()
     #.duration(200)
     .style("margin-left", offset+"px")
 
 populate_dates = ->
-  container = d3.select("#datatable_header")
+  data = selected_dates()
+  dates = d3.select("#datatable_header").selectAll(".header_cell").data data
+  dates.enter()
     .append("div")
-    .attr("class", "container")
-    .style("width", (all_dates().length*cell_width)+"px")
-    .style("margin-left", -(all_dates().length*cell_width-datatable_width)+"px")
+    .attr("class", "header_cell")
+  dates.html((d) -> "#{d}<br/>YOY%")
+  dates.exit().remove()
     
-  container.selectAll("div.cell")
-    .data(all_dates())
-    .enter()
-    .append("div")
-    .attr("class", "cell")
-    .text((d) -> d)
+create_ytd_column = (cat_series) ->
+    container = cat_series.append("div").attr("class", "ytd_cell")
+      .html((d) ->
+        #console.log d
+        last_obs = if d[freq].last? then (+d[freq].last).toFixed(3) else ""
+        last_date = if d[freq].last? then d[freq].date[d[freq].last_i] else ""
+        last_ytd_change_num = +d[freq].ytd_change[d[freq].last_i]
+        last_ytd_change = (last_ytd_change_num).toFixed(2) + "%"
+        sign = if last_ytd_change_num > 0 then " pos" else " neg"
+        "<span class=\"last_obs\">#{last_obs}</span><span class=\"last_date\">#{last_date}</span><span class=\"ytd_change#{sign}\">#{last_ytd_change}</span>"
+      )
+
+window.update_ytd_column = (event) ->
+    last_index = ($("#line_chart_slider_div").val().map (value) -> +value)[1]
+    d3.selectAll(".ytd_cell").html((d) ->
+        last_obs = if d[freq].data[last_index]? then (+d[freq].data[last_index]).toFixed(3) else ""
+        last_date = if d[freq].data[last_index]? then d[freq].date[last_index] else ""
+        if not d[freq].data[last_index]? or isNaN d[freq].ytd_change[last_index]
+          last_ytd_change = "&nbsp;"
+          sign = ""
+        else
+          last_ytd_change = (+d[freq].ytd_change[last_index]).toFixed(2) + "%"
+          sign = if +d[freq].ytd_change[last_index] > 0 then " pos" else " neg"
+        #last_ytd_change_num = if d[freq].ytd_change[last_index]? then +
+        #last_ytd_change = (last_ytd_change_num).toFixed(2) + "%"
+        #sign = if last_ytd_change_num > 0 then " pos" else " neg"
+        "<span class=\"last_obs\">#{last_obs}</span><span class=\"last_date\">#{last_date}</span><span class=\"ytd_change#{sign}\">#{last_ytd_change}</span>"
+    )
+    
 
 create_data_columns = (cat_series) ->
   container = cat_series.append("div")
     .attr("class", "data_cols")
-    .append("div")
-    .attr("class", "container")
-    .style("width", (d) -> (d[freq].data.length*cell_width)+"px")
-    .style("margin-left", (d) -> -(d[freq].data.length*cell_width-datatable_width)+"px")
+    #.append("div")
+    #.attr("class", "container")
+    #.style("width", (d) -> (d[freq].data.length*cell_width)+"px")
+    #.style("margin-left", (d) -> -(d[freq].data.length*cell_width-datatable_width)+"px")
     
   container.selectAll("div.cell")
-    .data((d) -> d[freq].data)
+    .data((d) ->
+        selected_data(d))
     .enter()
     .append("div")
     .attr("class", "cell")
-    .text((d) -> (+d).toFixed(3))
+    .html (d) ->
+      data = if d.data? then (+d.data).toFixed(3) else ""
+      yoy = if d.yoy? then (+d.yoy).toFixed(2) + "%" else ""
+      yoy = if d.yoy > 0 then "+#{yoy}" else yoy
+      sign = if d.yoy > 0 then " pos" else (if d.yoy < 0 then " neg" else "")
+      "<span class=\"cell_value\">#{data}</span><span class=\"cell_yoy#{sign}\">#{yoy}</span>"
+
+update_data_columns = () ->
+    cat_series = d3.selectAll("div.series")
+    container = cat_series.selectAll(".data_cols")
+
+    cells = container.selectAll("div.cell")
+      .data (d) -> selected_data(d)
+    cells.enter().append("div").attr("class", "cell")
+    #cells.text (d) -> if d? then (+d).toFixed(3) else ""
+    cells.html (d) ->
+      data = if d.data? then (+d.data).toFixed(3) else ""
+      yoy = if d.yoy? then (+d.yoy).toFixed(2) + "%" else ""
+      yoy = if d.yoy > 0 then "+#{yoy}" else yoy
+      sign = if d.yoy > 0 then " pos" else (if d.yoy < 0 then " neg" else "")
+      "<span class=\"cell_value\">#{data}</span><span class=\"cell_yoy#{sign}\">#{yoy}</span>"
+    #d3.selectAll("div.series").selectAll('.cell').data()
+    #data = selected_data cat_series.data()
+    #container = cat_series.selectAll(".data_cols")
+    #cells = container.selectAll("div.data_cell")
+      #.data data
+    #cells.enter()
+      #.append("div")
+      #.attr("class", "cell")
+    #cells.text((d) ->
+      #if d? then (+d).toFixed(3) else "")
+    #cells.exit().remove()
       
 create_axis_control = (cat_series, axis) ->
   #cat_series.append("div")
@@ -327,13 +401,11 @@ create_axis_control = (cat_series, axis) ->
       button = d3.select(this)
       if (button.classed("off"))
         #button.classed({"off": false, "on": true, "glyphicon-unchecked": false, "glyphicon-check": true})
-        console.log("you clicked to add secondary")
         set_secondary_series(d3.select(button.node().parentNode))
         #add_to_line_chart(d, axis)
       else
         #remove_from_line_chart(d, axis)
         button.classed({"off": true, "on": false, "glyphicon-unchecked": true, "glyphicon-check": false})
-        console.log("you clicked to remove this secondary series")
         remove_secondary_series(d3.select(button.node().parentNode))
 
 )
@@ -349,14 +421,14 @@ create_sparklines = (cat_series) ->
     .attr("height", series_height)
     .attr("width", 150)
 
-#this line seems to throw an error about slider initialization
+  #this line seems to throw an error about slider initialization
   spark_range = $("#line_chart_slider_div").val()
   draw_sparklines spark_range, 0
     
 create_series_label = (cat_series) ->
   label = cat_series.append("div")
     .attr("class", "series_label")
-    .style("line-height", series_height + "px")
+    #.style("line-height", series_height + "px")
 
   #parents = label.filter((d) -> d.children_sum)
     #.append("a")
@@ -367,6 +439,9 @@ create_series_label = (cat_series) ->
   label
     .append("span")
     .text((d) -> d.display_name)
+  label.append("br")
+  label.append("span")
+    .text((d) -> "(#{d.units})")
       
 series_row_class = (d)->
   child_class = if d.series_parent != "" then " child child_of_#{window.series_to_class(d.series_parent)}" else ""
@@ -392,9 +467,11 @@ create_series_rows = (cat_divs)->
     .call(create_series_label)
     .call(create_sparklines)
     .call(create_axis_controls)
+    .call(create_ytd_column)
     .call(create_data_columns)
     
 window.create_data_table = (page_data)->
+  slider_val = all_dates().length - 1
   populate_dates()
   cat_divs = d3.select("#series_display")
     .selectAll("div.category")

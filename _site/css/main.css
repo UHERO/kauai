@@ -539,11 +539,21 @@ path.line_chart_path {
   fill: #3182bd; }
 
 /*********** Pie Chart Stuff *****************/
+#pie_chart_svg {
+  overflow: visible; }
+
 g#pie_chart_area text {
   pointer-events: none;
   stroke: black; }
 
 /*********** Treemap Stuff ******************/
+#pie_notes {
+  font-size: 9px; }
+
+g#pie_chart_area rect {
+  stroke: white;
+  stroke-width: 1; }
+
 #treemap_tooltip {
   position: absolute;
   width: 220px;
@@ -631,6 +641,68 @@ g#pie_chart_area text {
   background: rgba(49, 130, 189, 0.5); }
 
 /*********** Flextable Stuff *****************/
+.header_cell {
+  float: left;
+  margin-right: 10px;
+  width: 42px; }
+
+.cell_value, .cell_yoy {
+  display: block; }
+
+.cell_yoy.pos {
+  color: #3182bd; }
+
+.cell_yoy.neg {
+  color: #ff9847; }
+
+.ytd_cell {
+  width: 99px;
+  float: left;
+  text-align: center; }
+
+.ytd_cell span {
+  display: block; }
+
+.ytd_cell .last_date {
+  opacity: 0.5; }
+
+.ytd_cell .ytd_change.pos {
+  color: #3182bd; }
+
+.ytd_cell .ytd_change.neg {
+  color: #ff9847; }
+
+#frequency_controls {
+  display: inline; }
+
+#frequency_controls span.enabled {
+  padding: 2px 5px;
+  color: #3182bd;
+  font-weight: bolder;
+  cursor: pointer; }
+
+#frequency_controls span.enabled:hover {
+  border-bottom: 2px solid #3182bd; }
+
+#frequency_controls span.selected {
+  padding: 2px 5px;
+  color: white;
+  background-color: #ff9847;
+  font-weight: bolder; }
+
+#export, #reset {
+  padding: 2px 5px;
+  color: #3182bd;
+  font-weight: bolder;
+  cursor: pointer;
+  float: right; }
+
+#export:hover, #reset:hover {
+  border-bottom: 2px solid #3182bd; }
+
+#secondary_controls {
+  margin-top: 380px; }
+
 .category {
   clear: both; }
 
@@ -643,7 +715,7 @@ g#pie_chart_area text {
 
 .series_label, .sparkline, .selected_value, .selected_perc,
 #category_header, #series_header, #sparkline_header, #level_header, #yoy_header,
-#line_left_header, #line_right_header, #pie_header, #datatable_header,
+#line_left_header, #ytd_header, #pie_header, #datatable_header,
 .left_toggle, .right_toggle, .data_cols, .container, .cell {
   float: left; }
 
@@ -666,7 +738,9 @@ g#pie_chart_area text {
   background-color: #EEE; }
 
 .series_label {
-  padding-left: 20px; }
+  padding-left: 20px;
+  padding-top: 1em;
+  line-height: 1em; }
 
 .child .series_label span {
   padding-left: 10px; }
@@ -677,13 +751,13 @@ g#pie_chart_area text {
   line-height: normal; }
 
 #datatable_header {
-  width: 319px;
+  width: 270px;
   overflow: hidden;
   height: 100%;
   margin-left: 10px; }
 
 .data_cols {
-  width: 319px;
+  width: 270px;
   overflow: hidden;
   height: 100%; }
 
@@ -709,8 +783,8 @@ g#pie_chart_area text {
 #line_left_header {
   width: 40px; }
 
-#line_right_header {
-  width: 40px; }
+#ytd_header {
+  width: 90px; }
 
 #pie_header {
   width: 40px; }
@@ -721,14 +795,14 @@ g#pie_chart_area text {
   font-size: 20px;
   line-height: 45px;
   cursor: pointer;
-  margin-right: 50px; }
+  /*margin-right:50px;*/ }
 
 #sparkline_header {
   font-weight: bold;
   font-size: 11px; }
 
 #table_header {
-  height: 20px;
+  height: 48px;
   text-align: center;
   font-size: 11px; }
 

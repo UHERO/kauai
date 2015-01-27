@@ -6,14 +6,14 @@ svg = null
 chart_area = null
 max_pie = null
 
-treemap_props = 
+treemap_props =
   width: null
   height: null
 color = d3.scale.category20c()
 
 window.treemap_layout = d3.layout.treemap()
   #.size([])
-  .size([300, 300])
+  .size([300, 200])
   .sticky(true)
   .value((d) -> d[freq].data[slider_val])
 
@@ -37,46 +37,45 @@ set_date_shown = ->
   d3.select("#slice_slider_selection").text(selected_date())
     
 window.redraw_slice = (event, ui) ->
-  #console.log "window.redraw_slice called"
-  #slider_val = ui.value
   slider_val = +$("#time_slice_slider_div").val()
   set_date_shown()
 
-  if window.slice_type is "pie"
-    pie_slices = chart_area.selectAll("path")
-    pie_data = pie_slices.data().map((d) -> d.data)
-    pie_slices
-      .data(pie_layout(pie_data), (d) -> d.data.display_name)
-      .attr("d", pie_arc)
+  if window.pied == true
+    if window.slice_type is "pie"
+      pie_slices = chart_area.selectAll("path")
+      pie_data = pie_slices.data().map((d) -> d.data)
+      pie_slices
+        .data(pie_layout(pie_data), (d) -> d.data.display_name)
+        .attr("d", pie_arc)
 
-    chart_area.select("text.in_pie_label").remove()
+      chart_area.select("text.in_pie_label").remove()
 
-    sorted_array = pie_slices.data().sort((a,b) -> a.value - b.value)
-    #console.log(sorted_array)
-    max_pie = sorted_array.pop()
+      sorted_array = pie_slices.data().sort((a,b) -> a.value - b.value)
+      #console.log(sorted_array)
+      max_pie = sorted_array.pop()
 
-    console.log max_pie
-    chart_area.selectAll("text")
-      #.data([pie_slices.data()[0]])
-      .data([max_pie])
-      ##.data([d])
-      .enter()
-      .append("text")
-      .attr("class","in_pie_label")
-      .attr("text-anchor", "middle")
-      .attr("transform", (d) -> "translate( #{pie_arc.centroid(d)} )" )
-      .append("tspan")
-      .attr("class", "pie_slice_name")
-      .attr("dy", 20)
-      .text((d) -> d.data.display_name)
-      .append("tspan")
-      .attr("class", "pie_slice_value")
-      .attr("dy", 20)
-      .attr("x", 0)
-      # .text(d.value.toPrecision(3)) # keep 3 significant digits
-      .text((d) -> d.value.toFixed(1)) # keep one decimal place
-  else
-    window.node.data(treemap_layout.nodes).call treemap_position
+      #console.log max_pie
+      chart_area.selectAll("text")
+        #.data([pie_slices.data()[0]])
+        .data([max_pie])
+        ##.data([d])
+        .enter()
+        .append("text")
+        .attr("class","in_pie_label")
+        .attr("text-anchor", "middle")
+        .attr("transform", (d) -> "translate( #{pie_arc.centroid(d)} )" )
+        .append("tspan")
+        .attr("class", "pie_slice_name")
+        .attr("dy", 20)
+        .text((d) -> d.data.display_name)
+        .append("tspan")
+        .attr("class", "pie_slice_value")
+        .attr("dy", 20)
+        .attr("x", 0)
+        # .text(d.value.toPrecision(3)) # keep 3 significant digits
+        .text((d) -> d.value.toFixed(1)) # keep one decimal place
+    else
+      window.node.data(treemap_layout.nodes).call treemap_position
 
 
 get_data_index_extent = (data) ->
@@ -142,12 +141,12 @@ set_slider_dates = (extent) ->
   # no need to change the dates, slider indices are still relative
   # to full date / data arrays
   # this causes problems when sharing the slider
-  #$("#time_slice_slider_div").noUiSlider({ range: {min: extent[0], max: extent[1]} }, true)
-  set_date_shown()  
+  $("#time_slice_slider_div").noUiSlider({ range: {min: extent[0], max: extent[1]} }, true)
+  set_date_shown()
 
 window.pie_these_series = (series_data) ->
-  console.log "window.pie_these_series was called"
-  console.log(series_data)
+  #console.log "window.pie_these_series was called"
+  #console.log(series_data)
   if series_data[0].display_name is "Construction & Mining"
     window.slice_type = "treemap"
   else
@@ -188,29 +187,49 @@ window.pie_these_series = (series_data) ->
       .attr("x", 0)
       .text((d) -> d.value.toFixed(1)) # keep one decimal place
   else
-    chart_area.attr("transform", "translate(0,0)")
+    chart_area.attr("transform", "translate(0,50)")
     window.node = chart_area.datum({children: series_data}).selectAll("rect")
       .data(treemap_layout.nodes)
       .enter().append("rect")
       .call treemap_position
-      .attr("fill", (d) -> color(d.display_name))
-      .on "mouseover", treemap_mousemove
+      .attr("fill", (d) ->
+        switch d.depth
+          when 2 then color d.parent.display_name
+          when 3 then color d.parent.parent.display_name
+          else color d.display_name
+      )
+      .on "mousemove", treemap_mousemove
       .on "mouseout", treemap_mouseout
+    # add subtitle
+    pie_notes = svg.append("text")
+      .attr("id", "pie_notes")
+      .attr("text-anchor", "start")
+      .attr("x", 0)
+      .attr("y", svg.attr("height") - 40)
+    pie_notes.append("tspan").attr("dy", 0).text("The area of each box represents the number of jobs in each category.")
+    pie_notes.append("tspan").attr("dy", 10).text("Colors indicate top-level categories (e.g., Total Government Jobs).").attr("x", 0)
 
-  d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", ""))
+
+  d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series.parent").first().next()).datum().units + ")")
 
 treemap_mousemove = (d) ->
   xPosition = d3.event.pageX + 5
   yPosition = d3.event.pageY + 5
-  console.log(d)
+  #console.log(d)
 
   d3.select "#treemap_tooltip"
     .style "left", xPosition + "px"
     .style "top", yPosition + "px"
   d3.select "#treemap_tooltip #treemap_tooltip_heading"
-    .text d.display_name
+    .text () ->
+      switch d.depth
+        when 2 then "#{d.display_name} (#{d.parent.display_name})"
+        when 3 then "#{d.display_name} (#{d.parent.display_name} - #{d.parent.parent.display_name})"
+        else d.display_name
   d3.select("#treemap_tooltip #treemap_tooltip_percentage")
-    .text( ((300*300)/d.area).toFixed(1) + "%")
+    .text () ->
+      "YOY: " + d[freq].yoy[slider_val].toFixed(1) + "%"
+    #.text( (d.area/(300*300) * 100).toFixed(1) + "%")
   d3.select("#treemap_tooltip #treemap_tooltip_value")
     .text(d.value.toFixed(3))
   d3.select("#treemap_tooltip").classed "hidden", false
@@ -242,8 +261,7 @@ window.visitor_pie_chart = (container) ->
     .attr("text-anchor", "middle")
     .attr("x", center_x)
     .attr("y", 20)
-    .text($(".cat_label").first().text().trim())
-
+    #.text($(".cat_label").first().text().trim())
 
   #if window.slice_type == "pie" 
   chart_area = svg.append("g")

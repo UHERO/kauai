@@ -11,11 +11,11 @@ y_left = d3.scale.linear()
 y_right = d3.scale.linear()
 
 x = d3.scale.ordinal()
-window.x_scale = x  
+window.x_scale = x
 y =
   left:
     class:"s_left"
-    scale: y_left 
+    scale: y_left
     axis: d3.svg.axis().scale(y_left).orient("left")
     path: d3.svg.line()
             .x(x_from_slider)
@@ -49,15 +49,14 @@ y_height = (d)->
 
 
 all_dates = ->
-  #d3.select("#line_chart_slider_div").datum()
-  d3.select("#sparkline_slider_div").datum() #dt
+  d3.select("#line_chart_slider_div").datum()
     
 dates_extent = (extent) ->
   # debugging an issue with the line_chart not updating
   #console.log extent
   date_extent = all_dates().slice(parseInt(parseInt(extent[0])), parseInt(extent[1])+1)
   #console.log "date_extent -> #{JSON.stringify date_extent}"
-  #date_extent
+  date_extent
 
 slider_dates = ->
   extent = slider_extent
@@ -130,10 +129,10 @@ update_y_domain_with_new = (axis, domain, duration = 500) ->
     .duration(duration)
     .call(y[axis].axis)
 
-# dt note: remove all/most of the console.log
+
 regenerate_path = (d, extent, axis) ->
-  y[axis].path(d[freq].trimmed_data) #SOMETHING IS WRONG HERE! VERY WRONG???
-  # above is updating path attrib of y object's left object (ish)
+  trim_d d[freq], extent
+  y[axis].path(d[freq].trimmed_data)
 
 show_bars = (d,extent) ->
   duration = 500
@@ -149,7 +148,7 @@ show_bars = (d,extent) ->
     .attr("fill", "gray")
     .attr("fill-opacity", 0.5)
     .attr("y", y_right(0))
-    .attr("x", x_from_slider) 
+    .attr("x", x_from_slider)
     .attr("height", 0)
     .attr("width", 1)
      
@@ -197,15 +196,15 @@ hide_bars = ->
     .duration(duration)
     .call(y["right"].axis)
 
-# redraws the line and bar chart. right.
-window.redraw_line_and_bar_chart = (extent) ->
-  update_x_domain(extent) #update_x_domain with date_extent based on slider_extent 
+redraw_line_and_bar_chart = (extent) ->
+  update_x_domain(extent)
   path = d3.select("g#chart_area path.with_bar")
-    .attr("d", (d) -> regenerate_path(d, extent, "left") ) #there is a problem with d
+    .attr("d", (d) -> regenerate_path(d, extent, "left") )
+  
   regenerate_bars(path.datum(), extent)
   
     
-window.redraw_line_chart = (extent, duration = 0) ->
+redraw_line_chart = (extent, duration = 0) ->
   update_x_domain(extent)
 
   l_paths = d3.selectAll("g#chart_area path.s_left")
@@ -216,10 +215,8 @@ window.redraw_line_chart = (extent, duration = 0) ->
     
 # change this
 #window.trim_time_series = (event, ui) ->
-  ###
 window.trim_time_series = (event) ->
   slider_extent =  $("#line_chart_slider_div").val().map (value) -> +value
-  console.log JSON.stringify slider_extent 
   d3.select("h3#date_line_left").text(all_dates()[slider_extent[0]])
   d3.select("h3#date_line_right").text(all_dates()[slider_extent[1]])
   #if d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") == "left"
@@ -235,18 +232,17 @@ window.trim_time_series = (event) ->
     when "multi_line" then redraw_line_chart(slider_extent)
     when "line_bar" then redraw_line_and_bar_chart(slider_extent)
     else redraw_line_chart(slider_extent)
-###
 
 window.line_and_bar_to_multi_line = (d) ->
   hide_bars()
 
-  d3.select("g#chart_area path.with_bar")    
+  d3.select("g#chart_area path.with_bar")
     .classed("with_bar",false)
     .classed("s_left", true)
   
-  add_to_line_chart(d,"right")  
-  console.log "line and bar to multi"
-  console.log d
+  add_to_line_chart(d,"right")
+  #console.log "line and bar to multi"
+  #console.log d
   window.mode = "multi_line"
   
 window.multi_line_to_line_and_bar = (d) ->
@@ -266,10 +262,10 @@ window.multi_line_to_line_and_bar = (d) ->
 window.clear_from_line_chart = (d) ->
   path = s_path d.udaman_name
   axis = if path.classed("s_left") then "left" else "right"
-  console.log "Remove from #{axis} axis:"
-  console.log(d.udaman_name)
-  console.log(path.classed("s_left"))
-  console.log(path.classed("s_right"))
+  #console.log "Remove from #{axis} axis:"
+  #console.log(d.udaman_name)
+  #console.log(path.classed("s_left"))
+  #console.log(path.classed("s_right"))
   remove_from_line_chart(d,axis)
   
 window.clear_line_and_bar_chart = (d) ->
@@ -282,7 +278,7 @@ window.display_line_and_bar_chart = (d) ->
   highlight_series_row(d)
   duration = 500
   trim_d d[freq], slider_extent
-  domain = chart_extent(d[freq].data) 
+  domain = chart_extent(d[freq].data)
   yoy_domain = yoy_chart_extent(d[freq].yoy)
    
   path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
@@ -301,7 +297,7 @@ window.display_line_and_bar_chart = (d) ->
     
   show_bars(d, slider_extent)
 
-  console.log(d)
+  #console.log(d)
   # update left and right axis labels
   d3.select("#left_axis_label").text("#{d.display_name} (#{d.units})")
   d3.select("#right_axis_label").text("YOY%")
@@ -318,7 +314,7 @@ window.add_to_line_chart = (d, axis) ->
     .classed("#{y[axis].class}", true)
     .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
     
-  d3.selectAll("g#chart_area path.#{y[axis].class}") 
+  d3.selectAll("g#chart_area path.#{y[axis].class}")
     #.transition()
     #.duration(duration)
     .attr("d", (d) -> y[axis].path(d[freq].trimmed_data))
@@ -326,13 +322,13 @@ window.add_to_line_chart = (d, axis) ->
   #toggle_axis_button(d.udaman_name, axis)
 
   # update axis label
-  console.log d.display_name
-  d3.select("#right_axis_label").text("#{d.display_name} (#{d.units})")
+  #console.log d.display_name
+  d3.select("#" + axis + "_axis_label").text("#{d.display_name} (#{d.units})")
 
 
 window.remove_from_line_chart = (d, axis) ->
   duration = 500
-  chart_area = d3.select("g#chart_area")  
+  chart_area = d3.select("g#chart_area")
   path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
   #console.log(path)
 
@@ -366,7 +362,7 @@ window.set_up_line_chart_paths = (data) ->
     
 window.line_chart = (container) ->
   svg = set_up_svg(container)
-  margin = 
+  margin =
     top: 30
     bottom: 20
     left: 50
@@ -376,6 +372,8 @@ window.line_chart = (container) ->
   chart_area_height = svg.attr("height") - margin.top - margin.bottom
 
   slider_extent = [0, all_dates().length-1]
+  d3.select("h3#date_line_left").text(all_dates()[slider_extent[0]])
+  d3.select("h3#date_line_right").text(all_dates()[slider_extent[1]])
   update_x_domain(slider_extent)
   x.rangePoints([0, chart_area_width])
   y.left.scale.range([chart_area_height,0])

@@ -1,0 +1,25 @@
+{
+"series_groups": [ { 
+    "group_name": "Construction Activity", 
+    "series_list": [ 
+      { "display_name": "Construction Jobs", "udaman_name": "ECT@KAU", "a": true, "q": true, "m": false, "units": "Thou"},
+      { "display_name": "Real Residential Building Permits", "udaman_name": "KPPRVRSD_R@KAU", "a": true, "q": true, "m": false, "units": "1992 $Mil"}
+    ]
+  }, { 
+    "group_name": "Home Resales", 
+    "series_list": [ 
+      { "display_name": "Median Resale Price for SFH", "udaman_name": "PMKRSGF@KAU", "a": true, "q": true, "m": false, "units": "$Thou", "scale_factor": 0.001},
+      { "display_name": "Median Resale Price for Condo", "udaman_name": "PMKRCON@KAU", "a": true, "q": true, "m": false, "units": "$Thou", "scale_factor": 0.001},
+      { "display_name": "Number of Resales for SFH", "udaman_name": "KRSGF@KAU", "a": true, "q": true, "m": false, "units": "#"},
+      { "display_name": "Number of Resales for Condo", "udaman_name": "KRCON@KAU", "a": true, "q": true, "m": false, "units": "#"}
+    ]
+  }, { 
+    "group_name": "Construction Costs and Affordability", 
+    "series_list": [ 
+      { "display_name": "Honolulu Construction Cost Index", "udaman_name": "PICTSGF@HON", "a": true, "q": true, "m": false, "units": "Index (1992=100)"},
+      { "display_name": "Housing Affordability, Single-family home", "udaman_name": "HAI@KAU", "a": true, "q": false, "m": false, "units": "Index (1992=100)"},
+      { "display_name": "Housing Affordability, Condominium", "udaman_name": "HAICON@KAU", "a": true, "q": false, "m": false, "units": "Index (1992=100)"}
+    ]
+  }
+]
+}

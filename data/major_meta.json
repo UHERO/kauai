@@ -1,0 +1,30 @@
+{
+"series_groups": [ { 
+    "group_name": "Jobs", 
+    "series_list": [ 
+      { "display_name": "Total Non-farm Payrolls", "udaman_name": "E_NF@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
+      { "display_name": "Unemployment Rate", "udaman_name": "UR@KAU", "a": true, "q": true, "m": true, "units": "%"}
+    ]
+  }, { 
+    "group_name": "Income", 
+    "series_list": [ 
+      { "display_name": "Real Personal Income", "udaman_name": "Y_RCY@KAU", "a": true, "q": false, "m": false, "units": "2013 $Mil", "scale_factor": 0.001},
+      { "display_name": "Population", "udaman_name": "NR@KAU", "a": true, "q": false, "m": false, "units": "Thou"},
+      { "display_name": "Real Per-Capita Personal Income", "udaman_name": "YPC_RCY@KAU", "a": true, "q": false, "m": false, "units": "2013 $Thou", "scale_factor": 0.001}
+    ]
+  }, { 
+    "group_name": "Visitors", 
+    "series_list": [ 
+      { "display_name": "Total Visitor Arrivals", "udaman_name": "VIS@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
+      { "display_name": "Total Visitor Days", "udaman_name": "VDAY@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
+    ]
+  }, { 
+    "group_name": "Construction and Housing",
+    "series_list": [ 
+      { "display_name": "Median Resale Price for SFH", "udaman_name": "PMKRSGF@KAU", "a": true, "q": true, "m": false, "units": "$Thou", "scale_factor": 0.001},
+      { "display_name": "Real Residential Building Permits", "udaman_name": "KPPRVRSD_R@KAU", "a": true, "q": true, "m": false, "units": "1992 $Mil"},
+      { "display_name": "Construction Jobs", "udaman_name": "ECT@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
+    ]
+  }
+]
+}

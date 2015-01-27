@@ -2,6 +2,7 @@
 ---
 # ------- overal context variables ------------
 window.freq = "q"
+current_data_category = {}
 #-------- used by several modules -------------  
 
 window.series_to_class = (series_name) ->
@@ -26,8 +27,8 @@ set_up_nav = () ->
     .attr("class", "nav_link")
     .attr("id", (d) -> d.key.replace(" ", "_"))
     .style("width", (d) -> d.value.width+"px")
-    .text((d) -> d.key)
-    .on("click", (d) -> load_page(d.value))
+    .text((d) -> d.value.title)
+    .on("click", (d) -> load_page(d.value, true))
 
 set_headline = (text) ->
   d3.select("#headline").text(text)
@@ -78,16 +79,13 @@ set_single_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).datum(dates)
   
 set_up_sliders = (dates)->
-  #set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
-  #set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
   set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, left_slider_func
-  #set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
-  #set_single_slider_in_div "datatable_slider_div", dates, 0, dates.length-2, slide_table
   set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-2, right_slider_func
 
 left_slider_func = (event)->
   window.trim_sparklines(event)
   window.trim_time_series(event)
+  window.update_ytd_column(event)
 
 right_slider_func = (event)->
   window.redraw_slice(event)
@@ -126,40 +124,93 @@ clear_sliders = ->
   
   
 clear_previous_page = ->
+  window.remove_secondary_series(window.secondary_series) if window.secondary_series? and window.secondary_series.datum? and window.mode == 'multi_line'
   clear_dashboard_elements()
   clear_data_table()
   # don't need to clear sliders because they already clear themselves. 
   # Possibly move that in here if it doesn't break things
-  
+
 render_page = (page_data) ->
   clear_previous_page()
   #maybe fix sliders so they correspond to panel sizes
-  set_up_sliders(page_data.dates[freq])
+  console.log("render page at frequency: #{window.freq}")
+  set_up_sliders(page_data.dates[window.freq])
 
-  dashboard_elements = [ 
-    { id: "line_chart", width: 425, height: 300, type_function: line_chart },
-    { id: "pie_chart", width: 300, height: 300, type_function: visitor_pie_chart }
-  ]
-  
-  set_up_dashboard_elements(dashboard_elements)
-  create_data_table(page_data)
-  set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
-  
-  # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
-  window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
-  # identify the first series with children
-  pied = false
+  make_slice = false
   for series_group in page_data.series_groups
-    do (series_group)->
-      if series_group.series_list[0].children? and pied == false
-        window.pie_these_series series_group.series_list[0].children
+    do (series_group) ->
+      make_slice = true if series_group.series_list[0].children?
+  
+  if make_slice
+    # include pie_chart
+    d3.select("#time_slice_slider_container").style("float", "left").style("margin-right", 0).style("margin-bottom", 0)
+    d3.select("#line_chart_slider_container").style("width", "330px")
+    dashboard_elements = [
+      { id: "line_chart", width: 425, height: 300, type_function: line_chart },
+      { id: "pie_chart", width: 300, height: 300, type_function: visitor_pie_chart }
+    ]
+    set_up_dashboard_elements(dashboard_elements)
+    create_data_table(page_data)
+    set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
+    
+    # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
+    window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
+    # identify the first series with children
+    window.pied = false
+    for series_group in page_data.series_groups
+      do (series_group)->
+        if series_group.series_list[0].children? and window.pied == false
+          window.pie_these_series series_group.series_list[0].children
+          window.pied= true
+    #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
+  else
+    # update css for sliders
+    d3.select("#time_slice_slider_container").style("float", "right").style("margin-right", "20px").style("margin-bottom", "20px")
+    d3.select("#line_chart_slider_container").style("width", "648px")
+    # make line chart take up entire width
+    dashboard_elements = [{id: "line_chart", width: 740, height: 300, type_function: line_chart}]
+    set_up_dashboard_elements(dashboard_elements)
+    create_data_table(page_data)
+    set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
+    
+    # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
+    window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
+    # identify the first series with children
+    #window.pied = false
+    #for series_group in page_data.series_groups
+      #do (series_group)->
+        #if series_group.series_list[0].children? and window.pied == false
+          #window.pie_these_series series_group.series_list[0].children
+          #window.pied= true
+    #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
+
+  #set_up_dashboard_elements(dashboard_elements)
+  #create_data_table(page_data)
+  #set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
+  
+  ## add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
+  #window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
+  ## identify the first series with children
+  #window.pied = false
+  #for series_group in page_data.series_groups
+    #do (series_group)->
+      #if series_group.series_list[0].children? and window.pied == false
+        #window.pie_these_series series_group.series_list[0].children
+        #window.pied= true
   #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
   
-window.load_page = (data_category) ->
+load_page = (data_category, use_default_freq) ->
+  if use_default_freq
+    window.freq = data_category.default_freq
+    $("#frequency_controls span.selected").removeClass("selected")
+    $("#frequency_controls span").addClass("enabled")
+    $("#freq_#{window.freq}").removeClass("enabled")
+    $("#freq_#{window.freq}").addClass("selected")
   # this takes some time to load, so put in page loading graphic
   console.log "slug: #{data_category.slug}"
   console.log "title: #{data_category.title}"
-  load_page_data(data_category.slug, (data) ->
+  current_data_category = data_category
+  window.load_page_data(data_category.slug, (data) ->
     set_headline(data_category.title)
     render_page(data)
   )
@@ -167,6 +218,32 @@ window.load_page = (data_category) ->
 #-------- main run code -------------  
 set_up_nav()
 load_page(data_categories["visitor industry"])
+$("#frequency_controls span").addClass("enabled")
+$("#freq_q").removeClass("enabled").addClass("selected")
 
+# event listener for switching frequency
+$("#frequency_controls span").on("click", () ->
+    if $(this).hasClass("enabled")
+      # grab the currently selected primary series and secondary series
+      #primary_series = window.primary_series if window.primary_series?
+      #secondary_series = window.secondary_series if window.secondary_series?
+      $("#frequency_controls span.selected").removeClass("selected")
+      window.freq = $(this).text().toLowerCase()
+      load_page(current_data_category)
+      $("#frequency_controls span").addClass("enabled")
+      $(this).removeClass("enabled")
+      $(this).addClass("selected")
+      # set the currently selected primary series and secondary series
+      #window.set_primary_series(primary_series) if primary_series?
+      #window.set_secondary_series(secondary_series) if secondary_series?
+)
 
-
+# event listener for export link
+$("#export").on("click", () ->
+  window.location.href = "export_data/#{current_data_category.slug}_#{window.freq}_export.csv"
+)
+# event listener for reset link
+$("#reset").on("click", () ->
+  window.remove_secondary_series(window.secondary_series) if window.secondary_series? and window.secondary_series.datum? and window.mode == 'multi_line'
+  load_page(current_data_category)
+)
