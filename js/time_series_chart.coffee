@@ -145,7 +145,7 @@ show_bars = (d,extent) ->
   bars.enter()
     .append("rect")
     .attr("class", "yoy")
-    .attr("fill", "gray")
+    .attr("fill", "gray") #superceded by css .yoy class
     .attr("fill-opacity", 0.5)
     .attr("y", y_right(0))
     .attr("x", x_from_slider)

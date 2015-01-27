@@ -93,9 +93,9 @@ h2#headline {
   font-weight: bold;
   color: $grey-color-dark;
   box-shadow: // dt not sure if this works in all browsers. may fail gracefully anyway
-    0px 3px $uhero_blue,
-    0px 4px #fff,
-    0px 7px $uhero_orange;
+    0px 2px $uhero_blue,
+    0px 3px #fff,
+    0px 5px $uhero_orange;
 }
 
 /*********** Line Chart *****************/
@@ -118,8 +118,11 @@ path.line_chart_path { fill:none; stroke-width:2}
   font-weight: bolder;
   font-size: .8em;
 }
-.s_right { stroke: rgb(49, 130, 189) }
-.yoy { stroke: rgb(49, 130, 189); fill: rgb(49, 130, 189) }
+.s_right { stroke: rgb(49, 130, 189) } //dt what is this
+.yoy { 
+  stroke: $uhero_blue; //rgb(49, 130, 189); 
+  fill: $uhero_blue; //rgb(49, 130, 189);
+}
 #left_axis{
 }
 #right_axis{
@@ -194,8 +197,12 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 
 #line_chart_slider_div { clear:both }
 
-.noUi-connect { background: rgb(49, 130, 189)}
-.noUi-handle::before, .noUi-handle::after { background: rgba(49, 130, 189, 0.5)}
+.noUi-connect { 
+  background: $uhero_blue; //rgb(49, 130, 189)
+}
+.noUi-handle::before, .noUi-handle::after { 
+  background: $uhero_blue; //rgba(49, 130, 189, 0.5)
+}
 /*********** Flextable Stuff *****************/
 
 // new styles
