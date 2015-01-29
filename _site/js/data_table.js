@@ -167,9 +167,7 @@
     window.secondary_series = series;
     new_secondary_series = series.datum();
     primary_series = d3.select(".series.selected").datum();
-    if (new_secondary_series.udaman_name === primary_series.udaman_name) {
-
-    } else {
+    if (new_secondary_series.udaman_name !== primary_series.udaman_name) {
       on_toggle = d3.select(".right_toggle.on").node();
       if (on_toggle != null) {
         old_secondary_series = d3.select(on_toggle.parentNode).datum();

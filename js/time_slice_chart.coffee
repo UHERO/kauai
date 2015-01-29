@@ -12,7 +12,6 @@ treemap_props =
 color = d3.scale.category20c()
 
 window.treemap_layout = d3.layout.treemap()
-  #.size([])
   .size([300, 200])
   .sticky(true)
   .value((d) -> d[freq].data[slider_val])
@@ -51,14 +50,10 @@ window.redraw_slice = (event, ui) ->
       chart_area.select("text.in_pie_label").remove()
 
       sorted_array = pie_slices.data().sort((a,b) -> a.value - b.value)
-      #console.log(sorted_array)
       max_pie = sorted_array.pop()
 
-      #console.log max_pie
       chart_area.selectAll("text")
-        #.data([pie_slices.data()[0]])
         .data([max_pie])
-        ##.data([d])
         .enter()
         .append("text")
         .attr("class","in_pie_label")
@@ -72,7 +67,6 @@ window.redraw_slice = (event, ui) ->
         .attr("class", "pie_slice_value")
         .attr("dy", 20)
         .attr("x", 0)
-        # .text(d.value.toPrecision(3)) # keep 3 significant digits
         .text((d) -> d.value.toFixed(1)) # keep one decimal place
     else
       window.node.data(treemap_layout.nodes).call treemap_position
@@ -103,19 +97,15 @@ mouseover_pie = (d,i) ->
     .attr("class", "pie_slice_value")
     .attr("dy", 20)
     .attr("x", 0)
-    # .text(d.value.toPrecision(3)) # keep 3 significant digits
     .text(d.value.toFixed(1)) # keep one decimal place
     
-  #if max_pie.value == d.value
   chart_area.select("text.in_pie_label").remove()
 
 mouseout_pie = (d) ->
   slice = d3.select(this)
   slice.attr("fill-opacity", "1")
   chart_area.select("text.pie_label").remove()
-  #if max_pie.value == d.value 
   chart_area.selectAll("text")
-    #.data([max_pie])
     .data([d])
     .enter()
     .append("text")
@@ -130,11 +120,7 @@ mouseout_pie = (d) ->
     .attr("class", "pie_slice_value")
     .attr("dy", 20)
     .attr("x", 0)
-    # .text(d.value.toPrecision(3)) # keep 3 significant digits
     .text(d.value.toFixed(1)) # keep one decimal place
-    #.text((d) -> d.data.display_name)
-    #.style("font-size", "9px")
-    #.style('font-weight', "bold")
       
 set_slider_dates = (extent) ->
   slider_val = extent[1]
@@ -145,8 +131,6 @@ set_slider_dates = (extent) ->
   set_date_shown()
 
 window.pie_these_series = (series_data) ->
-  #console.log "window.pie_these_series was called"
-  #console.log(series_data)
   if series_data[0].display_name is "Construction & Mining"
     window.slice_type = "treemap"
   else
@@ -156,7 +140,6 @@ window.pie_these_series = (series_data) ->
   chart_area.selectAll("path").remove()
 
   sorted_array = pie_layout(series_data).sort((a,b) -> a.value - b.value)
-  #console.log(sorted_array)
   if window.slice_type == "pie"
     max_pie = sorted_array.pop()
     chart_area.selectAll("path")
@@ -215,7 +198,6 @@ window.pie_these_series = (series_data) ->
 treemap_mousemove = (d) ->
   xPosition = d3.event.pageX + 5
   yPosition = d3.event.pageY + 5
-  #console.log(d)
 
   d3.select "#treemap_tooltip"
     .style "left", xPosition + "px"
@@ -229,7 +211,6 @@ treemap_mousemove = (d) ->
   d3.select("#treemap_tooltip #treemap_tooltip_percentage")
     .text () ->
       "YOY: " + d[freq].yoy[slider_val].toFixed(1) + "%"
-    #.text( (d.area/(300*300) * 100).toFixed(1) + "%")
   d3.select("#treemap_tooltip #treemap_tooltip_value")
     .text(d.value.toFixed(3))
   d3.select("#treemap_tooltip").classed "hidden", false
@@ -246,7 +227,6 @@ treemap_position = () ->
 
 # this is the main function that instantiates the time-slice chart
 window.visitor_pie_chart = (container) ->
-  #console.log "window.visitor_pie_chart"
   slider_val = all_dates().length-1
   svg = set_up_svg(container)
 
@@ -261,16 +241,10 @@ window.visitor_pie_chart = (container) ->
     .attr("text-anchor", "middle")
     .attr("x", center_x)
     .attr("y", 20)
-    #.text($(".cat_label").first().text().trim())
 
-  #if window.slice_type == "pie" 
   chart_area = svg.append("g")
     .attr("id", "pie_chart_area")
     .attr("transform", "translate(#{center_x},#{center_y})")
-  #else
-    # make treemap
-    #chart_area = svg.append("g")
-      #.attr("id", "treemap_area")
 
   svg.append("text")
     .attr("id", "slice_slider_selection")
