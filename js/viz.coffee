@@ -28,10 +28,14 @@ set_up_nav = () ->
     .attr("id", (d) -> d.key.replace(" ", "_"))
     .style("width", (d) -> d.value.width+"px")
     .text((d) -> d.value.title)
-    .on("click", (d) -> load_page(d.value, true))
+    .on("click", (d) -> load_page(d.value, true)) #click here to load a different page
 
 set_headline = (text) ->
   d3.select("#headline").text(text)
+  #dt: maybe this shouldn't be here, can move later:
+  d3.select("div#nav").selectAll("div.nav_link").style("background-color",null) #reset
+  current_nav_item = text.split(' ').join('_').toLowerCase()
+  d3.select("#"+current_nav_item).style("background-color","#ecffc7") #$neon_green
 
 set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()
