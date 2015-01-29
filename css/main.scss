@@ -6,9 +6,11 @@
 
 
 // Our variables
-$base-font-family: Helvetica, Arial, sans-serif;
+$base-font-family: Gotham, Helvetica, Arial, sans-serif;
 $base-font-size:   16px;
-$small-font-size:  $base-font-size * 0.875;
+$small-font-size:  $base-font-size * 0.875; // used for bootstrap resets (?)
+$smaller-font-size:$base-font-size * 0.65;
+$smallest-font-size:$base-font-size* 0.65; // p much used for pie_label's only
 $base-line-height: 1.5;
 
 $spacing-unit:     30px;
@@ -25,9 +27,9 @@ $on-palm:          600px;
 $on-laptop:        800px;
 
 //$uhero_blue:        rgb(49, 130, 189);
-$uhero_blue:        rgb(54,130,153); //#368299
+$uhero_blue:        #03627f; // old: rgb(54,130,153); //#368299
 $uhero_orange:      rgb(255, 152, 71);
-$neon_green:        rgb(240,255,211);
+$neon_green:        #ecffc7;
 
 // Using media queries with like this:
 // @include media-query($palm) {
@@ -65,7 +67,7 @@ $neon_green:        rgb(240,255,211);
 }
 
 .nav_link:hover {
-	background-color: #F0FFD3; //c4def5;
+	background-color: $neon_green;
   color: $grey-color-dark;
 	cursor: pointer;
 }
@@ -91,7 +93,7 @@ h2#headline {
   text-transform: uppercase;
   font-size: 20px;
   font-weight: bold;
-  color: $grey-color-dark;
+  color: $uhero_blue;
   box-shadow: // dt not sure if this works in all browsers. may fail gracefully anyway
     0px 2px $uhero_blue,
     0px 3px #fff,
@@ -108,7 +110,7 @@ path.line_chart_path { fill:none; stroke-width:2}
   stroke: rgb(255, 152, 71); 
   text-transform: uppercase;
   font-weight: bolder;
-  font-size: .8em;
+  font-size: $small-font-size;
   } // can use var here?
 .s_left, path.line_chart_path.with_bar{ stroke: rgb(255, 152, 71) }
 #right_axis_label { 
@@ -116,7 +118,7 @@ path.line_chart_path { fill:none; stroke-width:2}
   stroke: $uhero_blue;
   text-transform: uppercase;
   font-weight: bolder;
-  font-size: .8em;
+  font-size: $small-font-size;
 }
 .s_right { stroke: rgb(49, 130, 189) } //dt what is this
 .yoy { 
@@ -137,10 +139,10 @@ g#pie_chart_area text {
 }
 .in_pie_label, .pie_label { //dt why are there two?
   text-transform: uppercase;
-  font-size:.65em; //dt might be too small
+  font-size: $smallest-font-size; //dt might be too small
   font-weight: 300;
 }
-
+#slice_slider_selection {font-size: $smaller-font-size;}
 /*********** Treemap Stuff ******************/
 #pie_notes { font-size: 9px}
 g#pie_chart_area rect { stroke: white; stroke-width: 1}
@@ -149,10 +151,10 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
   width: 220px;
   height: auto;
   padding: 10px;
-  background-color: white;
+  //background-color: white;
   pointer-events: none;
-  background-color: rgb(49, 130, 189);
-  color: white
+  background-color: $neon_green;
+  color: $grey-color-dark;
 }
 
 #treemap_tooltip.hidden {
@@ -166,7 +168,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #treemap_tooltip p {
   margin: 0;
   /*font-family: sans-serif;*/
-  font-size: 16px;
+  font-size: $small-font-size;
   line-height: 20px;
 }
 
@@ -244,7 +246,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #frequency_controls {
     display: inline;
     text-transform: uppercase;
-    font-size: .8em;
+    font-size: $smaller-font-size;
     color: $grey-color-dark;
     font-weight: bolder;
 }
@@ -269,7 +271,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
     font-weight: bolder;
     cursor: pointer;
     float: right;
-    font-size: .8em;
+    font-size: $smaller-font-size;
     text-transform: uppercase;
 }
 #export:hover, #reset:hover {
@@ -286,11 +288,11 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
   cursor:pointer; 
   border-bottom:2px solid $uhero_blue;
   text-transform: uppercase;
-  font-size: 0.8em;
+  font-size: $small-font-size;
   //letter-spacing: 1px;
   //font-kerning: auto;
   font-weight: bold;
-  color: $grey-color-dark;
+  color: $uhero_blue;
 }
 #category_header { width:150px; }
 
@@ -352,11 +354,11 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #ytd_header { width: 90px }
 #pie_header { width: 40px }
 #pie_heading { //dt had to add this, might need to change to "pie_header" in d3 code
-  fill: #000; 
-  stroke: #000; 
+  fill: $uhero_blue; 
+  stroke: $uhero_blue; 
   text-transform: uppercase;
   font-weight: bolder;
-  font-size: .8em;
+  font-size: $small-font-size;
 }
 .left_toggle, .right_toggle { 
     width: 40px; 
@@ -368,7 +370,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 }
 
 #sparkline_header {font-weight:bold; font-size:11px;}
-#table_header { height: 48px; text-align:center; font-size:11px;}
+#table_header { height: 48px; text-align:center; font-size:10px; text-transform: uppercase;}
 
 #series_display h3{position: relative; bottom:40px}
 #buttons a { text-decoration:none;}
@@ -381,4 +383,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #date_line_left{ font-size:12px; position:relative; float:left}
 #date_line_right{font-size:12px; position:relative; float:right}
 
-
+/****** Regular link recoloring (for footer items mainly) ********/
+a, a:active, a:visited, a:hover {
+  color: $uhero_blue;
+}

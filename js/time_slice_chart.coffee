@@ -10,7 +10,8 @@ treemap_props =
   width: null
   height: null
 color = d3.scale.category20c() #dt -- not using default scale anymore (might remove)
-uhero_color = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579fb3", "#88c2d3"]) #can define domain later?? D:
+uhero_color5 = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579fb3", "#88c2d3"]) #can define domain later?? D:
+uhero_color10 = d3.scale.ordinal().range(["#03627F","#1C718B","#358198","#4E91A5","#67A0B2","#81B0BF","#9AC0CB","#B3CFD8","#CCDFE5","#E5EFF2"])
 
 window.treemap_layout = d3.layout.treemap()
   #.size([])
@@ -91,7 +92,7 @@ get_common_dates = (series_data) ->
 mouseover_pie = (d,i) ->
   slice = d3.select(this)
   #slice.attr("fill-opacity", ".3")
-  slice.attr("fill", "#F0FFD3")
+  slice.attr("fill", "#ecffc7") # $neon_green
 
   chart_area.append("text")
     .attr("class","pie_label")
@@ -114,7 +115,7 @@ mouseover_pie = (d,i) ->
 mouseout_pie = (d) ->
   slice = d3.select(this)
   slice.attr("fill-opacity", "1")
-    .attr("fill", (d) -> uhero_color(d.data.display_name))
+    .attr("fill", (d) -> uhero_color5(d.data.display_name))
 
   chart_area.select("text.pie_label").remove()
   #if max_pie.value == d.value 
@@ -169,7 +170,7 @@ window.pie_these_series = (series_data) ->
       .append("path")
       .attr("d", pie_arc)
       #.attr("fill", "green") 
-      .attr("fill", (d) -> uhero_color(d.data.display_name)) #dt changed color scale to custom
+      .attr("fill", (d) -> uhero_color5(d.data.display_name)) #dt changed color scale to custom
       .attr("stroke", "white")
       .attr("stroke-width", 2)
       .on("mouseover", mouseover_pie)
@@ -198,10 +199,10 @@ window.pie_these_series = (series_data) ->
       .enter().append("rect")
       .call treemap_position
       .attr("fill", (d) ->
-        switch d.depth
-          when 2 then color d.parent.display_name
-          when 3 then color d.parent.parent.display_name
-          else color d.display_name
+        switch d.depth #below changed range, color -> uhero_color
+          when 2 then uhero_color10 d.parent.display_name
+          when 3 then uhero_color10 d.parent.parent.display_name
+          else uhero_color10 d.display_name
       )
       .on "mousemove", treemap_mousemove
       .on "mouseout", treemap_mouseout

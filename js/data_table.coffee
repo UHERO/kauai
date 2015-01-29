@@ -264,7 +264,7 @@ draw_spark_path = (svg, duration) ->
     .enter()
     .append("path")
     .attr("class", "spark")
-    .attr("stroke", "#368299") #dt
+    .attr("stroke", "#03627f") #uhero_green
     .attr "fill", "none"
 
   spark_path
@@ -281,7 +281,7 @@ draw_spark_area = (svg, duration) ->
     .append("path")
     .attr("class", "spark_area")
     .attr("stroke", "none")
-    .attr("fill", "#368299") #dt
+    .attr("fill", "#03627f") #uhero_green
     .attr "fill-opacity", .1
 
   spark_area

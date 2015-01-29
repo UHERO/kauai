@@ -90,7 +90,7 @@
 	<div id="dashboard">
 		<div id="headline_container"><h2 id="headline"></h2></div>
 		<div id="charts_area"></div>
-		<div id="sparkline_slider_container">
+		<div id="line_chart_slider_container">
 		  <h3 id="date_line_left">1989Q1</h3>
 	 		<h3 id="date_line_right">2014Q2</h3>
 		</div>
@@ -99,31 +99,41 @@
 	
 	<div id="data">
 		<div id="controls">
-			<div id="line_chart_slider_container">
-			 		<!--h3 id="date_series_left">1989Q1</h3>
-			 		<h3 id="date_series_right">2014Q2</h3-->
-			 		&nbsp;
+			<div id="sparkline_slider_container">
+					 <!--<h3 id="date_series_left">1989Q1</h3>-->
+					 <!--<h3 id="date_series_right">2014Q2</h3>-->
 			</div>
 			<div id="datatable_slider_container">
 					 <!--<h3 id="date_table">2014Q2</h3>-->
 			</div>
+            <div id="secondary_controls">
+                <div id="frequency_controls">
+                    Frequency: <span id="freq_a">A</span> | <span id="freq_q">Q</span> | <span id="freq_m">M</span>
+                </div>
+                <span id="reset">Reset</span> <span id="export">Export</span>
+            </div>
 		</div>
 		<div id="series_display">
 			<div id="table_header">
 				<div id="series_header">&nbsp;</div>
 				<div id="sparkline_header">&nbsp;</div>
-				<div id="line_left_header">Compare</div>
-				<div id="line_right_header">&nbsp;</div>
-				<div id="datatable_header"></div>
+                <div id="line_left_header"><br/>Compare</div>
+                <div id="ytd_header">Last Obs<br/>Date<br/>YTD %Change</div>
+                <div id="datatable_header"><br/></div>
 			</div>
 		</div>
 	</div>
+
+  <div id="treemap_tooltip" class="hidden">
+    <p><span id="treemap_tooltip_heading"></span></p>
+    <p><span id="treemap_tooltip_value"></span></p>
+    <p><span id="treemap_tooltip_percentage"></span></p>
+  </div>
 	
 	<div id="source_links">
 		Designed by Adele Balderston, Ben Trevino, and David Wang
 	</div>
 </div>
-
       </div>
     </div>
 
@@ -188,7 +198,8 @@
 <script src="js/time_slice_chart.js"></script>
 <script src="js/data_table.js"></script>
 <script src="js/viz.js"></script>
-
+<!--Gotham font includes-->
+  <script type="text/javascript" src="js2/GothamLight_300.font.js"></script><script type="text/javascript" src="js2/GothamBold_400.font.js"></script>
 
   </body>
 

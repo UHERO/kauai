@@ -216,6 +216,13 @@ load_page = (data_category, use_default_freq) ->
     set_headline(data_category.title)
     render_page(data)
   )
+  #dt edit --- to manually gray out the options w/ no data:
+  # Personal Income Q/M, County Budget Q/M, Construction M
+  if data_category.title == "Personal Income" || data_category.title == "County Budget"
+    $("#freq_q").removeClass("enabled")
+    $("#freq_m").removeClass("enabled")
+  else if data_category.title == "Construction"
+    $("#freq_m").removeClass("enabled")
 
 #-------- main run code -------------  
 set_up_nav()
@@ -232,6 +239,17 @@ $("#frequency_controls span").on("click", () ->
       $("#frequency_controls span.selected").removeClass("selected")
       window.freq = $(this).text().toLowerCase()
       load_page(current_data_category)
+
+      #--
+      ###
+      current_page = current_data_category.title
+      if current_page == "Visitor Industry"
+        console.log("TRUE")
+      else
+        console.log("FALSE")
+      ###
+      #--
+
       $("#frequency_controls span").addClass("enabled")
       $(this).removeClass("enabled")
       $(this).addClass("selected")

@@ -1,5 +1,5 @@
 (function() {
-  var all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_date, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props;
+  var all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_date, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props, uhero_color10, uhero_color5;
 
   window.slice_type = "pie";
 
@@ -17,6 +17,10 @@
   };
 
   color = d3.scale.category20c();
+
+  uhero_color5 = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579fb3", "#88c2d3"]);
+
+  uhero_color10 = d3.scale.ordinal().range(["#03627F", "#1C718B", "#358198", "#4E91A5", "#67A0B2", "#81B0BF", "#9AC0CB", "#B3CFD8", "#CCDFE5", "#E5EFF2"]);
 
   window.treemap_layout = d3.layout.treemap().size([300, 200]).sticky(true).value(function(d) {
     return d[freq].data[slider_val];
@@ -103,7 +107,7 @@
   mouseover_pie = function(d, i) {
     var slice;
     slice = d3.select(this);
-    slice.attr("fill-opacity", ".3");
+    slice.attr("fill", "#ecffc7");
     chart_area.append("text").attr("class", "pie_label").attr("text-anchor", "middle").attr("transform", "translate( " + (pie_arc.centroid(d)) + " )").append("tspan").attr("class", "pie_slice_name").attr("dy", 20).text(d.data.display_name).append("tspan").attr("class", "pie_slice_value").attr("dy", 20).attr("x", 0).text(d.value.toFixed(1));
     return chart_area.select("text.in_pie_label").remove();
   };
@@ -111,7 +115,9 @@
   mouseout_pie = function(d) {
     var slice;
     slice = d3.select(this);
-    slice.attr("fill-opacity", "1");
+    slice.attr("fill-opacity", "1").attr("fill", function(d) {
+      return uhero_color5(d.data.display_name);
+    });
     chart_area.select("text.pie_label").remove();
     return chart_area.selectAll("text").data([d]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
       return "translate( " + (pie_arc.centroid(d)) + " )";
@@ -147,7 +153,7 @@
       chart_area.selectAll("path").data(pie_layout(series_data), function(d) {
         return d.data.display_name;
       }).enter().append("path").attr("d", pie_arc).attr("fill", function(d) {
-        return color(d.data.display_name);
+        return uhero_color5(d.data.display_name);
       }).attr("stroke", "white").attr("stroke-width", 2).on("mouseover", mouseover_pie).on("mouseout", mouseout_pie);
       chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
         return "translate( " + (pie_arc.centroid(d)) + " )";
@@ -163,11 +169,11 @@
       }).selectAll("rect").data(treemap_layout.nodes).enter().append("rect").call(treemap_position).attr("fill", function(d) {
         switch (d.depth) {
           case 2:
-            return color(d.parent.display_name);
+            return uhero_color10(d.parent.display_name);
           case 3:
-            return color(d.parent.parent.display_name);
+            return uhero_color10(d.parent.parent.display_name);
           default:
-            return color(d.display_name);
+            return uhero_color10(d.display_name);
         }
       }).on("mousemove", treemap_mousemove).on("mouseout", treemap_mouseout);
       pie_notes = svg.append("text").attr("id", "pie_notes").attr("text-anchor", "start").attr("x", 0).attr("y", svg.attr("height") - 40);
