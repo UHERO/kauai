@@ -59,9 +59,11 @@ set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
       #return "right")
   
   #adding some pips
+###
   $("#" + div_id).noUiSlider_pips
     mode: 'range'
     density: 3
+###
 
 set_single_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()
