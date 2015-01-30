@@ -9,8 +9,9 @@
 $base-font-family: Gotham, Helvetica, Arial, sans-serif;
 $base-font-size:   16px;
 $small-font-size:  $base-font-size * 0.875; // used for bootstrap resets (?)
-$smaller-font-size:$base-font-size * 0.65;
+$smaller-font-size:$base-font-size * 0.75;
 $smallest-font-size:$base-font-size* 0.65; // p much used for pie_label's only
+$figure_label_font_size: 12px;
 $base-line-height: 1.5;
 
 $spacing-unit:     30px;
@@ -142,7 +143,7 @@ g#pie_chart_area text {
   font-size: $smallest-font-size; //dt might be too small
   font-weight: 300;
 }
-#slice_slider_selection {font-size: $smaller-font-size;}
+text#slice_slider_selection {font-size: $figure_label_font_size; padding-top: 50px; border: 1px solid blue;}
 /*********** Treemap Stuff ******************/
 #pie_notes { font-size: 9px}
 g#pie_chart_area rect { stroke: white; stroke-width: 1}
@@ -168,8 +169,8 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #treemap_tooltip p {
   margin: 0;
   /*font-family: sans-serif;*/
-  font-size: $small-font-size;
-  line-height: 20px;
+  font-size: $smallest-font-size;
+  line-height: $smaller-font-size;
 }
 
 /*********** General Div Alignment *****************/
@@ -230,6 +231,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
     width: 99px;
     float: left;
     text-align: center;
+    padding-left: 10px; //to align under repositioned header
 }
 .ytd_cell span {
     display: block;
@@ -246,7 +248,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #frequency_controls {
     display: inline;
     text-transform: uppercase;
-    font-size: $smaller-font-size;
+    font-size: $smallest-font-size;
     color: $grey-color-dark;
     font-weight: bolder;
 }
@@ -271,7 +273,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
     font-weight: bolder;
     cursor: pointer;
     float: right;
-    font-size: $smaller-font-size;
+    font-size: $smallest-font-size;
     text-transform: uppercase;
 }
 #export:hover, #reset:hover {
@@ -319,11 +321,11 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 }
 .series.selected { 
     //border-left: 1px solid rgb(49, 130, 189);
-    background-color: #F0F0F0
+    background-color: $neon_green;
 }
 .series.hovered  { 
     //border-left: 1px solid rgb(107, 174, 214);
-    background-color: #EEE;
+    background-color: $neon_green;
 }
 .series:collapsed {
   border: 0px;
@@ -350,8 +352,8 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 .selected_value, #level_header { width:70px; }
 .selected_perc, #yoy_header { width: 40px; }
 
-#line_left_header { width: 40px }
-#ytd_header { width: 90px }
+#line_left_header { width: 60px;}
+#ytd_header { width: 70px }
 #pie_header { width: 40px }
 #pie_heading { //dt had to add this, might need to change to "pie_header" in d3 code
   fill: $uhero_blue; 
@@ -363,10 +365,13 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 .left_toggle, .right_toggle { 
     width: 40px; 
     text-align:center; 
-    font-size:20px; 
+    font-size:14px; // glyphicon size
     line-height:45px; 
     cursor:pointer; 
     /*margin-right:50px;*/
+}
+.series .glyphicon {
+  color: rgba(54,130,153,.3);
 }
 
 #sparkline_header {font-weight:bold; font-size:11px;}
@@ -377,11 +382,11 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #geo, #freq { float:left; margin-top:10px;}
 #geo { width :300px; }
 #freq {width :100px; }
-#date_series_left{ font-size:12px; position:absolute; top:-20px; left:-20px}
-#date_series_right{font-size:12px; position:absolute; top:-20px; left:345px}
+#date_series_left{ font-size:12px; position:absolute; top:-20px; left:-20px} // exists?
+#date_series_right{font-size:12px; position:absolute; top:-20px; left:345px} // exists?
 #date_table{font-size:12px; position:absolute; top:-20px; left:700px}
-#date_line_left{ font-size:12px; position:relative; float:left}
-#date_line_right{font-size:12px; position:relative; float:right}
+#date_line_left{ font-size: $figure_label_font_size; position:relative; float:left}
+#date_line_right{font-size: $figure_label_font_size; position:relative; float:right}
 
 /****** Regular link recoloring (for footer items mainly) ********/
 a, a:active, a:visited, a:hover {
