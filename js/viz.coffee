@@ -116,16 +116,21 @@ clear_previous_page = ->
   # don't need to clear sliders because they already clear themselves. 
   # Possibly move that in here if it doesn't break things
 
-render_page = (page_data) ->
+render_page = (page_data, page_slug) ->
   clear_previous_page()
   #maybe fix sliders so they correspond to panel sizes
   console.log("render page at frequency: #{window.freq}")
   set_up_sliders(page_data.dates[window.freq])
 
   make_slice = false
+  window.pied = false
   for series_group in page_data.series_groups
     do (series_group) ->
       make_slice = true if series_group.series_list[0].children?
+  
+  if page_slug is 'major'
+    console.log 'major page here'
+    make_slice = true
   
   if make_slice
     # include pie_chart
@@ -142,12 +147,22 @@ render_page = (page_data) ->
     # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
     window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
     # identify the first series with children
-    window.pied = false
+    series_to_pie = []
+    # goes through each series group
     for series_group in page_data.series_groups
       do (series_group)->
-        if series_group.series_list[0].children? and window.pied == false
-          window.pie_these_series series_group.series_list[0].children
-          window.pied= true
+        # and pies the first group
+        if page_slug isnt 'major'
+          if series_group.series_list[0].children? and window.pied == false
+            window.pie_these_series series_group.series_list[0].children
+            window.pied= true
+        else
+          # add series to be pied
+          for series in series_group.series_list
+            series_to_pie.push(series) if series.udaman_name in ['Y_RCY@KAU', 'VDAY@KAU', 'KPPRVRSD_R@KAU']
+    if page_slug is 'major'
+      window.pied = true
+      window.pie_these_series series_to_pie, true
   else
     # update css for sliders
     d3.select("#time_slice_slider_container").style("float", "right").style("margin-right", "20px").style("margin-bottom", "20px")
@@ -168,12 +183,12 @@ load_page = (data_category, use_default_freq) ->
     $("#freq_#{window.freq}").removeClass("enabled")
     $("#freq_#{window.freq}").addClass("selected")
   # this takes some time to load, so put in page loading graphic
-  console.log "slug: #{data_category.slug}"
-  console.log "title: #{data_category.title}"
+  #console.log "slug: #{data_category.slug}"
+  #console.log "title: #{data_category.title}"
   current_data_category = data_category
   window.load_page_data(data_category.slug, (data) ->
     set_headline(data_category.title)
-    render_page(data)
+    render_page(data, data_category.slug)
   )
 
 #-------- main run code -------------  

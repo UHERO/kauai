@@ -17,9 +17,10 @@ selected_dates = ->
 
 # new implementation
 selected_data = (d) ->
-    yoy = d[freq].yoy[(slider_val-4)..slider_val]
-    d[freq].data[(slider_val-4)..slider_val].map (d, i) ->
-      {data: d, yoy: yoy[i]}
+  #console.log(d)
+  yoy = d[freq].yoy[(slider_val-4)..slider_val]
+  d[freq].data[(slider_val-4)..slider_val].map (d, i) ->
+    {data: d, yoy: yoy[i]}
   
 spark_line = d3.svg.line()
   .x((d, i) -> x i)
@@ -344,7 +345,7 @@ update_data_columns = () ->
 create_axis_control = (cat_series, axis) ->
   cat_series.append("span")
     .attr("class", "#{axis}_toggle off glyphicon glyphicon-unchecked")
-    .on("click", (d) -> 
+    .on("click", (d) ->
       d3.event.stopPropagation()
       button = d3.select(this)
       if (button.classed("off"))

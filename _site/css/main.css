@@ -850,3 +850,7 @@ g#pie_chart_area rect {
   font-size: 12px;
   position: relative;
   float: right; }
+
+/* Clustered bar chart */
+.clustered_bar_legend {
+  font-size: 0.7em; }
