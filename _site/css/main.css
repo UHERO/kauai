@@ -562,8 +562,10 @@ g#pie_chart_area text {
   font-size: 10.4px;
   font-weight: 300; }
 
-#slice_slider_selection {
-  font-size: 10.4px; }
+text#slice_slider_selection {
+  font-size: 12px;
+  padding-top: 50px;
+  border: 1px solid blue; }
 
 /*********** Treemap Stuff ******************/
 #pie_notes {
@@ -591,8 +593,8 @@ g#pie_chart_area rect {
 #treemap_tooltip p {
   margin: 0;
   /*font-family: sans-serif;*/
-  font-size: 14px;
-  line-height: 20px; }
+  font-size: 10.4px;
+  line-height: 12px; }
 
 /*********** General Div Alignment *****************/
 #controls {
@@ -676,7 +678,8 @@ g#pie_chart_area rect {
 .ytd_cell {
   width: 99px;
   float: left;
-  text-align: center; }
+  text-align: center;
+  padding-left: 10px; }
 
 .ytd_cell span {
   display: block; }
@@ -761,10 +764,10 @@ g#pie_chart_area rect {
   width: 180px; }
 
 .series.selected {
-  background-color: #F0F0F0; }
+  background-color: #ecffc7; }
 
 .series.hovered {
-  background-color: #EEE; }
+  background-color: #ecffc7; }
 
 .series:collapsed {
   border: 0px; }
@@ -813,10 +816,10 @@ g#pie_chart_area rect {
   width: 40px; }
 
 #line_left_header {
-  width: 40px; }
+  width: 60px; }
 
 #ytd_header {
-  width: 90px; }
+  width: 70px; }
 
 #pie_header {
   width: 40px; }
@@ -831,10 +834,13 @@ g#pie_chart_area rect {
 .left_toggle, .right_toggle {
   width: 40px;
   text-align: center;
-  font-size: 20px;
+  font-size: 14px;
   line-height: 45px;
   cursor: pointer;
   /*margin-right:50px;*/ }
+
+.series .glyphicon {
+  color: rgba(54, 130, 153, 0.3); }
 
 #sparkline_header {
   font-weight: bold;
