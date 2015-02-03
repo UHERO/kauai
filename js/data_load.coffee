@@ -6,11 +6,11 @@ dates = { a: [], q:[] , m:[] }
 window.data_categories =
   "major indicators": { width: 130, slug: "major", title: "Major Indicators", default_freq: "a"}
   "visitor industry": { width: 140, slug: "vis", title: "Visitor Industry", default_freq: "q" }
-  "labor": { width: 100, slug: "jobs", title: "Labor Market", default_freq: "q" }
+  "labor market": { width: 100, slug: "jobs", title: "Labor Market", default_freq: "q" }
   "personal income": { width: 120, slug: "income", title: "Personal Income", default_freq: "a"}
   "construction": { width: 100, slug: "const", title: "Construction", default_freq: "a" }
-  "county revenue": { width: 120, slug: "county_rev", title: "County Budget", default_freq: "a" }
-
+  "county budget": { width: 120, slug: "county_rev", title: "County Budget", default_freq: "a" }
+#dt changed 'labor' to 'labor market', county revenue' to 'county budget' -- does this have any effect?
 
 yoy = (d,i,array,f) ->
   return null if d is null or i is 0

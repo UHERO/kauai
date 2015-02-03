@@ -72,7 +72,7 @@
 
   window.collapse_series = function(series) {
     series.attr("state", "collapsed");
-    return d3.selectAll(".child_of_" + (class_name_from_series_node(series))).transition().style("height", "0px").attr("state", "collapsed");
+    return d3.selectAll(".child_of_" + (class_name_from_series_node(series))).transition().style("height", "0px").style("border", "0px").attr("state", "collapsed");
   };
 
   window.expand_series = function(series) {
@@ -89,14 +89,14 @@
     cat = d3.select(this);
     if (cat.attr("state") === "expanded") {
       cat.select(".glyphicon").classed({
-        "glyphicon-chevron-down": false,
-        "glyphicon-chevron-right": true
+        "glyphicon-minus": false,
+        "glyphicon-plus": true
       });
       return collapse(cat);
     } else {
       cat.select(".glyphicon").classed({
-        "glyphicon-chevron-down": true,
-        "glyphicon-chevron-right": false
+        "glyphicon-minus": true,
+        "glyphicon-plus": false
       });
       return expand(cat);
     }
@@ -300,7 +300,7 @@
     spark_path = svg.selectAll("path.spark").data(function(d) {
       return [d.scaled_data];
     });
-    spark_path.enter().append("path").attr("class", "spark").attr("stroke", "#3182bd").attr("fill", "none");
+    spark_path.enter().append("path").attr("class", "spark").attr("stroke", "#03627f").attr("fill", "none");
     return spark_path.transition().duration(duration).attr("d", spark_line);
   };
 
@@ -309,7 +309,7 @@
     spark_area = svg.selectAll("path.spark_area").data(function(d) {
       return [d.scaled_data];
     });
-    spark_area.enter().append("path").attr("class", "spark_area").attr("stroke", "none").attr("fill", "#3182bd").attr("fill-opacity", .1);
+    spark_area.enter().append("path").attr("class", "spark_area").attr("stroke", "none").attr("fill", "#03627f").attr("fill-opacity", .1);
     return spark_area.transition().duration(duration).attr("d", spark_area_path);
   };
 
@@ -467,7 +467,7 @@
     cat_labels = cat_divs.append("div").attr("class", "cat_label").attr("id", function(d) {
       return "cat_" + (window.series_to_class(d.group_name));
     }).attr("state", "expanded").html(function(d) {
-      return "<span class='glyphicon glyphicon-chevron-down'></span> " + (d.group_name.replace('Total ', ''));
+      return "<span class='glyphicon glyphicon-minus'></span> " + (d.group_name.replace('Total ', ''));
     }).on("mouseover", function(d) {
       return d3.select(this).style("background-color", "#999");
     }).on("mouseout", function(d) {

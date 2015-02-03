@@ -13,8 +13,10 @@ y = {}
 treemap_props =
   width: null
   height: null
-color = d3.scale.category20c()
-clustered_color = d3.scale.ordinal().range(["#3182bd", "#6baed6", "#9ecae1"])
+
+color = d3.scale.category20c() #dt -- not using default scale anymore (might remove)
+uhero_color5 = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579fb3", "#88c2d3"]) #can define domain later?? D:
+uhero_color10 = d3.scale.ordinal().range(["#03627F","#1C718B","#358198","#4E91A5","#67A0B2","#81B0BF","#9AC0CB","#B3CFD8","#CCDFE5","#E5EFF2"])
 
 window.treemap_layout = d3.layout.treemap()
   .size([300, 200])
@@ -104,7 +106,8 @@ get_common_dates = (series_data) ->
   
 mouseover_pie = (d,i) ->
   slice = d3.select(this)
-  slice.attr("fill-opacity", ".3")
+  #slice.attr("fill-opacity", ".3")
+  slice.attr("fill", "#ecffc7") # $neon_green
 
   chart_area.append("text")
     .attr("class","pie_label")
@@ -125,6 +128,8 @@ mouseover_pie = (d,i) ->
 mouseout_pie = (d) ->
   slice = d3.select(this)
   slice.attr("fill-opacity", "1")
+    .attr("fill", (d) -> uhero_color5(d.data.display_name))
+
   chart_area.select("text.pie_label").remove()
   chart_area.selectAll("text")
     .data([d])
@@ -175,7 +180,7 @@ window.pie_these_series = (series_data, cluster = false) ->
         .enter()
         .append("path")
         .attr("d", pie_arc)
-        .attr("fill", (d) -> color(d.data.display_name))
+        .attr("fill", (d) -> uhero_color5(d.data.display_name))
         .attr("stroke", "white")
         .attr("stroke-width", 2)
         .on("mouseover", mouseover_pie)
@@ -206,9 +211,9 @@ window.pie_these_series = (series_data, cluster = false) ->
         .call treemap_position
         .attr("fill", (d) ->
           switch d.depth
-            when 2 then color d.parent.display_name
-            when 3 then color d.parent.parent.display_name
-            else color d.display_name
+            when 2 then uhero_color10 d.parent.display_name
+            when 3 then uhero_color10 d.parent.parent.display_name
+            else uhero_color10 d.display_name
         )
         .on "mousemove", treemap_mousemove
         .on "mouseout", treemap_mouseout
@@ -264,7 +269,7 @@ window.visitor_pie_chart = (container) ->
   treemap_props.height = svg.attr("height")
 
   svg.append("text")
-    .attr("id", "pie_heading")
+    .attr("id", "pie_heading") #dt may want to change this to "pie_header" for consistency
     .attr("text-anchor", "middle")
     .attr("x", center_x)
     .attr("y", 20)
@@ -320,7 +325,7 @@ window.cluster_these_series = (series_data) ->
   x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.2)
   x1 = d3.scale.ordinal()
   y = d3.scale.linear().range([height, 0])
-  #clustered_color = d3.scale.ordinal().range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"])
+  #uhero_color5 = d3.scale.ordinal().range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"])
   xAxis = d3.svg.axis().scale(x0).orient("bottom")
   yAxis = d3.svg.axis().scale(y).orient("right").tickFormat(d3.format(".2s"))
   #svg = d3.select("svg")
@@ -370,7 +375,7 @@ window.cluster_these_series = (series_data) ->
     .attr("x", (d) -> x1(d.name))
     .attr("y", (d) -> y(d3.max([0,d.value])))
     .attr("height", (d) -> Math.abs(y(0)-y(d.value)))
-    .style("fill", (d) -> clustered_color(d.name))
+    .style("fill", (d) -> uhero_color5(d.name))
 
   legend = svg.selectAll(".legend")
     .data(seriesNames.slice())
@@ -382,7 +387,7 @@ window.cluster_these_series = (series_data) ->
     .attr("x", width - 18)
     .attr("width", 18)
     .attr("height", 18)
-    .style("fill", clustered_color)
+    .style("fill", uhero_color5)
 
   legend.append("text")
     .attr("x", width - 24)
@@ -441,7 +446,7 @@ window.update_clustered_chart = (slider_val) ->
     .attr("x", (d) -> x1(d.name))
     .attr("y", (d) -> y(d3.max([0,d.value])))
     .attr("height", (d) -> Math.abs(y(0)-y(d.value)))
-    .style("fill", (d) -> clustered_color(d.name))
+    .style("fill", (d) -> uhero_color5(d.name))
   console.log series.exit().remove()
 
   # clear legend and recreate it
@@ -456,7 +461,7 @@ window.update_clustered_chart = (slider_val) ->
     .attr("x", width - 18)
     .attr("width", 18)
     .attr("height", 18)
-    .style("fill", clustered_color)
+    .style("fill", uhero_color5)
 
   legend.append("text")
     .attr("x", width - 24)

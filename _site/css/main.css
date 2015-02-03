@@ -11,7 +11,7 @@ dl, dd, ol, ul, figure {
  * Basic styling
  */
 body {
-  font-family: Helvetica, Arial, sans-serif;
+  font-family: Gotham, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.5;
   font-weight: 300;
@@ -467,15 +467,15 @@ pre {
   margin: 0 5px 0 0;
   padding: 5px 0;
   background-color: #cccccc;
-  color: #5d5d5d;
+  color: #424242;
   text-transform: uppercase;
   float: left;
   font-size: 11px;
   font-weight: bold; }
 
 .nav_link:hover {
-  background-color: #c4def5;
-  color: #5d5d5d;
+  background-color: #ecffc7;
+  color: #424242;
   cursor: pointer; }
 
 #dashboard {
@@ -500,7 +500,12 @@ pre {
   font-size: 10px; }
 
 h2#headline {
-  padding: 10px 0 0 0; }
+  padding: 10px 0 0 0;
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: bold;
+  color: #03627f;
+  box-shadow: 0px 2px #03627f, 0px 3px #fff, 0px 5px #ff9847; }
 
 /*********** Line Chart *****************/
 path.domain {
@@ -522,21 +527,27 @@ path.line_chart_path {
 
 #left_axis_label {
   fill: #ff9847;
-  stroke: #ff9847; }
+  stroke: #ff9847;
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: 14px; }
 
 .s_left, path.line_chart_path.with_bar {
   stroke: #ff9847; }
 
 #right_axis_label {
-  fill: #3182bd;
-  stroke: #3182bd; }
+  fill: #03627f;
+  stroke: #03627f;
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: 14px; }
 
 .s_right {
   stroke: #3182bd; }
 
 .yoy {
-  stroke: #3182bd;
-  fill: #3182bd; }
+  stroke: #03627f;
+  fill: #03627f; }
 
 /*********** Pie Chart Stuff *****************/
 #pie_chart_svg {
@@ -545,6 +556,16 @@ path.line_chart_path {
 g#pie_chart_area text {
   pointer-events: none;
   stroke: black; }
+
+.in_pie_label, .pie_label {
+  text-transform: uppercase;
+  font-size: 10.4px;
+  font-weight: 300; }
+
+text#slice_slider_selection {
+  font-size: 12px;
+  padding-top: 50px;
+  border: 1px solid blue; }
 
 /*********** Treemap Stuff ******************/
 #pie_notes {
@@ -559,10 +580,9 @@ g#pie_chart_area rect {
   width: 220px;
   height: auto;
   padding: 10px;
-  background-color: white;
   pointer-events: none;
-  background-color: #3182bd;
-  color: white; }
+  background-color: #ecffc7;
+  color: #424242; }
 
 #treemap_tooltip.hidden {
   display: none; }
@@ -573,8 +593,8 @@ g#pie_chart_area rect {
 #treemap_tooltip p {
   margin: 0;
   /*font-family: sans-serif;*/
-  font-size: 16px;
-  line-height: 20px; }
+  font-size: 10.4px;
+  line-height: 12px; }
 
 /*********** General Div Alignment *****************/
 #controls {
@@ -635,10 +655,10 @@ g#pie_chart_area rect {
   clear: both; }
 
 .noUi-connect {
-  background: #3182bd; }
+  background: #03627f; }
 
 .noUi-handle::before, .noUi-handle::after {
-  background: rgba(49, 130, 189, 0.5); }
+  background: #03627f; }
 
 /*********** Flextable Stuff *****************/
 .header_cell {
@@ -650,7 +670,7 @@ g#pie_chart_area rect {
   display: block; }
 
 .cell_yoy.pos {
-  color: #3182bd; }
+  color: #03627f; }
 
 .cell_yoy.neg {
   color: #ff9847; }
@@ -658,7 +678,8 @@ g#pie_chart_area rect {
 .ytd_cell {
   width: 99px;
   float: left;
-  text-align: center; }
+  text-align: center;
+  padding-left: 10px; }
 
 .ytd_cell span {
   display: block; }
@@ -667,48 +688,59 @@ g#pie_chart_area rect {
   opacity: 0.5; }
 
 .ytd_cell .ytd_change.pos {
-  color: #3182bd; }
+  color: #03627f; }
 
 .ytd_cell .ytd_change.neg {
   color: #ff9847; }
 
 #frequency_controls {
-  display: inline; }
+  display: inline;
+  text-transform: uppercase;
+  font-size: 10.4px;
+  color: #424242;
+  font-weight: bolder; }
 
 #frequency_controls span.enabled {
   padding: 2px 5px;
-  color: #3182bd;
+  color: #03627f;
   font-weight: bolder;
   cursor: pointer; }
 
 #frequency_controls span.enabled:hover {
-  border-bottom: 2px solid #3182bd; }
+  border-bottom: 2px solid #03627f; }
 
 #frequency_controls span.selected {
   padding: 2px 5px;
-  color: white;
-  background-color: #ff9847;
+  color: #03627f;
+  background-color: #ecffc7;
   font-weight: bolder; }
 
 #export, #reset {
   padding: 2px 5px;
-  color: #3182bd;
+  color: #03627f;
   font-weight: bolder;
   cursor: pointer;
-  float: right; }
+  float: right;
+  font-size: 10.4px;
+  text-transform: uppercase; }
 
 #export:hover, #reset:hover {
-  border-bottom: 2px solid #3182bd; }
+  border-bottom: 2px solid #03627f; }
 
 #secondary_controls {
   margin-top: 380px; }
 
+/* Sparkline Row stuff */
 .category {
   clear: both; }
 
 .cat_label {
   cursor: pointer;
-  border-bottom: 2px solid #3182bd; }
+  border-bottom: 2px solid #03627f;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: bold;
+  color: #03627f; }
 
 #category_header {
   width: 150px; }
@@ -724,18 +756,21 @@ g#pie_chart_area rect {
   /*width:450px; text-align:center;*/
   font-size: 10px;
   overflow: hidden;
-  border-left: 1px solid white; }
+  text-transform: uppercase;
+  font-weight: bolder;
+  border-bottom: 1px dashed rgba(54, 130, 153, 0.3); }
 
 .series_label, #series_header {
   width: 180px; }
 
 .series.selected {
-  border-left: 1px solid #3182bd;
-  background-color: #F0F0F0; }
+  background-color: #ecffc7; }
 
 .series.hovered {
-  border-left: 1px solid #6baed6;
-  background-color: #EEE; }
+  background-color: #ecffc7; }
+
+.series:collapsed {
+  border: 0px; }
 
 .series_label {
   padding-left: 20px;
@@ -767,7 +802,7 @@ g#pie_chart_area rect {
 .cell {
   float: left;
   height: 100%;
-  border: 0px solid red;
+  border-left: 1px dashed rgba(54, 130, 153, 0.3);
   width: 50px;
   text-align: center; }
 
@@ -781,21 +816,31 @@ g#pie_chart_area rect {
   width: 40px; }
 
 #line_left_header {
-  width: 40px; }
+  width: 60px; }
 
 #ytd_header {
-  width: 90px; }
+  width: 70px; }
 
 #pie_header {
   width: 40px; }
 
+#pie_heading {
+  fill: #03627f;
+  stroke: #03627f;
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: 14px; }
+
 .left_toggle, .right_toggle {
   width: 40px;
   text-align: center;
-  font-size: 20px;
+  font-size: 14px;
   line-height: 45px;
   cursor: pointer;
   /*margin-right:50px;*/ }
+
+.series .glyphicon {
+  color: rgba(54, 130, 153, 0.3); }
 
 #sparkline_header {
   font-weight: bold;
@@ -804,7 +849,8 @@ g#pie_chart_area rect {
 #table_header {
   height: 48px;
   text-align: center;
-  font-size: 11px; }
+  font-size: 10px;
+  text-transform: uppercase; }
 
 #series_display h3 {
   position: relative;
@@ -854,3 +900,7 @@ g#pie_chart_area rect {
 /* Clustered bar chart */
 .clustered_bar_legend {
   font-size: 0.7em; }
+
+/****** Regular link recoloring (for footer items mainly) ********/
+a, a:active, a:visited, a:hover {
+  color: #03627f; }

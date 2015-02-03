@@ -28,10 +28,14 @@ set_up_nav = () ->
     .attr("id", (d) -> d.key.replace(" ", "_"))
     .style("width", (d) -> d.value.width+"px")
     .text((d) -> d.value.title)
-    .on("click", (d) -> load_page(d.value, true))
+    .on("click", (d) -> load_page(d.value, true)) #click here to load a different page
 
 set_headline = (text) ->
   d3.select("#headline").text(text)
+  #dt: maybe this shouldn't be here, can move later:
+  d3.select("div#nav").selectAll("div.nav_link").style("background-color",null) #reset
+  current_nav_item = text.split(' ').join('_').toLowerCase()
+  d3.select("#"+current_nav_item).style("background-color","#ecffc7") #$neon_green
 
 set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()
@@ -190,6 +194,13 @@ load_page = (data_category, use_default_freq) ->
     set_headline(data_category.title)
     render_page(data, data_category.slug)
   )
+  #dt edit --- to manually gray out the options w/ no data:
+  # Personal Income Q/M, County Budget Q/M, Construction M
+  if data_category.title == "Personal Income" || data_category.title == "County Budget"
+    $("#freq_q").removeClass("enabled")
+    $("#freq_m").removeClass("enabled")
+  else if data_category.title == "Construction"
+    $("#freq_m").removeClass("enabled")
 
 #-------- main run code -------------  
 set_up_nav()
@@ -204,6 +215,17 @@ $("#frequency_controls span").on("click", () ->
       $("#frequency_controls span.selected").removeClass("selected")
       window.freq = $(this).text().toLowerCase()
       load_page(current_data_category)
+
+      #--
+      ###
+      current_page = current_data_category.title
+      if current_page == "Visitor Industry"
+        console.log("TRUE")
+      else
+        console.log("FALSE")
+      ###
+      #--
+
       $("#frequency_controls span").addClass("enabled")
       $(this).removeClass("enabled")
       $(this).addClass("selected")
