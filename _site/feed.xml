@@ -6,15 +6,9 @@
 </description>
     <link>http://uhero.github.io/</link>
     <atom:link href="http://uhero.github.io/feed.xml" rel="self" type="application/rss+xml" />
-<<<<<<< HEAD
-    <pubDate>Wed, 04 Feb 2015 13:45:28 -1000</pubDate>
-    <lastBuildDate>Wed, 04 Feb 2015 13:45:28 -1000</lastBuildDate>
+    <pubDate>Wed, 04 Feb 2015 13:52:16 -1000</pubDate>
+    <lastBuildDate>Wed, 04 Feb 2015 13:52:16 -1000</lastBuildDate>
     <generator>Jekyll v2.3.0</generator>
-=======
-    <pubDate>Mon, 02 Feb 2015 23:56:17 -0700</pubDate>
-    <lastBuildDate>Mon, 02 Feb 2015 23:56:17 -0700</lastBuildDate>
-    <generator>Jekyll v2.4.0</generator>
->>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
     
       <item>
         <title>Welcome to Jekyll!</title>
@@ -33,7 +27,7 @@
 &lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://github.com/jekyll/jekyll-help&quot;&gt;Jekyll’s dedicated Help repository&lt;/a&gt;.&lt;/p&gt;
 
 </description>
-        <pubDate>Mon, 08 Sep 2014 05:29:19 -0600</pubDate>
+        <pubDate>Mon, 08 Sep 2014 01:29:19 -1000</pubDate>
         <link>http://uhero.github.io/jekyll/update/2014/09/08/welcome-to-jekyll.html</link>
         <guid isPermaLink="true">http://uhero.github.io/jekyll/update/2014/09/08/welcome-to-jekyll.html</guid>
         

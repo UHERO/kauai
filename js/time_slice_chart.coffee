@@ -327,14 +327,7 @@ window.cluster_these_series = (series_data) ->
   x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.2)
   x1 = d3.scale.ordinal()
   y = d3.scale.linear().range([height, 0])
-<<<<<<< HEAD
 
-  #uhero_color5 = d3.scale.ordinal().range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"])
-  #clustered_color = d3.scale.ordinal().range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"])
-
-=======
-  #uhero_color5 = d3.scale.ordinal().range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"])
->>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
   xAxis = d3.svg.axis().scale(x0).orient("bottom")
   yAxis = d3.svg.axis().scale(y).orient("right").tickFormat(d3.format(".2s"))
   #svg = d3.select("svg")
@@ -384,11 +377,7 @@ window.cluster_these_series = (series_data) ->
     .attr("x", (d) -> x1(d.name))
     .attr("y", (d) -> y(d3.max([0,d.value])))
     .attr("height", (d) -> Math.abs(y(0)-y(d.value)))
-<<<<<<< HEAD
-    .style("fill", (d) -> clustered_color(d.name))
-=======
     .style("fill", (d) -> uhero_color5(d.name))
->>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
 
   legend = svg.selectAll(".legend")
     .data(seriesNames.slice())
@@ -400,11 +389,7 @@ window.cluster_these_series = (series_data) ->
     .attr("x", width - 18)
     .attr("width", 18)
     .attr("height", 18)
-<<<<<<< HEAD
-    .style("fill", clustered_color)
-=======
     .style("fill", uhero_color5)
->>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
 
   legend.append("text")
     .attr("x", width - 24)
