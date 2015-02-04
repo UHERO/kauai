@@ -28,10 +28,14 @@ set_up_nav = () ->
     .attr("id", (d) -> d.key.replace(" ", "_"))
     .style("width", (d) -> d.value.width+"px")
     .text((d) -> d.value.title)
-    .on("click", (d) -> load_page(d.value, true))
+    .on("click", (d) -> load_page(d.value, true)) #click here to load a different page
 
 set_headline = (text) ->
   d3.select("#headline").text(text)
+  #dt: maybe this shouldn't be here, can move later:
+  d3.select("div#nav").selectAll("div.nav_link").style("background-color",null) #reset
+  current_nav_item = text.split(' ').join('_').toLowerCase()
+  d3.select("#"+current_nav_item).style("background-color","#ecffc7") #$neon_green
 
 set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()
@@ -47,16 +51,9 @@ set_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
     step: 1
     connect: true
 
-  #console.log("hi")
   $("#" + div_id).on "slide", slide_func
-  #console.log("there")
 
   d3.select("#" + div_id).datum(dates)
-  #d3.selectAll("#" + div_id + " a").data([1,2]).attr("slider", (d) -> 
-    #if d == 1  
-      #return "left" 
-    #if d == 2 
-      #return "right")
 
 set_single_slider_in_div = (div_id, dates, pos1, pos2, slide_func) ->
   d3.select("#" + div_id).remove()
@@ -111,8 +108,6 @@ clear_data_table = ->
   d3.selectAll("#series_display .category").remove()
   
 clear_sliders = ->
-  #set_slider_in_div "sparkline_slider_div", dates, 0, dates.length-1, trim_sparklines
-  #set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, trim_time_series
   set_slider_in_div "line_chart_slider_div", dates, 0, dates.length-1, left_slider_func
   set_single_slider_in_div "time_slice_slider_div", dates, 0, dates.length-1, redraw_slice
   set_single_slider_in_div "datatable_slider_div", dates, 0, dates.length-1, slide_table
@@ -125,16 +120,21 @@ clear_previous_page = ->
   # don't need to clear sliders because they already clear themselves. 
   # Possibly move that in here if it doesn't break things
 
-render_page = (page_data) ->
+render_page = (page_data, page_slug) ->
   clear_previous_page()
   #maybe fix sliders so they correspond to panel sizes
   console.log("render page at frequency: #{window.freq}")
   set_up_sliders(page_data.dates[window.freq])
 
   make_slice = false
+  window.pied = false
   for series_group in page_data.series_groups
     do (series_group) ->
       make_slice = true if series_group.series_list[0].children?
+  
+  if page_slug is 'major'
+    console.log 'major page here'
+    make_slice = true
   
   if make_slice
     # include pie_chart
@@ -151,13 +151,22 @@ render_page = (page_data) ->
     # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
     window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
     # identify the first series with children
-    window.pied = false
+    series_to_pie = []
+    # goes through each series group
     for series_group in page_data.series_groups
       do (series_group)->
-        if series_group.series_list[0].children? and window.pied == false
-          window.pie_these_series series_group.series_list[0].children
-          window.pied= true
-    #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
+        # and pies the first group
+        if page_slug isnt 'major'
+          if series_group.series_list[0].children? and window.pied == false
+            window.pie_these_series series_group.series_list[0].children
+            window.pied= true
+        else
+          # add series to be pied
+          for series in series_group.series_list
+            series_to_pie.push(series) if series.udaman_name in ['Y_RCY@KAU', 'VDAY@KAU', 'KPPRVRSD_R@KAU']
+    if page_slug is 'major'
+      window.pied = true
+      window.pie_these_series series_to_pie, true
   else
     # update css for sliders
     d3.select("#time_slice_slider_container").style("float", "right").style("margin-right", "20px").style("margin-bottom", "20px")
@@ -168,31 +177,7 @@ render_page = (page_data) ->
     create_data_table(page_data)
     set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
     
-    # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
     window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
-    # identify the first series with children
-    #window.pied = false
-    #for series_group in page_data.series_groups
-      #do (series_group)->
-        #if series_group.series_list[0].children? and window.pied == false
-          #window.pie_these_series series_group.series_list[0].children
-          #window.pied= true
-    #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
-
-  #set_up_dashboard_elements(dashboard_elements)
-  #create_data_table(page_data)
-  #set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
-  
-  ## add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
-  #window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
-  ## identify the first series with children
-  #window.pied = false
-  #for series_group in page_data.series_groups
-    #do (series_group)->
-      #if series_group.series_list[0].children? and window.pied == false
-        #window.pie_these_series series_group.series_list[0].children
-        #window.pied= true
-  #window.pie_these_series(page_data.series_groups[0].series_list[0].children)
   
 load_page = (data_category, use_default_freq) ->
   if use_default_freq
@@ -202,13 +187,20 @@ load_page = (data_category, use_default_freq) ->
     $("#freq_#{window.freq}").removeClass("enabled")
     $("#freq_#{window.freq}").addClass("selected")
   # this takes some time to load, so put in page loading graphic
-  console.log "slug: #{data_category.slug}"
-  console.log "title: #{data_category.title}"
+  #console.log "slug: #{data_category.slug}"
+  #console.log "title: #{data_category.title}"
   current_data_category = data_category
   window.load_page_data(data_category.slug, (data) ->
     set_headline(data_category.title)
-    render_page(data)
+    render_page(data, data_category.slug)
   )
+  #dt edit --- to manually gray out the options w/ no data:
+  # Personal Income Q/M, County Budget Q/M, Construction M
+  if data_category.title == "Personal Income" || data_category.title == "County Budget"
+    $("#freq_q").removeClass("enabled")
+    $("#freq_m").removeClass("enabled")
+  else if data_category.title == "Construction"
+    $("#freq_m").removeClass("enabled")
 
 #-------- main run code -------------  
 set_up_nav()
@@ -220,17 +212,23 @@ $("#freq_q").removeClass("enabled").addClass("selected")
 $("#frequency_controls span").on("click", () ->
     if $(this).hasClass("enabled")
       # grab the currently selected primary series and secondary series
-      #primary_series = window.primary_series if window.primary_series?
-      #secondary_series = window.secondary_series if window.secondary_series?
       $("#frequency_controls span.selected").removeClass("selected")
       window.freq = $(this).text().toLowerCase()
       load_page(current_data_category)
+
+      #--
+      ###
+      current_page = current_data_category.title
+      if current_page == "Visitor Industry"
+        console.log("TRUE")
+      else
+        console.log("FALSE")
+      ###
+      #--
+
       $("#frequency_controls span").addClass("enabled")
       $(this).removeClass("enabled")
       $(this).addClass("selected")
-      # set the currently selected primary series and secondary series
-      #window.set_primary_series(primary_series) if primary_series?
-      #window.set_secondary_series(secondary_series) if secondary_series?
 )
 
 # event listener for export link

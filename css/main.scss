@@ -6,9 +6,12 @@
 
 
 // Our variables
-$base-font-family: Helvetica, Arial, sans-serif;
+$base-font-family: Gotham, Helvetica, Arial, sans-serif;
 $base-font-size:   16px;
-$small-font-size:  $base-font-size * 0.875;
+$small-font-size:  $base-font-size * 0.875; // used for bootstrap resets (?)
+$smaller-font-size:$base-font-size * 0.75;
+$smallest-font-size:$base-font-size* 0.65; // p much used for pie_label's only
+$figure_label_font_size: $smallest-font-size;
 $base-line-height: 1.5;
 
 $spacing-unit:     30px;
@@ -19,13 +22,15 @@ $brand-color:      #2a7ae2;
 
 $grey-color:       #828282;
 $grey-color-light: lighten($grey-color, 40%);
-$grey-color-dark:  darken($grey-color, 25%);
+$grey-color-dark:  darken($grey-color, 25%); //instead of #5d5d5d, looks ok
 
 $on-palm:          600px;
 $on-laptop:        800px;
 
-$uhero_blue:        rgb(49, 130, 189);
+//$uhero_blue:        rgb(49, 130, 189);
+$uhero_blue:        #03627f; // old: rgb(54,130,153); //#368299
 $uhero_orange:      rgb(255, 152, 71);
+$neon_green:        #ecffc7;
 
 // Using media queries with like this:
 // @include media-query($palm) {
@@ -52,10 +57,10 @@ $uhero_orange:      rgb(255, 152, 71);
 
 .nav_link { 
   text-align:center; 
-  margin: 0 5px 0 0; 
-  padding: 5px 0; 
+  margin: 0 5px 0 0; // not sure if this does anything
+  padding: 5px 0; // not sure if this does anything
   background-color:#cccccc; 
-  color: #5d5d5d; 
+  color: $grey-color-dark; 
   text-transform:uppercase; 
   float:left; 
   font-size:11px; 
@@ -63,8 +68,8 @@ $uhero_orange:      rgb(255, 152, 71);
 }
 
 .nav_link:hover {
-	background-color: #c4def5;
-    color: #5d5d5d;
+	background-color: $neon_green;
+  color: $grey-color-dark;
 	cursor: pointer;
 }
 #dashboard { clear:both; }
@@ -84,25 +89,61 @@ $uhero_orange:      rgb(255, 152, 71);
 
 #source_links { clear: both; position:relative; top:50px; margin-top:100px; text-align:right; font-size:10px;}
 
-h2#headline { padding: 10px 0 0 0; }
+h2#headline { 
+  padding: 10px 0 0 0; 
+  text-transform: uppercase;
+  font-size: 20px;
+  font-weight: bold;
+  color: $uhero_blue;
+  box-shadow: // dt not sure if this works in all browsers. may fail gracefully anyway
+    0px 2px $uhero_blue,
+    0px 3px #fff,
+    0px 5px $uhero_orange;
+}
 
 /*********** Line Chart *****************/
 path.domain { fill:none; stroke: #777; stroke-width:1 }
 g.tick text { font-size: 10px; fill: #777}
 g.tick line {stroke: #777; stroke-width:1 }
 path.line_chart_path { fill:none; stroke-width:2}
-#left_axis_label { fill: rgb(255, 152, 71); stroke: rgb(255, 152, 71) }
+#left_axis_label { 
+  fill: rgb(255, 152, 71); 
+  stroke: rgb(255, 152, 71); 
+  text-transform: uppercase;
+  font-weight: normal;
+  font-size: $smallest-font-size;
+  } // can use var here?
 .s_left, path.line_chart_path.with_bar{ stroke: rgb(255, 152, 71) }
-#right_axis_label { fill: rgb(49, 130, 189); stroke: rgb(49, 130, 189) }
-.s_right { stroke: rgb(49, 130, 189) }
-.yoy { stroke: rgb(49, 130, 189); fill: rgb(49, 130, 189) }
-
+#right_axis_label { 
+  fill: $uhero_blue; 
+  stroke: $uhero_blue;
+  text-transform: uppercase;
+  font-weight: normal;
+  font-size: $smallest-font-size;
+}
+.s_right { stroke: rgb(49, 130, 189) } //dt what is this
+.yoy { 
+  stroke: $uhero_blue; //rgb(49, 130, 189); 
+  fill: $uhero_blue; //rgb(49, 130, 189);
+}
+#left_axis{
+}
+#right_axis{
+}
 
 
 /*********** Pie Chart Stuff *****************/
 #pie_chart_svg {overflow: visible}
-g#pie_chart_area text { pointer-events: none; stroke: black}
-
+g#pie_chart_area text { 
+  pointer-events: none; 
+  stroke: black;
+}
+.in_pie_label, .pie_label { //dt why are there two?
+  text-transform: uppercase;
+  font-size: $smallest-font-size; //dt might be too small
+  font-weight: 300;
+}
+text#slice_slider_selection {font-size: $figure_label_font_size; padding-top: 50px; border: 1px solid blue;}
 /*********** Treemap Stuff ******************/
 #pie_notes { font-size: 9px}
 g#pie_chart_area rect { stroke: white; stroke-width: 1}
@@ -111,10 +152,10 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
   width: 220px;
   height: auto;
   padding: 10px;
-  background-color: white;
+  //background-color: white;
   pointer-events: none;
-  background-color: rgb(49, 130, 189);
-  color: white
+  background-color: $neon_green;
+  color: $grey-color-dark;
 }
 
 #treemap_tooltip.hidden {
@@ -128,8 +169,8 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #treemap_tooltip p {
   margin: 0;
   /*font-family: sans-serif;*/
-  font-size: 16px;
-  line-height: 20px;
+  font-size: $smallest-font-size;
+  line-height: $smaller-font-size;
 }
 
 /*********** General Div Alignment *****************/
@@ -163,8 +204,12 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 
 #line_chart_slider_div { clear:both }
 
-.noUi-connect { background: rgb(49, 130, 189)}
-.noUi-handle::before, .noUi-handle::after { background: rgba(49, 130, 189, 0.5)}
+.noUi-connect { 
+  background: $uhero_blue; //rgb(49, 130, 189)
+}
+.noUi-handle::before, .noUi-handle::after { 
+  background: $uhero_blue; //rgba(49, 130, 189, 0.5)
+}
 /*********** Flextable Stuff *****************/
 
 // new styles
@@ -186,6 +231,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
     width: 99px;
     float: left;
     text-align: center;
+    padding-left: 10px; //to align under repositioned header
 }
 .ytd_cell span {
     display: block;
@@ -201,6 +247,10 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 }
 #frequency_controls {
     display: inline;
+    text-transform: uppercase;
+    font-size: $smallest-font-size;
+    color: $grey-color-dark;
+    font-weight: bolder;
 }
 #frequency_controls span.enabled {
     padding: 2px 5px;
@@ -213,8 +263,8 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 }
 #frequency_controls span.selected {
     padding: 2px 5px;
-    color: white;
-    background-color: $uhero_orange;
+    color: $uhero_blue;
+    background-color: $neon_green;
     font-weight: bolder;
 }
 #export, #reset {
@@ -223,6 +273,8 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
     font-weight: bolder;
     cursor: pointer;
     float: right;
+    font-size: $smallest-font-size;
+    text-transform: uppercase;
 }
 #export:hover, #reset:hover {
     border-bottom: 2px solid $uhero_blue;
@@ -231,8 +283,19 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
     margin-top: 380px;
 }
 
+/* Sparkline Row stuff */
+
 .category { clear:both;}
-.cat_label { cursor:pointer; border-bottom:2px solid rgb(49, 130, 189)}
+.cat_label { 
+  cursor:pointer; 
+  border-bottom:2px solid $uhero_blue;
+  text-transform: uppercase;
+  font-size: $small-font-size;
+  //letter-spacing: 1px;
+  //font-kerning: auto;
+  font-weight: bold;
+  color: $uhero_blue;
+}
 #category_header { width:150px; }
 
 .series_label, .sparkline, .selected_value, .selected_perc,
@@ -246,19 +309,26 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
     /*width:450px; text-align:center;*/ 
     font-size:10px; 
     overflow:hidden;
-    border-left: 1px solid white;
+    text-transform: uppercase;
+    font-weight: bolder; //seems to have weird results normal/bold/bolder
+    //letter-spacing: 1px;
+    //border-left: 1px solid white;
+    border-bottom: 1px dashed rgba(54,130,153,.3);
 }
 
 .series_label, #series_header { 
   width: 180px; 
 }
 .series.selected { 
-    border-left: 1px solid rgb(49, 130, 189);
-    background-color: #F0F0F0
+    //border-left: 1px solid rgb(49, 130, 189);
+    background-color: $neon_green;
 }
 .series.hovered  { 
-    border-left: 1px solid rgb(107, 174, 214);
-    background-color: #EEE;
+    //border-left: 1px solid rgb(107, 174, 214);
+    background-color: $neon_green;
+}
+.series:collapsed {
+  border: 0px;
 }
 
 .series_label {padding-left: 20px; padding-top: 1em; line-height: 1em}
@@ -268,36 +338,63 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #datatable_header { width: 270px; overflow:hidden; height:100%; margin-left: 10px;}
 .data_cols { width: 270px; overflow:hidden; height:100%}
 .container { height:100%; }
-.cell { float: left; height:100%; border:0px solid red; width:50px; text-align:center }
+.cell { 
+  float: left; 
+  height:100%; 
+  //border:0px solid red; 
+  border-left: 1px dashed rgba(54,130,153,.3);
+  //border-right: 1px dashed rgba(54,130,153,.3);
+  width:50px; 
+  text-align:center;
+}
 
 .sparkline, #sparkline_header { width:150px; }
 .selected_value, #level_header { width:70px; }
 .selected_perc, #yoy_header { width: 40px; }
 
-#line_left_header { width: 40px }
-#ytd_header { width: 90px }
+#line_left_header { width: 60px;}
+#ytd_header { width: 70px }
 #pie_header { width: 40px }
+#pie_heading { //dt had to add this, might need to change to "pie_header" in d3 code
+  fill: $uhero_blue; 
+  stroke: $uhero_blue; 
+  text-transform: uppercase;
+  font-weight: bolder;
+  font-size: $smallest-font-size;
+}
 .left_toggle, .right_toggle { 
     width: 40px; 
     text-align:center; 
-    font-size:20px; 
+    font-size:14px; // glyphicon size
     line-height:45px; 
     cursor:pointer; 
     /*margin-right:50px;*/
 }
+.series .glyphicon {
+  color: rgba(54,130,153,.3);
+}
 
 #sparkline_header {font-weight:bold; font-size:11px;}
-#table_header { height: 48px; text-align:center; font-size:11px;}
+#table_header { height: 48px; text-align:center; font-size:10px; text-transform: uppercase;}
 
 #series_display h3{position: relative; bottom:40px}
 #buttons a { text-decoration:none;}
 #geo, #freq { float:left; margin-top:10px;}
 #geo { width :300px; }
 #freq {width :100px; }
-#date_series_left{ font-size:12px; position:absolute; top:-20px; left:-20px}
-#date_series_right{font-size:12px; position:absolute; top:-20px; left:345px}
+#date_series_left{ font-size:12px; position:absolute; top:-20px; left:-20px} // exists?
+#date_series_right{font-size:12px; position:absolute; top:-20px; left:345px} // exists?
 #date_table{font-size:12px; position:absolute; top:-20px; left:700px}
-#date_line_left{ font-size:12px; position:relative; float:left}
-#date_line_right{font-size:12px; position:relative; float:right}
 
+#date_line_left{ font-size: $figure_label_font_size; position:relative; float:left}
+#date_line_right{font-size: $figure_label_font_size; position:relative; float:right}
 
+/* Clustered bar chart */
+.clustered_bar_legend {
+  font-size: 0.7em;
+}
+
+/****** Regular link recoloring (for footer items mainly) ********/
+a, a:active, a:visited, a:hover {
+  color: $uhero_blue;
+}
