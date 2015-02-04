@@ -563,7 +563,11 @@ g#pie_chart_area text {
   font-weight: 300; }
 
 text#slice_slider_selection {
+<<<<<<< HEAD
   font-size: 10.4px;
+=======
+  font-size: 12px;
+>>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
   padding-top: 50px;
   border: 1px solid blue; }
 

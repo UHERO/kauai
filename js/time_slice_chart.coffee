@@ -182,7 +182,7 @@ window.pie_these_series = (series_data, cluster = false) ->
         .enter()
         .append("path")
         .attr("d", pie_arc)
-        .attr("fill", (d) -> color(d.data.display_name))
+        .attr("fill", (d) -> uhero_color5(d.data.display_name))
         .attr("stroke", "white")
         .attr("stroke-width", 2)
         .on("mouseover", mouseover_pie)
@@ -228,7 +228,6 @@ window.pie_these_series = (series_data, cluster = false) ->
       pie_notes.append("tspan").attr("dy", 0).text("The area of each box represents the number of jobs in each category.")
       pie_notes.append("tspan").attr("dy", 10).text("Colors indicate top-level categories (e.g., Total Government Jobs).").attr("x", 0)
     d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series.parent").first().next()).datum().units + ")")
-
 
 treemap_mousemove = (d) ->
   xPosition = d3.event.pageX + 5
@@ -328,10 +327,14 @@ window.cluster_these_series = (series_data) ->
   x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.2)
   x1 = d3.scale.ordinal()
   y = d3.scale.linear().range([height, 0])
+<<<<<<< HEAD
 
   #uhero_color5 = d3.scale.ordinal().range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"])
   #clustered_color = d3.scale.ordinal().range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"])
 
+=======
+  #uhero_color5 = d3.scale.ordinal().range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"])
+>>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
   xAxis = d3.svg.axis().scale(x0).orient("bottom")
   yAxis = d3.svg.axis().scale(y).orient("right").tickFormat(d3.format(".2s"))
   #svg = d3.select("svg")
@@ -381,7 +384,11 @@ window.cluster_these_series = (series_data) ->
     .attr("x", (d) -> x1(d.name))
     .attr("y", (d) -> y(d3.max([0,d.value])))
     .attr("height", (d) -> Math.abs(y(0)-y(d.value)))
+<<<<<<< HEAD
     .style("fill", (d) -> clustered_color(d.name))
+=======
+    .style("fill", (d) -> uhero_color5(d.name))
+>>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
 
   legend = svg.selectAll(".legend")
     .data(seriesNames.slice())
@@ -393,7 +400,11 @@ window.cluster_these_series = (series_data) ->
     .attr("x", width - 18)
     .attr("width", 18)
     .attr("height", 18)
+<<<<<<< HEAD
     .style("fill", clustered_color)
+=======
+    .style("fill", uhero_color5)
+>>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
 
   legend.append("text")
     .attr("x", width - 24)
@@ -452,7 +463,7 @@ window.update_clustered_chart = (slider_val) ->
     .attr("x", (d) -> x1(d.name))
     .attr("y", (d) -> y(d3.max([0,d.value])))
     .attr("height", (d) -> Math.abs(y(0)-y(d.value)))
-    .style("fill", (d) -> clustered_color(d.name))
+    .style("fill", (d) -> uhero_color5(d.name))
   console.log series.exit().remove()
 
   # clear legend and recreate it
@@ -467,7 +478,7 @@ window.update_clustered_chart = (slider_val) ->
     .attr("x", width - 18)
     .attr("width", 18)
     .attr("height", 18)
-    .style("fill", clustered_color)
+    .style("fill", uhero_color5)
 
   legend.append("text")
     .attr("x", width - 24)

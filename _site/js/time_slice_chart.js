@@ -1,5 +1,9 @@
 (function() {
+<<<<<<< HEAD
   var all_clustered_data, all_dates, chart_area, clustered_color, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_data, selected_date, selected_dates, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props, uhero_color10, uhero_color5, x, x0, x1, y;
+=======
+  var all_clustered_data, all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_data, selected_date, selected_dates, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props, uhero_color10, uhero_color5, x, x0, x1, y;
+>>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
 
   window.slice_type = "pie";
 
@@ -190,7 +194,11 @@
         chart_area.selectAll("path").data(pie_layout(series_data), function(d) {
           return d.data.display_name;
         }).enter().append("path").attr("d", pie_arc).attr("fill", function(d) {
+<<<<<<< HEAD
           return color(d.data.display_name);
+=======
+          return uhero_color5(d.data.display_name);
+>>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
         }).attr("stroke", "white").attr("stroke-width", 2).on("mouseover", mouseover_pie).on("mouseout", mouseout_pie);
         chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
           return "translate( " + (pie_arc.centroid(d)) + " )";
@@ -342,12 +350,20 @@
     }).attr("height", function(d) {
       return Math.abs(y(0) - y(d.value));
     }).style("fill", function(d) {
+<<<<<<< HEAD
       return clustered_color(d.name);
+=======
+      return uhero_color5(d.name);
+>>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
     });
     legend = svg.selectAll(".legend").data(seriesNames.slice()).enter().append("g").attr("class", "legend").attr("transform", function(d, i) {
       return "translate(-10," + i * 20 + ")";
     });
+<<<<<<< HEAD
     legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", clustered_color);
+=======
+    legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", uhero_color5);
+>>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
     return legend.append("text").attr("x", width - 24).attr("y", 9).attr("dy", ".35em").classed("clustered_bar_legend", true).style("text-anchor", "end").text(function(d) {
       return d;
     });
@@ -382,14 +398,22 @@
     }).attr("height", function(d) {
       return Math.abs(y(0) - y(d.value));
     }).style("fill", function(d) {
+<<<<<<< HEAD
       return clustered_color(d.name);
+=======
+      return uhero_color5(d.name);
+>>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
     });
     console.log(series.exit().remove());
     svg.selectAll(".legend").remove();
     legend = svg.selectAll(".legend").data(seriesNames.slice()).enter().append("g").attr("class", "legend").attr("transform", function(d, i) {
       return "translate(-10," + i * 20 + ")";
     });
+<<<<<<< HEAD
     legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", clustered_color);
+=======
+    legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", uhero_color5);
+>>>>>>> c12852dea0c4b48ccbbc18f09bda07e92aea5dc0
     return legend.append("text").attr("x", width - 24).attr("y", 9).attr("dy", ".35em").classed("clustered_bar_legend", true).style("text-anchor", "end").text(function(d) {
       return d;
     });
