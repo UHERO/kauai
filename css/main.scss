@@ -11,7 +11,7 @@ $base-font-size:   16px;
 $small-font-size:  $base-font-size * 0.875; // used for bootstrap resets (?)
 $smaller-font-size:$base-font-size * 0.75;
 $smallest-font-size:$base-font-size* 0.65; // p much used for pie_label's only
-$figure_label_font_size: 12px;
+$figure_label_font_size: $smallest-font-size;
 $base-line-height: 1.5;
 
 $spacing-unit:     30px;
@@ -110,16 +110,16 @@ path.line_chart_path { fill:none; stroke-width:2}
   fill: rgb(255, 152, 71); 
   stroke: rgb(255, 152, 71); 
   text-transform: uppercase;
-  font-weight: bolder;
-  font-size: $small-font-size;
+  font-weight: normal;
+  font-size: $smallest-font-size;
   } // can use var here?
 .s_left, path.line_chart_path.with_bar{ stroke: rgb(255, 152, 71) }
 #right_axis_label { 
   fill: $uhero_blue; 
   stroke: $uhero_blue;
   text-transform: uppercase;
-  font-weight: bolder;
-  font-size: $small-font-size;
+  font-weight: normal;
+  font-size: $smallest-font-size;
 }
 .s_right { stroke: rgb(49, 130, 189) } //dt what is this
 .yoy { 
@@ -360,7 +360,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
   stroke: $uhero_blue; 
   text-transform: uppercase;
   font-weight: bolder;
-  font-size: $small-font-size;
+  font-size: $smallest-font-size;
 }
 .left_toggle, .right_toggle { 
     width: 40px; 

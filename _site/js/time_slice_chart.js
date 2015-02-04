@@ -1,5 +1,5 @@
 (function() {
-  var all_clustered_data, all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_data, selected_date, selected_dates, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props, uhero_color10, uhero_color5, x, x0, x1, y;
+  var all_clustered_data, all_dates, chart_area, clustered_color, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_data, selected_date, selected_dates, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props, uhero_color10, uhero_color5, x, x0, x1, y;
 
   window.slice_type = "pie";
 
@@ -29,6 +29,8 @@
   uhero_color5 = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579fb3", "#88c2d3"]);
 
   uhero_color10 = d3.scale.ordinal().range(["#03627F", "#1C718B", "#358198", "#4E91A5", "#67A0B2", "#81B0BF", "#9AC0CB", "#B3CFD8", "#CCDFE5", "#E5EFF2"]);
+
+  clustered_color = d3.scale.ordinal().range(["#03627F", "#1C718B", "#358198", "#4E91A5", "#67A0B2", "#81B0BF", "#9AC0CB", "#B3CFD8", "#CCDFE5", "#E5EFF2"]);
 
   window.treemap_layout = d3.layout.treemap().size([300, 200]).sticky(true).value(function(d) {
     return d[freq].data[slider_val];
@@ -188,7 +190,7 @@
         chart_area.selectAll("path").data(pie_layout(series_data), function(d) {
           return d.data.display_name;
         }).enter().append("path").attr("d", pie_arc).attr("fill", function(d) {
-          return uhero_color5(d.data.display_name);
+          return clustered_color(d.data.display_name);
         }).attr("stroke", "white").attr("stroke-width", 2).on("mouseover", mouseover_pie).on("mouseout", mouseout_pie);
         chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
           return "translate( " + (pie_arc.centroid(d)) + " )";
@@ -340,12 +342,12 @@
     }).attr("height", function(d) {
       return Math.abs(y(0) - y(d.value));
     }).style("fill", function(d) {
-      return uhero_color5(d.name);
+      return clustered_color(d.name);
     });
     legend = svg.selectAll(".legend").data(seriesNames.slice()).enter().append("g").attr("class", "legend").attr("transform", function(d, i) {
       return "translate(-10," + i * 20 + ")";
     });
-    legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", uhero_color5);
+    legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", clustered_color);
     return legend.append("text").attr("x", width - 24).attr("y", 9).attr("dy", ".35em").classed("clustered_bar_legend", true).style("text-anchor", "end").text(function(d) {
       return d;
     });
@@ -387,7 +389,7 @@
     legend = svg.selectAll(".legend").data(seriesNames.slice()).enter().append("g").attr("class", "legend").attr("transform", function(d, i) {
       return "translate(-10," + i * 20 + ")";
     });
-    legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", uhero_color5);
+    legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", clustered_color);
     return legend.append("text").attr("x", width - 24).attr("y", 9).attr("dy", ".35em").classed("clustered_bar_legend", true).style("text-anchor", "end").text(function(d) {
       return d;
     });
