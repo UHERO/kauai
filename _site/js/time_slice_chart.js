@@ -342,12 +342,12 @@
     }).attr("height", function(d) {
       return Math.abs(y(0) - y(d.value));
     }).style("fill", function(d) {
-      return clustered_color(d.name);
+      return uhero_color5(d.name);
     });
     legend = svg.selectAll(".legend").data(seriesNames.slice()).enter().append("g").attr("class", "legend").attr("transform", function(d, i) {
       return "translate(-10," + i * 20 + ")";
     });
-    legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", clustered_color);
+    legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", uhero_color5);
     return legend.append("text").attr("x", width - 24).attr("y", 9).attr("dy", ".35em").classed("clustered_bar_legend", true).style("text-anchor", "end").text(function(d) {
       return d;
     });

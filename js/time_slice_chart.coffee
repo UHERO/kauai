@@ -378,7 +378,7 @@ window.cluster_these_series = (series_data) ->
     .attr("x", (d) -> x1(d.name))
     .attr("y", (d) -> y(d3.max([0,d.value])))
     .attr("height", (d) -> Math.abs(y(0)-y(d.value)))
-    .style("fill", (d) -> clustered_color(d.name))
+    .style("fill", (d) -> uhero_color5(d.name))
 
   legend = svg.selectAll(".legend")
     .data(seriesNames.slice())
@@ -390,7 +390,7 @@ window.cluster_these_series = (series_data) ->
     .attr("x", width - 18)
     .attr("width", 18)
     .attr("height", 18)
-    .style("fill", clustered_color)
+    .style("fill", uhero_color5)
 
   legend.append("text")
     .attr("x", width - 24)
