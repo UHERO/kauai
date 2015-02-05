@@ -242,7 +242,7 @@ window.multi_line_to_line_and_bar = (d) ->
   window.mode = "line_bar"
 
   # update right axis label
-  d3.select("#right_axis_label").text("YOY%")
+  d3.select("#right_axis_label").text("%Change")
     
 window.clear_from_line_chart = (d) ->
   path = s_path d.udaman_name
@@ -278,7 +278,7 @@ window.display_line_and_bar_chart = (d) ->
 
   # update left and right axis labels
   d3.select("#left_axis_label").text("#{d.display_name} (#{d.units})")
-  d3.select("#right_axis_label").text("YOY%")
+  d3.select("#right_axis_label").text("%Change")
     
 window.add_to_line_chart = (d, axis) ->
   duration = 500

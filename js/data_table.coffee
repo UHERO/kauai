@@ -283,7 +283,7 @@ populate_dates = ->
   dates.enter()
     .append("div")
     .attr("class", "header_cell")
-  dates.html((d) -> "#{d}<br/>YOY%")
+  dates.html((d) -> "#{d}<br/>%Change")
   dates.exit().remove()
     
 create_ytd_column = (cat_series) ->
