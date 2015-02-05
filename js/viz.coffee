@@ -202,6 +202,18 @@ load_page = (data_category, use_default_freq) ->
   else if data_category.title == "Construction"
     $("#freq_m").removeClass("enabled")
 
+  #dt edit -- to add data sources based on page. Hides div unless on target page.
+  #There's prob a better way to do this
+  d3.selectAll("#data_sources").selectAll("div").style("visibility","hidden").style("height",0)
+
+  switch data_category.title
+    when "Major Indicators" then d3.select("#data_source_maj").style("visibility","visible").style("height","auto")
+    when "Visitor Industry" then d3.select("#data_source_vis").style("visibility","visible").style("height","auto")
+    when "Labor Market" then d3.select("#data_source_lab").style("visibility","visible").style("height","auto")
+    when "Personal Income" then d3.select("#data_source_per").style("visibility","visible").style("height","auto")
+    when "Construction" then d3.select("#data_source_con").style("visibility","visible").style("height","auto")
+    when "County Budget" then d3.select("#data_source_bud").style("visibility","visible").style("height","auto")
+
 #-------- main run code -------------  
 set_up_nav()
 load_page(data_categories["major indicators"])
