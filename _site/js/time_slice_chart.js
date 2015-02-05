@@ -30,6 +30,8 @@
 
   uhero_color10 = d3.scale.ordinal().range(["#03627F", "#1C718B", "#358198", "#4E91A5", "#67A0B2", "#81B0BF", "#9AC0CB", "#B3CFD8", "#CCDFE5", "#E5EFF2"]);
 
+  clustered_color = d3.scale.ordinal().range(["#3182bd", "#6baed6", "#9ecae1"]);
+
   clustered_color = d3.scale.ordinal().range(["#03627F", "#1C718B", "#358198", "#4E91A5", "#67A0B2", "#81B0BF", "#9AC0CB", "#B3CFD8", "#CCDFE5", "#E5EFF2"]);
 
   window.treemap_layout = d3.layout.treemap().size([300, 200]).sticky(true).value(function(d) {

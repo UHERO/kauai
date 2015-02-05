@@ -17,6 +17,8 @@ treemap_props =
 color = d3.scale.category20c() #dt -- not using default scale anymore (might remove)
 uhero_color5 = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579fb3", "#88c2d3"]) #can define domain later?? D:
 uhero_color10 = d3.scale.ordinal().range(["#03627F","#1C718B","#358198","#4E91A5","#67A0B2","#81B0BF","#9AC0CB","#B3CFD8","#CCDFE5","#E5EFF2"])
+clustered_color = d3.scale.ordinal().range(["#3182bd", "#6baed6", "#9ecae1"])
+
 
 #clustered_color = d3.scale.ordinal().range(["#3182bd", "#6baed6", "#9ecae1"])
 clustered_color = d3.scale.ordinal().range(["#03627F","#1C718B","#358198","#4E91A5","#67A0B2","#81B0BF","#9AC0CB","#B3CFD8","#CCDFE5","#E5EFF2"])
