@@ -328,6 +328,7 @@ window.cluster_these_series = (series_data) ->
   height = (svg.attr('height') - 30) #to match axis of opposite graph
   x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.2)
   x1 = d3.scale.ordinal()
+  console.log("height" + height)
   y = d3.scale.linear().range([height, 0])
 
   xAxis = d3.svg.axis().scale(x0).orient("bottom")
@@ -341,11 +342,11 @@ window.cluster_these_series = (series_data) ->
   # remap data
   data = selected_data series_data
   seriesNames = ["Real Personal Income", "Total Visitor Days", "Total Non-farm Payrolls"] #have to match series names
-  x0.domain(data.map((d) -> d.period)) #years
+  x0.domain(data.map((d) -> d.period)) #years (x-axis)
   x1.domain(seriesNames).rangeRoundBands([0, x0.rangeBand()])
   #y.domain([d3.min(data, function(d) { return d3.min(d.series, function(d) { return d.value; }); }),
   #          d3.max(data, function(d) { return d3.max(d.series, function(d) { return d.value; }); })]);
-  y.domain([-100,100])
+  y.domain([-80,80]) #y-axis scale
 
   #svg = set_up_svg(container)
   svg.append("g")

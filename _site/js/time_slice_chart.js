@@ -318,6 +318,7 @@
     height = svg.attr('height') - 30;
     x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.2);
     x1 = d3.scale.ordinal();
+    console.log("height" + height);
     y = d3.scale.linear().range([height, 0]);
     xAxis = d3.svg.axis().scale(x0).orient("bottom");
     yAxis = d3.svg.axis().scale(y).orient("right").tickFormat(d3.format(".2s"));
@@ -327,7 +328,7 @@
       return d.period;
     }));
     x1.domain(seriesNames).rangeRoundBands([0, x0.rangeBand()]);
-    y.domain([-100, 100]);
+    y.domain([-80, 80]);
     svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + (height + 30) + ")").call(xAxis);
     svg.append("text").text("Growth Rate").attr("y", 20).attr("x", width / 2).attr("id", "cluster_heading").style("text-anchor", "middle");
     svg.append("g").attr("class", "y axis").attr("transform", "translate(" + width + ", 30)").call(yAxis);
