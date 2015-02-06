@@ -469,7 +469,7 @@
     }).attr("state", "expanded").html(function(d) {
       return "<span class='glyphicon glyphicon-minus'></span> " + (d.group_name.replace('Total ', ''));
     }).on("mouseover", function(d) {
-      return d3.select(this).style("background-color", "#999");
+      return d3.select(this).style("background-color", "#ecffc7");
     }).on("mouseout", function(d) {
       return d3.selectAll('.cat_label').style("background-color", "#FFF");
     }).on("click", click_cat);

@@ -179,8 +179,6 @@
     set_slider_dates(data_extent);
     chart_area.selectAll("path").remove();
     if (cluster) {
-      console.log("HEY");
-      console.log(series_data);
       return window.cluster_these_series(series_data);
     } else {
       sorted_array = pie_layout(series_data).sort(function(a, b) {

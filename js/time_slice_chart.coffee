@@ -171,9 +171,7 @@ window.pie_these_series = (series_data, cluster = false) ->
   set_slider_dates(data_extent)
   chart_area.selectAll("path").remove()
 
-  if cluster #dt this is not being entered at first page load
-    console.log "HEY"
-    console.log series_data #dt remove
+  if cluster
     window.cluster_these_series(series_data)
   else
     sorted_array = pie_layout(series_data).sort((a,b) -> a.value - b.value)

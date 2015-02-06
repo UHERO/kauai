@@ -196,7 +196,7 @@ load_page = (data_category, use_default_freq) ->
   )
   #dt edit --- to manually gray out the options w/ no data:
   # Personal Income Q/M, County Budget Q/M, Construction M
-  if data_category.title == "Personal Income" || data_category.title == "County Budget"
+  if data_category.title == "Personal Income" || data_category.title == "County Budget" || data_category.title == "Major Indicators"
     $("#freq_q").removeClass("enabled")
     $("#freq_m").removeClass("enabled")
   else if data_category.title == "Construction"

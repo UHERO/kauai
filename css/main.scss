@@ -121,7 +121,7 @@ path.line_chart_path { fill:none; stroke-width:2}
   font-weight: normal;
   font-size: $smallest-font-size;
 }
-.s_right { stroke: rgb(49, 130, 189) } //dt what is this
+.s_right { stroke: $uhero_blue; } // additional line graph paths
 .yoy { 
   stroke: $uhero_blue; //rgb(49, 130, 189); 
   fill: $uhero_blue; //rgb(49, 130, 189);

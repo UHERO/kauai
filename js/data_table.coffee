@@ -425,7 +425,7 @@ window.create_data_table = (page_data)->
     .attr("state", "expanded")
     .html((d) ->
       "<span class='glyphicon glyphicon-minus'></span> #{d.group_name.replace('Total ','')}")
-    .on("mouseover", (d) -> d3.select(this).style "background-color", "#999")
+    .on("mouseover", (d) -> d3.select(this).style "background-color", "#ecffc7")
     .on("mouseout", (d) -> d3.selectAll('.cat_label').style "background-color", "#FFF")
     .on("click", click_cat)
      
