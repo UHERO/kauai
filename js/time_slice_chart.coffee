@@ -102,7 +102,7 @@ get_data_index_extent = (data) ->
   [start_i,end_i]
   
 get_common_dates = (series_data) ->
-  console.log series_data
+  #console.log series_data #dt uncomment
   arr = series_data.map((series) -> get_data_index_extent series[freq].data)
   [d3.max(arr.map((d)-> d[0])), d3.min(arr.map((d)-> d[1]))]
   
@@ -166,11 +166,14 @@ window.pie_these_series = (series_data, cluster = false) ->
       window.slice_type = "treemap"
     else
       window.slice_type = "pie"
+
   data_extent = get_common_dates(series_data)
   set_slider_dates(data_extent)
   chart_area.selectAll("path").remove()
 
-  if cluster
+  if cluster #dt this is not being entered at first page load
+    console.log "HEY"
+    console.log series_data #dt remove
     window.cluster_these_series(series_data)
   else
     sorted_array = pie_layout(series_data).sort((a,b) -> a.value - b.value)
@@ -312,7 +315,7 @@ selected_data = (d) ->
 window.cluster_these_series = (series_data) ->
   all_clustered_data = series_data
   #x0.rangeRoundBands([0, svg.attr("width")], .1)
-  console.log series_data
+  #console.log series_data
   console.log 'selected_dates'
   console.log selected_dates()
   #console.log(selected_data series for series in series_data)

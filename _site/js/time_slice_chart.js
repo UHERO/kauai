@@ -118,7 +118,6 @@
 
   get_common_dates = function(series_data) {
     var arr;
-    console.log(series_data);
     arr = series_data.map(function(series) {
       return get_data_index_extent(series[freq].data);
     });
@@ -180,6 +179,8 @@
     set_slider_dates(data_extent);
     chart_area.selectAll("path").remove();
     if (cluster) {
+      console.log("HEY");
+      console.log(series_data);
       return window.cluster_these_series(series_data);
     } else {
       sorted_array = pie_layout(series_data).sort(function(a, b) {
@@ -311,7 +312,6 @@
   window.cluster_these_series = function(series_data) {
     var data, height, legend, period, seriesNames, width, xAxis, yAxis;
     all_clustered_data = series_data;
-    console.log(series_data);
     console.log('selected_dates');
     console.log(selected_dates());
     width = svg.attr('width');

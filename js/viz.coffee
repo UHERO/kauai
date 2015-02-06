@@ -216,7 +216,7 @@ load_page = (data_category, use_default_freq) ->
 
 #-------- main run code -------------  
 set_up_nav()
-load_page(data_categories["major indicators"])
+load_page(data_categories["visitor industry"])
 $("#frequency_controls span").addClass("enabled")
 $("#freq_q").removeClass("enabled").addClass("selected")
 
