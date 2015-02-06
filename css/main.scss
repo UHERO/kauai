@@ -107,16 +107,16 @@ g.tick text { font-size: 10px; fill: #777}
 g.tick line {stroke: #777; stroke-width:1 }
 path.line_chart_path { fill:none; stroke-width:2}
 #left_axis_label { 
-  fill: rgb(255, 152, 71); 
-  stroke: rgb(255, 152, 71); 
+  fill: $uhero_orange; 
+  //stroke: rgb(255, 152, 71); this makes it bold
   text-transform: uppercase;
   font-weight: normal;
   font-size: $smallest-font-size;
   } // can use var here?
-.s_left, path.line_chart_path.with_bar{ stroke: rgb(255, 152, 71) }
+.s_left, path.line_chart_path.with_bar{ stroke: $uhero_orange }
 #right_axis_label { 
   fill: $uhero_blue; 
-  stroke: $uhero_blue;
+  //stroke: $uhero_blue; this makes it bold
   text-transform: uppercase;
   font-weight: normal;
   font-size: $smallest-font-size;
@@ -356,10 +356,8 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #ytd_header { width: 70px }
 #pie_header { width: 40px }
 #pie_heading { //dt had to add this, might need to change to "pie_header" in d3 code
-  fill: $uhero_blue; 
-  stroke: $uhero_blue; 
+  fill: $uhero_blue;
   text-transform: uppercase;
-  font-weight: bolder;
   font-size: $smallest-font-size;
 }
 .left_toggle, .right_toggle { 
@@ -376,6 +374,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 
 #sparkline_header {font-weight:bold; font-size:11px;}
 #table_header { height: 48px; text-align:center; font-size:10px; text-transform: uppercase;}
+.pct_change {font-size: 8px;} // %change labels in table header
 
 #series_display h3{position: relative; bottom:40px}
 #buttons a { text-decoration:none;}
@@ -391,7 +390,13 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 
 /* Clustered bar chart */
 .clustered_bar_legend {
-  font-size: 0.7em;
+  font-size: $smallest-font-size;
+}
+
+#cluster_heading {
+  fill: $uhero_blue;
+  text-transform: uppercase;
+  font-size: $smallest-font-size;
 }
 
 /****** Regular link recoloring (for footer items mainly) ********/

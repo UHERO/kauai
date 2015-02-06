@@ -19,6 +19,7 @@ uhero_color5 = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579f
 uhero_color10 = d3.scale.ordinal().range(["#03627F","#1C718B","#358198","#4E91A5","#67A0B2","#81B0BF","#9AC0CB","#B3CFD8","#CCDFE5","#E5EFF2"])
 #clustered_color = d3.scale.ordinal().range(["#3182bd", "#6baed6", "#9ecae1"])
 clustered_color = uhero_color5
+clustered_color3 = d3.scale.ordinal().range(["#0e5a70", "#4E91A5", "#9AC0CB"])
 
 window.treemap_layout = d3.layout.treemap()
   .size([300, 200])
@@ -324,7 +325,7 @@ window.cluster_these_series = (series_data) ->
   #width = 396 - margin.left - margin.right
   #height = 189 - margin.top - margin.bottom
   width = svg.attr('width')
-  height = svg.attr('height')
+  height = (svg.attr('height') - 30) #to match axis of opposite graph
   x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.2)
   x1 = d3.scale.ordinal()
   y = d3.scale.linear().range([height, 0])
@@ -349,26 +350,38 @@ window.cluster_these_series = (series_data) ->
   #svg = set_up_svg(container)
   svg.append("g")
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(0," + (height+30) + ")")
     .call(xAxis)
+
+  svg.append("text") #appended title separately to move it above graph
+    .text("Growth Rate")
+    .attr("y", 20)
+    #.attr("dy", ".71em")
+    .attr("x",(width/2))
+    .attr("id","cluster_heading")
+    .style("text-anchor", "middle") #text-align
 
   svg.append("g")
     .attr("class", "y axis")
-    .attr("transform", "translate(" + width + ", 0)")
+    .attr("transform", "translate(" + width + ", 30)")
     .call(yAxis)
+    ###
     .append("text")
     #.attr("transform", "translate(-10, 0)")
-    .attr("transform", "rotate(-90), translate(0, 30)")
-    .attr("y", 6)
-    .attr("dy", ".71em")
-    .style("text-anchor", "end")
+    #.attr("transform", "rotate(-90), translate(0, 30)")
+    .attr("y", 20)
+    #.attr("dy", ".71em")
+    .attr("x",-(width/2))
+    .attr("id","cluster_heading")
+    .style("text-anchor", "middle") #text-align
     .text("Growth Rate")
+    ###
 
   period = svg.selectAll(".period")
     .data(data)
     .enter().append("g")
     .attr("class", "g")
-    .attr("transform", (d) -> "translate(" + x0(d.period) + ",0)")
+    .attr("transform", (d) -> "translate(" + x0(d.period) + ",30)")
 
   period.selectAll("rect")
     .data((d) -> d.series)
@@ -378,7 +391,7 @@ window.cluster_these_series = (series_data) ->
     .attr("x", (d) -> x1(d.name))
     .attr("y", (d) -> y(d3.max([0,d.value])))
     .attr("height", (d) -> Math.abs(y(0)-y(d.value)))
-    .style("fill", (d) -> uhero_color5(d.name))
+    .style("fill", (d) -> clustered_color3(d.name))
 
   legend = svg.selectAll(".legend")
     .data(seriesNames.slice())
@@ -388,13 +401,14 @@ window.cluster_these_series = (series_data) ->
 
   legend.append("rect")
     .attr("x", width - 18)
+    .attr("y", 39)
     .attr("width", 18)
     .attr("height", 18)
-    .style("fill", uhero_color5)
+    .style("fill", clustered_color3)
 
   legend.append("text")
     .attr("x", width - 24)
-    .attr("y", 9)
+    .attr("y", 47) #dt
     .attr("dy", ".35em")
     .classed("clustered_bar_legend", true)
     .style("text-anchor", "end")
@@ -427,7 +441,7 @@ window.update_clustered_chart = (slider_val) ->
   x0.domain(data.map((d) -> d.period))
   xAxis = d3.svg.axis().scale(x0).orient("bottom")
   svg.selectAll(".x.axis")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(0," + (height+30) + ")") #not sure if need height adjust here
     .call(xAxis)
 
   # remove old bars
@@ -438,7 +452,7 @@ window.update_clustered_chart = (slider_val) ->
     .data(data)
   period.enter().append("g")
     #.attr("class", "g")
-    .attr("transform", (d) -> "translate(" + x0(d.period) + ",0)")
+    .attr("transform", (d) -> "translate(" + x0(d.period) + ",30)")
 
   series = period.selectAll("rect")
     .data((d) -> d.series)
@@ -449,7 +463,7 @@ window.update_clustered_chart = (slider_val) ->
     .attr("x", (d) -> x1(d.name))
     .attr("y", (d) -> y(d3.max([0,d.value])))
     .attr("height", (d) -> Math.abs(y(0)-y(d.value)))
-    .style("fill", (d) -> uhero_color5(d.name))
+    .style("fill", (d) -> clustered_color3(d.name))
   console.log series.exit().remove()
 
   # clear legend and recreate it
@@ -462,13 +476,14 @@ window.update_clustered_chart = (slider_val) ->
 
   legend.append("rect")
     .attr("x", width - 18)
+    .attr("y", 39)
     .attr("width", 18)
     .attr("height", 18)
-    .style("fill", clustered_color)
+    .style("fill", clustered_color3)
 
   legend.append("text")
     .attr("x", width - 24)
-    .attr("y", 9)
+    .attr("y", 47)
     .attr("dy", ".35em")
     .classed("clustered_bar_legend", true)
     .style("text-anchor", "end")

@@ -527,7 +527,6 @@ path.line_chart_path {
 
 #left_axis_label {
   fill: #ff9847;
-  stroke: #ff9847;
   text-transform: uppercase;
   font-weight: normal;
   font-size: 10.4px; }
@@ -537,7 +536,6 @@ path.line_chart_path {
 
 #right_axis_label {
   fill: #03627f;
-  stroke: #03627f;
   text-transform: uppercase;
   font-weight: normal;
   font-size: 10.4px; }
@@ -826,9 +824,7 @@ g#pie_chart_area rect {
 
 #pie_heading {
   fill: #03627f;
-  stroke: #03627f;
   text-transform: uppercase;
-  font-weight: bolder;
   font-size: 10.4px; }
 
 .left_toggle, .right_toggle {
@@ -851,6 +847,9 @@ g#pie_chart_area rect {
   text-align: center;
   font-size: 10px;
   text-transform: uppercase; }
+
+.pct_change {
+  font-size: 8px; }
 
 #series_display h3 {
   position: relative;
@@ -899,7 +898,12 @@ g#pie_chart_area rect {
 
 /* Clustered bar chart */
 .clustered_bar_legend {
-  font-size: 0.7em; }
+  font-size: 10.4px; }
+
+#cluster_heading {
+  fill: #03627f;
+  text-transform: uppercase;
+  font-size: 10.4px; }
 
 /****** Regular link recoloring (for footer items mainly) ********/
 a, a:active, a:visited, a:hover {

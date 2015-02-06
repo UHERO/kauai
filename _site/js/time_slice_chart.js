@@ -1,5 +1,5 @@
 (function() {
-  var all_clustered_data, all_dates, chart_area, clustered_color, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_data, selected_date, selected_dates, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props, uhero_color10, uhero_color5, x, x0, x1, y;
+  var all_clustered_data, all_dates, chart_area, clustered_color, clustered_color3, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_data, selected_date, selected_dates, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props, uhero_color10, uhero_color5, x, x0, x1, y;
 
   window.slice_type = "pie";
 
@@ -31,6 +31,8 @@
   uhero_color10 = d3.scale.ordinal().range(["#03627F", "#1C718B", "#358198", "#4E91A5", "#67A0B2", "#81B0BF", "#9AC0CB", "#B3CFD8", "#CCDFE5", "#E5EFF2"]);
 
   clustered_color = uhero_color5;
+
+  clustered_color3 = d3.scale.ordinal().range(["#0e5a70", "#4E91A5", "#9AC0CB"]);
 
   window.treemap_layout = d3.layout.treemap().size([300, 200]).sticky(true).value(function(d) {
     return d[freq].data[slider_val];
@@ -313,7 +315,7 @@
     console.log('selected_dates');
     console.log(selected_dates());
     width = svg.attr('width');
-    height = svg.attr('height');
+    height = svg.attr('height') - 30;
     x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.2);
     x1 = d3.scale.ordinal();
     y = d3.scale.linear().range([height, 0]);
@@ -326,10 +328,23 @@
     }));
     x1.domain(seriesNames).rangeRoundBands([0, x0.rangeBand()]);
     y.domain([-100, 100]);
-    svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
-    svg.append("g").attr("class", "y axis").attr("transform", "translate(" + width + ", 0)").call(yAxis).append("text").attr("transform", "rotate(-90), translate(0, 30)").attr("y", 6).attr("dy", ".71em").style("text-anchor", "end").text("Growth Rate");
+    svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + (height + 30) + ")").call(xAxis);
+    svg.append("text").text("Growth Rate").attr("y", 20).attr("x", width / 2).attr("id", "cluster_heading").style("text-anchor", "middle");
+    svg.append("g").attr("class", "y axis").attr("transform", "translate(" + width + ", 30)").call(yAxis);
+
+    /*
+      .append("text")
+       *.attr("transform", "translate(-10, 0)")
+       *.attr("transform", "rotate(-90), translate(0, 30)")
+      .attr("y", 20)
+       *.attr("dy", ".71em")
+      .attr("x",-(width/2))
+      .attr("id","cluster_heading")
+      .style("text-anchor", "middle") #text-align
+      .text("Growth Rate")
+     */
     period = svg.selectAll(".period").data(data).enter().append("g").attr("class", "g").attr("transform", function(d) {
-      return "translate(" + x0(d.period) + ",0)";
+      return "translate(" + x0(d.period) + ",30)";
     });
     period.selectAll("rect").data(function(d) {
       return d.series;
@@ -340,13 +355,13 @@
     }).attr("height", function(d) {
       return Math.abs(y(0) - y(d.value));
     }).style("fill", function(d) {
-      return uhero_color5(d.name);
+      return clustered_color3(d.name);
     });
     legend = svg.selectAll(".legend").data(seriesNames.slice()).enter().append("g").attr("class", "legend").attr("transform", function(d, i) {
       return "translate(-10," + i * 20 + ")";
     });
-    legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", uhero_color5);
-    return legend.append("text").attr("x", width - 24).attr("y", 9).attr("dy", ".35em").classed("clustered_bar_legend", true).style("text-anchor", "end").text(function(d) {
+    legend.append("rect").attr("x", width - 18).attr("y", 39).attr("width", 18).attr("height", 18).style("fill", clustered_color3);
+    return legend.append("text").attr("x", width - 24).attr("y", 47).attr("dy", ".35em").classed("clustered_bar_legend", true).style("text-anchor", "end").text(function(d) {
       return d;
     });
   };
@@ -363,11 +378,11 @@
       return d.period;
     }));
     xAxis = d3.svg.axis().scale(x0).orient("bottom");
-    svg.selectAll(".x.axis").attr("transform", "translate(0," + height + ")").call(xAxis);
+    svg.selectAll(".x.axis").attr("transform", "translate(0," + (height + 30) + ")").call(xAxis);
     svg.selectAll("rect.series_bars").remove();
     period = svg.selectAll(".period").data(data);
     period.enter().append("g").attr("transform", function(d) {
-      return "translate(" + x0(d.period) + ",0)";
+      return "translate(" + x0(d.period) + ",30)";
     });
     series = period.selectAll("rect").data(function(d) {
       return d.series;
@@ -380,15 +395,15 @@
     }).attr("height", function(d) {
       return Math.abs(y(0) - y(d.value));
     }).style("fill", function(d) {
-      return uhero_color5(d.name);
+      return clustered_color3(d.name);
     });
     console.log(series.exit().remove());
     svg.selectAll(".legend").remove();
     legend = svg.selectAll(".legend").data(seriesNames.slice()).enter().append("g").attr("class", "legend").attr("transform", function(d, i) {
       return "translate(-10," + i * 20 + ")";
     });
-    legend.append("rect").attr("x", width - 18).attr("width", 18).attr("height", 18).style("fill", clustered_color);
-    return legend.append("text").attr("x", width - 24).attr("y", 9).attr("dy", ".35em").classed("clustered_bar_legend", true).style("text-anchor", "end").text(function(d) {
+    legend.append("rect").attr("x", width - 18).attr("y", 39).attr("width", 18).attr("height", 18).style("fill", clustered_color3);
+    return legend.append("text").attr("x", width - 24).attr("y", 47).attr("dy", ".35em").classed("clustered_bar_legend", true).style("text-anchor", "end").text(function(d) {
       return d;
     });
   };
