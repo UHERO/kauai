@@ -163,7 +163,7 @@ render_page = (page_data, page_slug) ->
         else
           # add series to be pied
           for series in series_group.series_list
-            series_to_pie.push(series) if series.udaman_name in ['Y_RCY@KAU', 'VDAY@KAU', 'KPPRVRSD_R@KAU']
+            series_to_pie.push(series) if series.udaman_name in ['Y_RCY@KAU', 'VDAY@KAU', 'E_NF@KAU'] #instead of KPPRVRSD_R@KAU
     if page_slug is 'major'
       window.pied = true
       window.pie_these_series series_to_pie, true

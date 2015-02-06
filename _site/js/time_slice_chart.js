@@ -322,7 +322,7 @@
     xAxis = d3.svg.axis().scale(x0).orient("bottom");
     yAxis = d3.svg.axis().scale(y).orient("right").tickFormat(d3.format(".2s"));
     data = selected_data(series_data);
-    seriesNames = ["Real Personal Income", "Total Visitor Days", "Real Residential Building Permits"];
+    seriesNames = ["Real Personal Income", "Total Visitor Days", "Total Non-farm Payrolls"];
     x0.domain(data.map(function(d) {
       return d.period;
     }));
@@ -347,6 +347,8 @@
       return "translate(" + x0(d.period) + ",30)";
     });
     period.selectAll("rect").data(function(d) {
+      console.log("d.series");
+      console.log(d.series);
       return d.series;
     }).enter().append("rect").classed("series_bars", true).attr("width", x1.rangeBand()).attr("x", function(d) {
       return x1(d.name);
@@ -369,7 +371,7 @@
   window.update_clustered_chart = function(slider_val) {
     var data, height, legend, period, series, seriesNames, width, xAxis;
     console.log("update_clustered_chart called");
-    seriesNames = ["Real Personal Income", "Total Visitor Days", "Real Residential Building Permits"];
+    seriesNames = ["Real Personal Income", "Total Visitor Days", "Total Non-farm Payrolls"];
     data = selected_data(all_clustered_data);
     width = svg.attr('width');
     height = svg.attr('height');

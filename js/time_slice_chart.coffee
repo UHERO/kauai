@@ -340,8 +340,8 @@ window.cluster_these_series = (series_data) ->
 
   # remap data
   data = selected_data series_data
-  seriesNames = ["Real Personal Income", "Total Visitor Days", "Real Residential Building Permits"]
-  x0.domain(data.map((d) -> d.period))
+  seriesNames = ["Real Personal Income", "Total Visitor Days", "Total Non-farm Payrolls"] #have to match series names
+  x0.domain(data.map((d) -> d.period)) #years
   x1.domain(seriesNames).rangeRoundBands([0, x0.rangeBand()])
   #y.domain([d3.min(data, function(d) { return d3.min(d.series, function(d) { return d.value; }); }),
   #          d3.max(data, function(d) { return d3.max(d.series, function(d) { return d.value; }); })]);
@@ -384,7 +384,7 @@ window.cluster_these_series = (series_data) ->
     .attr("transform", (d) -> "translate(" + x0(d.period) + ",30)")
 
   period.selectAll("rect")
-    .data((d) -> d.series)
+    .data((d) -> console.log "d.series"; console.log d.series; d.series)
     .enter().append("rect")
     .classed("series_bars", true)
     .attr("width", x1.rangeBand())
@@ -430,7 +430,7 @@ window.cluster_these_series = (series_data) ->
 
 window.update_clustered_chart = (slider_val) ->
   console.log "update_clustered_chart called"
-  seriesNames = ["Real Personal Income", "Total Visitor Days", "Real Residential Building Permits"]
+  seriesNames = ["Real Personal Income", "Total Visitor Days", "Total Non-farm Payrolls"]
   #console.log selected_data
   data = selected_data all_clustered_data
   
