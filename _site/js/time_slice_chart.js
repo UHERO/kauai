@@ -378,7 +378,7 @@
       return d.period;
     }));
     xAxis = d3.svg.axis().scale(x0).orient("bottom");
-    svg.selectAll(".x.axis").attr("transform", "translate(0," + (height + 30) + ")").call(xAxis);
+    svg.selectAll(".x.axis").attr("transform", "translate(0," + height + ")").call(xAxis);
     svg.selectAll("rect.series_bars").remove();
     period = svg.selectAll(".period").data(data);
     period.enter().append("g").attr("transform", function(d) {

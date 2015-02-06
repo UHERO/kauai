@@ -441,7 +441,7 @@ window.update_clustered_chart = (slider_val) ->
   x0.domain(data.map((d) -> d.period))
   xAxis = d3.svg.axis().scale(x0).orient("bottom")
   svg.selectAll(".x.axis")
-    .attr("transform", "translate(0," + (height+30) + ")") #not sure if need height adjust here
+    .attr("transform", "translate(0," + (height) + ")") #don't adjust height here
     .call(xAxis)
 
   # remove old bars
