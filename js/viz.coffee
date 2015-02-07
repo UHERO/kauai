@@ -183,7 +183,6 @@ render_page = (page_data, page_slug) ->
     window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
   
 load_page = (data_category, use_default_freq) ->
-  
   window.remove_secondary_series(window.secondary_series) if window.secondary_series? and window.secondary_series.datum? and window.mode == 'multi_line'
   if use_default_freq
     window.freq = data_category.default_freq
