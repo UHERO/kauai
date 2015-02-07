@@ -68,13 +68,10 @@
 
   window.redraw_slice = function(event, ui) {
     var pie_data, pie_slices, sorted_array;
-    console.log("redraw_slice called");
     slider_val = +$("#time_slice_slider_div").val();
     set_date_shown();
     if (window.pied === true) {
-      console.log('window.pied is true');
       if (window.slice_type === "pie") {
-        console.log('window.slice_type is pie');
         pie_slices = chart_area.selectAll("path");
         pie_data = pie_slices.data().map(function(d) {
           return d.data;
@@ -95,12 +92,9 @@
           return d.value.toFixed(1);
         });
       } else {
-        console.log('window.slice_type isnt pie');
         if (window.slice_type === 'treemap') {
-          console.log('window.slice_type is treemap');
           return window.node.data(treemap_layout.nodes).call(treemap_position);
         } else {
-          console.log('window.slice_type isnt treemap');
           return window.update_clustered_chart(slider_val);
         }
       }
@@ -312,13 +306,10 @@
   window.cluster_these_series = function(series_data) {
     var data, height, legend, period, seriesNames, width, xAxis, yAxis;
     all_clustered_data = series_data;
-    console.log('selected_dates');
-    console.log(selected_dates());
     width = svg.attr('width');
     height = svg.attr('height') - 30;
     x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.2);
     x1 = d3.scale.ordinal();
-    console.log("height" + height);
     y = d3.scale.linear().range([height, 0]);
     xAxis = d3.svg.axis().scale(x0).orient("bottom");
     yAxis = d3.svg.axis().scale(y).orient("right").tickFormat(d3.format(".2s"));
@@ -328,7 +319,7 @@
       return d.period;
     }));
     x1.domain(seriesNames).rangeRoundBands([0, x0.rangeBand()]);
-    y.domain([-80, 80]);
+    y.domain([-20, 20]);
     svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + (height + 30) + ")").call(xAxis);
     svg.append("text").text("Growth Rate").attr("y", 20).attr("x", width / 2).attr("id", "cluster_heading").style("text-anchor", "middle");
     svg.append("g").attr("class", "y axis").attr("transform", "translate(" + width + ", 30)").call(yAxis);
@@ -348,15 +339,13 @@
       return "translate(" + x0(d.period) + ",30)";
     });
     period.selectAll("rect").data(function(d) {
-      console.log("d.series");
-      console.log(d.series);
       return d.series;
     }).enter().append("rect").classed("series_bars", true).attr("width", x1.rangeBand()).attr("x", function(d) {
       return x1(d.name);
     }).attr("y", function(d) {
-      return y(d3.max([0, d.value]));
+      return y(d3.max([0, d3.min([20, d.value])]));
     }).attr("height", function(d) {
-      return Math.abs(y(0) - y(d.value));
+      return y(0) - y(d3.min([20, Math.abs(d.value)]));
     }).style("fill", function(d) {
       return clustered_color3(d.name);
     });
@@ -371,7 +360,6 @@
 
   window.update_clustered_chart = function(slider_val) {
     var data, height, legend, period, series, seriesNames, width, xAxis;
-    console.log("update_clustered_chart called");
     seriesNames = ["Real Personal Income", "Total Visitor Days", "Total Non-farm Payrolls"];
     data = selected_data(all_clustered_data);
     width = svg.attr('width');
@@ -394,13 +382,13 @@
     series.enter().append("rect").classed("series_bars", true).attr("width", x1.rangeBand()).attr("x", function(d) {
       return x1(d.name);
     }).attr("y", function(d) {
-      return y(d3.max([0, d.value]));
+      return y(d3.max([0, d3.min([20, d.value])]));
     }).attr("height", function(d) {
-      return Math.abs(y(0) - y(d.value));
+      return y(0) - y(d3.min([20, Math.abs(d.value)]));
     }).style("fill", function(d) {
       return clustered_color3(d.name);
     });
-    console.log(series.exit().remove());
+    series.exit().remove();
     svg.selectAll(".legend").remove();
     legend = svg.selectAll(".legend").data(seriesNames.slice()).enter().append("g").attr("class", "legend").attr("transform", function(d, i) {
       return "translate(-10," + i * 20 + ")";

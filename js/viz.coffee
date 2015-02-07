@@ -28,7 +28,10 @@ set_up_nav = () ->
     .attr("id", (d) -> d.key.replace(" ", "_"))
     .style("width", (d) -> d.value.width+"px")
     .text((d) -> d.value.title)
-    .on("click", (d) -> load_page(d.value, true)) #click here to load a different page
+    .on("click", (d) ->
+      #console.log d.value
+      load_page(d.value, true)
+    ) #click here to load a different page
 
 set_headline = (text) ->
   d3.select("#headline").text(text)
@@ -123,7 +126,7 @@ clear_previous_page = ->
 render_page = (page_data, page_slug) ->
   clear_previous_page()
   #maybe fix sliders so they correspond to panel sizes
-  console.log("render page at frequency: #{window.freq}")
+  #console.log("render page at frequency: #{window.freq}")
   set_up_sliders(page_data.dates[window.freq])
 
   make_slice = false
@@ -133,7 +136,7 @@ render_page = (page_data, page_slug) ->
       make_slice = true if series_group.series_list[0].children?
   
   if page_slug is 'major'
-    console.log 'major page here'
+    #console.log 'major page here'
     make_slice = true
   
   if make_slice
@@ -180,6 +183,8 @@ render_page = (page_data, page_slug) ->
     window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
   
 load_page = (data_category, use_default_freq) ->
+  
+  window.remove_secondary_series(window.secondary_series) if window.secondary_series? and window.secondary_series.datum? and window.mode == 'multi_line'
   if use_default_freq
     window.freq = data_category.default_freq
     $("#frequency_controls span.selected").removeClass("selected")
@@ -216,9 +221,11 @@ load_page = (data_category, use_default_freq) ->
 
 #-------- main run code -------------  
 set_up_nav()
-load_page(data_categories["visitor industry"])
+load_page(data_categories["major indicators"], true)
 $("#frequency_controls span").addClass("enabled")
-$("#freq_q").removeClass("enabled").addClass("selected")
+$("#freq_a").removeClass("enabled").addClass("selected")
+$("#freq_q").removeClass("enabled")
+$("#freq_m").removeClass("enabled")
 
 # event listener for switching frequency
 $("#frequency_controls span").on("click", () ->

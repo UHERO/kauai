@@ -51,14 +51,14 @@ set_date_shown = ->
 
     
 window.redraw_slice = (event, ui) ->
-  console.log "redraw_slice called"
+  #console.log "redraw_slice called"
   slider_val = +$("#time_slice_slider_div").val()
   set_date_shown()
 
   if window.pied is true
-    console.log 'window.pied is true'
+    #console.log 'window.pied is true'
     if window.slice_type is "pie"
-      console.log 'window.slice_type is pie'
+      #console.log 'window.slice_type is pie'
       pie_slices = chart_area.selectAll("path")
       pie_data = pie_slices.data().map((d) -> d.data)
       pie_slices
@@ -87,12 +87,12 @@ window.redraw_slice = (event, ui) ->
         .attr("x", 0)
         .text((d) -> d.value.toFixed(1)) # keep one decimal place
     else
-      console.log 'window.slice_type isnt pie'
+      #console.log 'window.slice_type isnt pie'
       if window.slice_type is 'treemap'
-        console.log 'window.slice_type is treemap'
+        #console.log 'window.slice_type is treemap'
         window.node.data(treemap_layout.nodes).call treemap_position
       else
-        console.log 'window.slice_type isnt treemap'
+        #console.log 'window.slice_type isnt treemap'
         window.update_clustered_chart slider_val
 
 
@@ -315,8 +315,8 @@ window.cluster_these_series = (series_data) ->
   all_clustered_data = series_data
   #x0.rangeRoundBands([0, svg.attr("width")], .1)
   #console.log series_data
-  console.log 'selected_dates'
-  console.log selected_dates()
+  #console.log 'selected_dates'
+  #console.log selected_dates()
   #console.log(selected_data series for series in series_data)
   #console.log JSON.stringify(selected_data series_data)
 
@@ -328,7 +328,7 @@ window.cluster_these_series = (series_data) ->
   height = (svg.attr('height') - 30) #to match axis of opposite graph
   x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.2)
   x1 = d3.scale.ordinal()
-  console.log("height" + height)
+  #console.log("height" + height)
   y = d3.scale.linear().range([height, 0])
 
   xAxis = d3.svg.axis().scale(x0).orient("bottom")
@@ -346,7 +346,7 @@ window.cluster_these_series = (series_data) ->
   x1.domain(seriesNames).rangeRoundBands([0, x0.rangeBand()])
   #y.domain([d3.min(data, function(d) { return d3.min(d.series, function(d) { return d.value; }); }),
   #          d3.max(data, function(d) { return d3.max(d.series, function(d) { return d.value; }); })]);
-  y.domain([-80,80]) #y-axis scale
+  y.domain([-20,20]) #y-axis scale
 
   #svg = set_up_svg(container)
   svg.append("g")
@@ -385,13 +385,14 @@ window.cluster_these_series = (series_data) ->
     .attr("transform", (d) -> "translate(" + x0(d.period) + ",30)")
 
   period.selectAll("rect")
-    .data((d) -> console.log "d.series"; console.log d.series; d.series)
+    .data((d) -> d.series)
     .enter().append("rect")
     .classed("series_bars", true)
     .attr("width", x1.rangeBand())
     .attr("x", (d) -> x1(d.name))
-    .attr("y", (d) -> y(d3.max([0,d.value])))
-    .attr("height", (d) -> Math.abs(y(0)-y(d.value)))
+    
+    .attr("y", (d) -> y(d3.max([0, d3.min([20, d.value])])))
+    .attr("height", (d) -> y(0)-y(d3.min([20, Math.abs(d.value)])))
     .style("fill", (d) -> clustered_color3(d.name))
 
   legend = svg.selectAll(".legend")
@@ -430,7 +431,7 @@ window.cluster_these_series = (series_data) ->
     #.attr("height", (d) -> height - y(d.yoy))
 
 window.update_clustered_chart = (slider_val) ->
-  console.log "update_clustered_chart called"
+  #console.log "update_clustered_chart called"
   seriesNames = ["Real Personal Income", "Total Visitor Days", "Total Non-farm Payrolls"]
   #console.log selected_data
   data = selected_data all_clustered_data
@@ -462,10 +463,10 @@ window.update_clustered_chart = (slider_val) ->
     .classed("series_bars", true)
     .attr("width", x1.rangeBand())
     .attr("x", (d) -> x1(d.name))
-    .attr("y", (d) -> y(d3.max([0,d.value])))
-    .attr("height", (d) -> Math.abs(y(0)-y(d.value)))
+    .attr("y", (d) -> y(d3.max([0, d3.min([20, d.value])])))
+    .attr("height", (d) -> y(0)-y(d3.min([20, Math.abs(d.value)])))
     .style("fill", (d) -> clustered_color3(d.name))
-  console.log series.exit().remove()
+  series.exit().remove()
 
   # clear legend and recreate it
   svg.selectAll(".legend").remove()
