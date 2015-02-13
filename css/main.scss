@@ -403,3 +403,12 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 a, a:active, a:visited, a:hover {
   color: $uhero_blue;
 }
+
+/* Table Footnotes */
+// hierarchy: div id footnotes -> div class footnote, div id footnote_#
+#footnotes {
+  font-size: $smallest-font-size;
+  padding: 10px 20px 0px;
+  border-top: 2px solid $uhero_blue;
+  clear: both;
+}
