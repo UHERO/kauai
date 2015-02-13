@@ -6,13 +6,8 @@
 </description>
     <link>http://uhero.github.io/</link>
     <atom:link href="http://uhero.github.io/feed.xml" rel="self" type="application/rss+xml" />
-<<<<<<< HEAD
-    <pubDate>Wed, 18 Feb 2015 13:34:09 -1000</pubDate>
-    <lastBuildDate>Wed, 18 Feb 2015 13:34:09 -1000</lastBuildDate>
-=======
-    <pubDate>Mon, 09 Feb 2015 13:39:31 -1000</pubDate>
-    <lastBuildDate>Mon, 09 Feb 2015 13:39:31 -1000</lastBuildDate>
->>>>>>> _site/feed.xml
+    <pubDate>Wed, 18 Feb 2015 13:35:34 -1000</pubDate>
+    <lastBuildDate>Wed, 18 Feb 2015 13:35:34 -1000</lastBuildDate>
     <generator>Jekyll v2.3.0</generator>
     
       <item>
