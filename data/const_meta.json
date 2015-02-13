@@ -8,10 +8,10 @@
   }, { 
     "group_name": "Home Resales", 
     "series_list": [ 
-      { "display_name": "Median Resale Price for SFH", "udaman_name": "PMKRSGF@KAU", "a": true, "q": true, "m": false, "units": "$Thou", "scale_factor": 0.001},
-      { "display_name": "Median Resale Price for Condo", "udaman_name": "PMKRCON@KAU", "a": true, "q": true, "m": false, "units": "$Thou", "scale_factor": 0.001},
-      { "display_name": "Number of Resales for SFH", "udaman_name": "KRSGF@KAU", "a": true, "q": true, "m": false, "units": "#"},
-      { "display_name": "Number of Resales for Condo", "udaman_name": "KRCON@KAU", "a": true, "q": true, "m": false, "units": "#"}
+      { "display_name": "Median Resale Price for Single-Family Home", "udaman_name": "PMKRSGF@KAU", "a": true, "q": true, "m": false, "units": "$Thou", "scale_factor": 0.001},
+      { "display_name": "Median Resale Price for Condominium", "udaman_name": "PMKRCON@KAU", "a": true, "q": true, "m": false, "units": "$Thou", "scale_factor": 0.001},
+      { "display_name": "Number of Resales for Single-Family Home", "udaman_name": "KRSGF@KAU", "a": true, "q": true, "m": false, "units": "#"},
+      { "display_name": "Number of Resales for Condominium", "udaman_name": "KRCON@KAU", "a": true, "q": true, "m": false, "units": "#"}
     ]
   }, { 
     "group_name": "Construction Costs and Affordability", 
