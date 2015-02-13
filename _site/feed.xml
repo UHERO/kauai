@@ -8,12 +8,17 @@
     <atom:link href="http://uhero.github.io/feed.xml" rel="self" type="application/rss+xml" />
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <pubDate>Mon, 16 Feb 2015 01:15:21 -1000</pubDate>
     <lastBuildDate>Mon, 16 Feb 2015 01:15:21 -1000</lastBuildDate>
 =======
     <pubDate>Sun, 15 Feb 2015 19:57:55 -1000</pubDate>
     <lastBuildDate>Sun, 15 Feb 2015 19:57:55 -1000</lastBuildDate>
 >>>>>>> _site/feed.xml
+=======
+    <pubDate>Sun, 15 Feb 2015 19:59:37 -1000</pubDate>
+    <lastBuildDate>Sun, 15 Feb 2015 19:59:37 -1000</lastBuildDate>
+>>>>>>> modified series labels
     <generator>Jekyll v2.4.0</generator>
 =======
     <pubDate>Fri, 13 Feb 2015 12:09:53 -1000</pubDate>
