@@ -144,13 +144,23 @@
    */
 
   set_primary_series = function(series) {
-    var new_series, old_series;
+    var array_length, first_value_index, new_series, old_series;
     new_series = series.datum();
     old_series = d3.select(".series.selected").datum();
     if (new_series.udaman_name !== old_series.udaman_name && !d3.select("g#chart_area #path_" + (window.series_to_class(new_series.udaman_name))).classed("s_right")) {
       if (window.mode === "line_bar") {
         unhighlight_series_row(old_series);
         highlight_series_row(new_series);
+        first_value_index = 0;
+        array_length = new_series[window.freq].data.length;
+        while (first_value_index < array_length && (new_series[window.freq].data[first_value_index] == null)) {
+          first_value_index++;
+        }
+        console.log(first_value_index);
+        $("#line_chart_slider_div").val(first_value_index, array_length - 1);
+        window.trim_sparklines();
+        window.trim_time_series();
+        window.update_ytd_column();
         clear_line_and_bar_chart(old_series);
         return display_line_and_bar_chart(new_series);
       } else {
