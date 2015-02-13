@@ -339,7 +339,7 @@
     dates = d3.select("#datatable_header").selectAll(".header_cell").data(data);
     dates.enter().append("div").attr("class", "header_cell");
     dates.html(function(d) {
-      return d + "<br/><span class=\"pct_change\">%Change</a>";
+      return "" + d + "<br/><span class=\"pct_change\">%Change</a>";
     });
     return dates.exit().remove();
   };
@@ -411,7 +411,7 @@
   };
 
   create_axis_control = function(cat_series, axis) {
-    return cat_series.append("span").attr("class", axis + "_toggle off glyphicon glyphicon-unchecked").on("click", function(d) {
+    return cat_series.append("span").attr("class", "" + axis + "_toggle off glyphicon glyphicon-unchecked").on("click", function(d) {
       var button;
       d3.event.stopPropagation();
       button = d3.select(this);
