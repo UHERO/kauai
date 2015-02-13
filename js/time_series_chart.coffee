@@ -283,7 +283,7 @@ window.display_line_and_bar_chart = (d) ->
 window.add_to_line_chart = (d, axis) ->
   duration = 500
   trim_d d[freq], slider_extent
-  domain = chart_extent(d[freq].data)  
+  domain = chart_extent(d[freq].data)
   path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
 
   update_y_domain_with_new(axis, domain, duration)

@@ -128,8 +128,22 @@ set_primary_series = (series) ->
     if (window.mode == "line_bar")
       unhighlight_series_row(old_series)
       highlight_series_row(new_series)
+
+      first_value_index = 0
+      array_length = new_series[window.freq].data.length
+      while first_value_index < array_length and not new_series[window.freq].data[first_value_index]?
+        first_value_index++
+      console.log(first_value_index)
+      #set_slider_in_div "line_chart_slider_div", first_series[window.freq].date, first_value_index, array_length-1, left_slider_func
+      $("#line_chart_slider_div").val(first_value_index, array_length - 1)
+      window.trim_sparklines()
+      window.trim_time_series()
+      window.update_ytd_column()
       clear_line_and_bar_chart(old_series)
       display_line_and_bar_chart(new_series)
+
+      #clear_line_and_bar_chart(old_series)
+      #display_line_and_bar_chart(new_series)
     # if we are in multi_line, should call add_to_line_chart and clear_from_line_chart
     else
       unhighlight_series_row(old_series)

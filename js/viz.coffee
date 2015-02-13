@@ -135,7 +135,8 @@ render_page = (page_data, page_slug) ->
     do (series_group) ->
       make_slice = true if series_group.series_list[0].children?
   
-  if page_slug is 'major'
+  #console.log(page_slug)
+  if page_slug in ['major', 'income', 'county_rev']
     #console.log 'major page here'
     make_slice = true
   
@@ -152,21 +153,35 @@ render_page = (page_data, page_slug) ->
     set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
     
     # add_to_line_chart(page_data.series_groups[0].series_list[0], "left")
-    window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
+    first_series = page_data.series_groups[0].series_list[0]
+    window.display_line_and_bar_chart(first_series)
+    first_value_index = 0
+    array_length = first_series[window.freq].data.length
+    while first_value_index < array_length and not first_series[window.freq].data[first_value_index]?
+      first_value_index++
+    console.log(page_data.series_groups[0].series_list[0][window.freq])
+    console.log(first_value_index)
+    $("#line_chart_slider_div").val(first_value_index, array_length - 1)
+    window.trim_sparklines()
+    window.trim_time_series()
+    window.update_ytd_column()
+    clear_line_and_bar_chart(first_series)
+    display_line_and_bar_chart(first_series)
+    #$("#line_chart_slider_div").val(first_value_index, array_length - 1)
     # identify the first series with children
     series_to_pie = []
     # goes through each series group
     for series_group in page_data.series_groups
       do (series_group)->
         # and pies the first group
-        if page_slug isnt 'major'
-          if series_group.series_list[0].children? and window.pied == false
-            window.pie_these_series series_group.series_list[0].children
-            window.pied= true
-        else
+        if page_slug is 'major'
           # add series to be pied
           for series in series_group.series_list
             series_to_pie.push(series) if series.udaman_name in ['Y_RCY@KAU', 'VDAY@KAU', 'E_NF@KAU'] #instead of KPPRVRSD_R@KAU
+        else
+          if series_group.series_list[0].children? and window.pied == false
+            window.pie_these_series series_group.series_list[0].children
+            window.pied= true
     if page_slug is 'major'
       window.pied = true
       window.pie_these_series series_to_pie, true
@@ -180,7 +195,22 @@ render_page = (page_data, page_slug) ->
     create_data_table(page_data)
     set_up_line_chart_paths(d3.selectAll("#series_display .series").data())
     
-    window.display_line_and_bar_chart(page_data.series_groups[0].series_list[0])
+    first_series = page_data.series_groups[0].series_list[0]
+    window.display_line_and_bar_chart(first_series)
+    first_value_index = 0
+    array_length = first_series[window.freq].data.length
+    while first_value_index < array_length and not first_series[window.freq].data[first_value_index]?
+      first_value_index++
+    console.log(page_data.series_groups[0].series_list[0][window.freq])
+    console.log(first_value_index)
+    #set_slider_in_div "line_chart_slider_div", first_series[window.freq].date, first_value_index, array_length-1, left_slider_func
+    $("#line_chart_slider_div").val(first_value_index, array_length - 1)
+    window.trim_sparklines()
+    window.trim_time_series()
+    window.update_ytd_column()
+    clear_line_and_bar_chart(first_series)
+    display_line_and_bar_chart(first_series)
+    #$("#line_chart_slider_div").val(first_value_index, array_length - 1)
   
 load_page = (data_category, use_default_freq) ->
   window.remove_secondary_series(window.secondary_series) if window.secondary_series? and window.secondary_series.datum? and window.mode == 'multi_line'

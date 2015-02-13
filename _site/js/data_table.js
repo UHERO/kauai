@@ -144,13 +144,23 @@
    */
 
   set_primary_series = function(series) {
-    var new_series, old_series;
+    var array_length, first_value_index, new_series, old_series;
     new_series = series.datum();
     old_series = d3.select(".series.selected").datum();
     if (new_series.udaman_name !== old_series.udaman_name && !d3.select("g#chart_area #path_" + (window.series_to_class(new_series.udaman_name))).classed("s_right")) {
       if (window.mode === "line_bar") {
         unhighlight_series_row(old_series);
         highlight_series_row(new_series);
+        first_value_index = 0;
+        array_length = new_series[window.freq].data.length;
+        while (first_value_index < array_length && (new_series[window.freq].data[first_value_index] == null)) {
+          first_value_index++;
+        }
+        console.log(first_value_index);
+        $("#line_chart_slider_div").val(first_value_index, array_length - 1);
+        window.trim_sparklines();
+        window.trim_time_series();
+        window.update_ytd_column();
         clear_line_and_bar_chart(old_series);
         return display_line_and_bar_chart(new_series);
       } else {
@@ -329,7 +339,7 @@
     dates = d3.select("#datatable_header").selectAll(".header_cell").data(data);
     dates.enter().append("div").attr("class", "header_cell");
     dates.html(function(d) {
-      return "" + d + "<br/><span class=\"pct_change\">%Change</a>";
+      return d + "<br/><span class=\"pct_change\">%Change</a>";
     });
     return dates.exit().remove();
   };
@@ -401,7 +411,7 @@
   };
 
   create_axis_control = function(cat_series, axis) {
-    return cat_series.append("span").attr("class", "" + axis + "_toggle off glyphicon glyphicon-unchecked").on("click", function(d) {
+    return cat_series.append("span").attr("class", axis + "_toggle off glyphicon glyphicon-unchecked").on("click", function(d) {
       var button;
       d3.event.stopPropagation();
       button = d3.select(this);
