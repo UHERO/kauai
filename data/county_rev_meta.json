@@ -2,32 +2,32 @@
 "series_groups": [ { 
     "group_name": "County Government Revenues", 
     "series_list": [ 
-      { "display_name": "Revenue - Total", "udaman_name": "RNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001, 
+      { "display_name": "Total", "udaman_name": "RNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001, 
         "children": [
-          { "display_name": "Revenue - Taxes", "udaman_name": "RTNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Revenue - Licenses and Permits", "udaman_name": "ROLCNNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Revenue - Rents and Concessions", "udaman_name": "RORENNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Revenue - Interest", "udaman_name": "ROINTNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Revenue - Intergovernmental Revenue", "udaman_name": "ROITGNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Revenue - Charges for Current Services", "udaman_name": "ROCHGNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Revenue - Miscellaneous", "udaman_name": "ROMISNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001}
+          { "display_name": "Taxes (excluding TAT)", "udaman_name": "RTNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Licenses and Permits", "udaman_name": "ROLCNNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Rents and Concessions", "udaman_name": "RORENNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Interest", "udaman_name": "ROINTNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Intergov Revenue (including TAT)", "udaman_name": "ROITGNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Charges for Current Services", "udaman_name": "ROCHGNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Miscellaneous", "udaman_name": "ROMISNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001}
         ]
       }
     ]
   }, { 
     "group_name": "County Governemnt Expenditures", 
     "series_list": [ 
-      { "display_name": "Expenditures - Total","udaman_name": "GNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001, 
+      { "display_name": "Total","udaman_name": "GNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001, 
         "children": [
-          { "display_name": "Expenditures - General Government","udaman_name": "GGNGNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Expenditures - Public Safety","udaman_name": "GPSFNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Expenditures - Public Works","udaman_name": "GPWKNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Expenditures - Highways and Streets","udaman_name": "GHWYNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Expenditures - Sanitation","udaman_name": "GSANNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Expenditures - Culture and Recreation","udaman_name": "GCULNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Expenditures - Public Welfare","udaman_name": "GPWFNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Expenditures - Capital Outlay","udaman_name": "GCAPNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Expenditures - Debt Service","udaman_name": "GDEBNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001}
+          { "display_name": "General Government","udaman_name": "GGNGNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Public Safety","udaman_name": "GPSFNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Public Works","udaman_name": "GPWKNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Highways and Streets","udaman_name": "GHWYNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Sanitation","udaman_name": "GSANNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Culture and Recreation","udaman_name": "GCULNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Public Welfare","udaman_name": "GPWFNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Capital Outlay","udaman_name": "GCAPNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Debt Service","udaman_name": "GDEBNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001}
         ]
       }
     ]
