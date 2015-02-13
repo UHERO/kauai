@@ -4,11 +4,11 @@
     "series_list": [ 
       { "display_name": "Total", "udaman_name": "RNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001, 
         "children": [
-          { "display_name": "Taxes (excluding TAT)", "udaman_name": "RTNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Taxes", "udaman_name": "RTNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
           { "display_name": "Licenses and Permits", "udaman_name": "ROLCNNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
           { "display_name": "Rents and Concessions", "udaman_name": "RORENNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
           { "display_name": "Interest", "udaman_name": "ROINTNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
-          { "display_name": "Intergov Revenue (including TAT)", "udaman_name": "ROITGNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
+          { "display_name": "Intergovernmental Revenue", "udaman_name": "ROITGNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
           { "display_name": "Charges for Current Services", "udaman_name": "ROCHGNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001},
           { "display_name": "Miscellaneous", "udaman_name": "ROMISNS@KAU", "a": true, "q": false, "m": false, "units": "$Thou", "scale_factor": 0.001}
         ]
