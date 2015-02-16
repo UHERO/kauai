@@ -1,5 +1,5 @@
 (function() {
-  var all_clustered_data, all_dates, chart_area, clustered_color, clustered_color3, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_data, selected_date, selected_dates, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props, uhero_color10, uhero_color5, x, x0, x1, y;
+  var all_clustered_data, all_dates, chart_area, clustered_color, clustered_color3, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_data, selected_date, selected_dates, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props, uhero_color10, uhero_color5, x, x0, x1, y;
 
   window.slice_type = "pie";
 
@@ -23,8 +23,6 @@
     width: null,
     height: null
   };
-
-  color = d3.scale.category20c();
 
   uhero_color5 = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579fb3", "#88c2d3"]);
 

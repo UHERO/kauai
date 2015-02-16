@@ -10,7 +10,6 @@ window.data_categories =
   "personal income": { width: 120, slug: "income", title: "Personal Income", default_freq: "a"}
   "construction": { width: 100, slug: "const", title: "Construction", default_freq: "a" }
   "county budget": { width: 120, slug: "county_rev", title: "County Budget", default_freq: "a" }
-#dt changed 'labor' to 'labor market', county revenue' to 'county budget' -- does this have any effect?
 
 yoy = (d,i,array,f) ->
   return null if d is null or i is 0

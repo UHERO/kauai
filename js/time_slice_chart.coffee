@@ -14,12 +14,11 @@ treemap_props =
   width: null
   height: null
 
-color = d3.scale.category20c() #dt -- not using default scale anymore (might remove)
-uhero_color5 = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579fb3", "#88c2d3"]) #can define domain later?? D:
+#color = d3.scale.category20c() #dt -- not using default scale anymore (might remove)
+uhero_color5 = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579fb3", "#88c2d3"])
 uhero_color10 = d3.scale.ordinal().range(["#03627F","#1C718B","#358198","#4E91A5","#67A0B2","#81B0BF","#9AC0CB","#B3CFD8","#CCDFE5","#E5EFF2"])
-#clustered_color = d3.scale.ordinal().range(["#3182bd", "#6baed6", "#9ecae1"])
 clustered_color = uhero_color5
-clustered_color3 = d3.scale.ordinal().range(["#0e5a70", "#4E91A5", "#9AC0CB"])
+clustered_color3 = d3.scale.ordinal().range(["#0e5a70", "#4E91A5", "#9AC0CB"]) #smaller range to help cluster bars stand out from each other
 
 window.treemap_layout = d3.layout.treemap()
   .size([300, 200])
@@ -103,7 +102,7 @@ get_data_index_extent = (data) ->
   [start_i,end_i]
   
 get_common_dates = (series_data) ->
-  #console.log series_data #dt uncomment
+  #console.log series_data
   arr = series_data.map((series) -> get_data_index_extent series[freq].data)
   [d3.max(arr.map((d)-> d[0])), d3.min(arr.map((d)-> d[1]))]
   
@@ -275,7 +274,7 @@ window.visitor_pie_chart = (container) ->
   treemap_props.height = svg.attr("height")
 
   svg.append("text")
-    .attr("id", "pie_heading") #dt may want to change this to "pie_header" for consistency
+    .attr("id", "pie_heading")
     .attr("text-anchor", "middle")
     .attr("x", center_x)
     .attr("y", 20)
@@ -412,7 +411,7 @@ window.cluster_these_series = (series_data) ->
 
   legend.append("text")
     .attr("x", width - 24)
-    .attr("y", 47) #dt
+    .attr("y", 47)
     .attr("dy", ".35em")
     .classed("clustered_bar_legend", true)
     .style("text-anchor", "end")
