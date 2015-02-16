@@ -230,11 +230,27 @@ load_page = (data_category, use_default_freq) ->
   )
   #dt edit --- to manually gray out the options w/ no data:
   # Personal Income Q/M, County Budget Q/M, Construction M
+
+  freq_m = $("#freq_m")
+  freq_m_pipe = $("#freq_m_pipe")
+  freq_q = $("#freq_q")
+  freq_q_pipe = $("#freq_q_pipe")
+
   if data_category.title == "Personal Income" || data_category.title == "County Budget" || data_category.title == "Major Indicators"
-    $("#freq_q").removeClass("enabled")
-    $("#freq_m").removeClass("enabled")
+    freq_m.removeClass("enabled").addClass("disabled")
+    freq_q.removeClass("enabled").addClass("disabled")
+    freq_m_pipe.removeClass("enabled").addClass("disabled")
+    freq_q_pipe.removeClass("enabled").addClass("disabled")
   else if data_category.title == "Construction"
-    $("#freq_m").removeClass("enabled")
+    freq_m.removeClass("enabled").addClass("disabled")
+    freq_m_pipe.removeClass("enabled").addClass("disabled")
+  else
+    #$("frequency_controls span").show()
+    #d3.select("#frequency_controls span").style("background-color","blue")
+    freq_m.removeClass("disabled").addClass("enabled")
+    freq_q.removeClass("disabled").addClass("enabled")
+    freq_m_pipe.removeClass("disabled")
+    freq_q_pipe.removeClass("disabled")
 
   #dt edit -- to add data sources based on page. Hides div unless on target page.
   #There's prob a better way to do this
@@ -253,8 +269,10 @@ set_up_nav()
 load_page(data_categories["major indicators"], true)
 $("#frequency_controls span").addClass("enabled")
 $("#freq_a").removeClass("enabled").addClass("selected")
-$("#freq_q").removeClass("enabled")
-$("#freq_m").removeClass("enabled")
+$("#freq_q_pipe").removeClass("enabled")
+$("#freq_m_pipe").removeClass("enabled")
+#$("#freq_q").removeClass("enabled")
+#$("#freq_m").removeClass("enabled")
 
 # event listener for switching frequency
 $("#frequency_controls span").on("click", () ->
@@ -263,16 +281,6 @@ $("#frequency_controls span").on("click", () ->
       $("#frequency_controls span.selected").removeClass("selected")
       window.freq = $(this).text().toLowerCase()
       load_page(current_data_category)
-
-      #--
-      ###
-      current_page = current_data_category.title
-      if current_page == "Visitor Industry"
-        console.log("TRUE")
-      else
-        console.log("FALSE")
-      ###
-      #--
 
       $("#frequency_controls span").addClass("enabled")
       $(this).removeClass("enabled")
