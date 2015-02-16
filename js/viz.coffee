@@ -35,7 +35,7 @@ set_up_nav = () ->
 
 set_headline = (text) ->
   d3.select("#headline").text(text)
-  #dt: maybe this shouldn't be here, can move later:
+  # change current nav item to neon green:
   d3.select("div#nav").selectAll("div.nav_link").style("background-color",null) #reset
   current_nav_item = text.split(' ').join('_').toLowerCase()
   d3.select("#"+current_nav_item).style("background-color","#ecffc7") #$neon_green
@@ -228,9 +228,9 @@ load_page = (data_category, use_default_freq) ->
     set_headline(data_category.title)
     render_page(data, data_category.slug)
   )
-  #dt edit --- to manually gray out the options w/ no data:
-  # Personal Income Q/M, County Budget Q/M, Construction M
 
+  #to manually gray out the options w/ no data:
+  # Personal Income Q/M, County Budget Q/M, Construction M
   freq_m = $("#freq_m")
   freq_m_pipe = $("#freq_m_pipe")
   freq_q = $("#freq_q")
@@ -245,17 +245,14 @@ load_page = (data_category, use_default_freq) ->
     freq_m.removeClass("enabled").addClass("disabled")
     freq_m_pipe.removeClass("enabled").addClass("disabled")
   else
-    #$("frequency_controls span").show()
-    #d3.select("#frequency_controls span").style("background-color","blue")
     freq_m.removeClass("disabled").addClass("enabled")
     freq_q.removeClass("disabled").addClass("enabled")
     freq_m_pipe.removeClass("disabled")
     freq_q_pipe.removeClass("disabled")
 
-  #dt edit -- to add data sources based on page. Hides div unless on target page.
+  #to add data sources based on page. Hides div unless on target page.
   #There's prob a better way to do this
   d3.selectAll("#data_sources").selectAll("div").style("visibility","hidden").style("height",0)
-
   switch data_category.title
     when "Major Indicators" then d3.select("#data_source_maj").style("visibility","visible").style("height","auto")
     when "Visitor Industry" then d3.select("#data_source_vis").style("visibility","visible").style("height","auto")
