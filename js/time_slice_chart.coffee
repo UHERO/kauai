@@ -176,6 +176,8 @@ window.pie_these_series = (series_data, cluster = false) ->
     window.cluster_these_series(series_data)
   else
     sorted_array = pie_layout(series_data).sort((a,b) -> a.value - b.value)
+    d3.select("#pie_heading").text($(".series").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series").first().next()).datum().units + ")")
+    #^moved pie heading here to catch personal income & county budget pie charts
     if window.slice_type is "pie"
       max_pie = sorted_array.pop()
       # pie graphic
@@ -229,7 +231,7 @@ window.pie_these_series = (series_data, cluster = false) ->
         .attr("y", svg.attr("height") - 40)
       pie_notes.append("tspan").attr("dy", 0).text("The area of each box represents the number of jobs in each category.")
       pie_notes.append("tspan").attr("dy", 10).text("Colors indicate top-level categories (e.g., Total Government Jobs).").attr("x", 0)
-    d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series.parent").first().next()).datum().units + ")")
+    #d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series.parent").first().next()).datum().units + ")")
 
 treemap_mousemove = (d) ->
   xPosition = d3.event.pageX + 5
