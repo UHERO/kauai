@@ -355,7 +355,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #line_left_header { width: 60px;}
 #ytd_header { width: 70px }
 #pie_header { width: 40px }
-#pie_heading { //dt had to add this, might need to change to "pie_header" in d3 code
+#pie_heading {
   fill: $uhero_blue;
   text-transform: uppercase;
   font-size: $smallest-font-size;

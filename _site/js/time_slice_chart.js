@@ -180,6 +180,7 @@
       sorted_array = pie_layout(series_data).sort(function(a, b) {
         return a.value - b.value;
       });
+      d3.select("#pie_heading").text($(".series").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series").first().next()).datum().units + ")");
       if (window.slice_type === "pie") {
         max_pie = sorted_array.pop();
         chart_area.selectAll("path").data(pie_layout(series_data), function(d) {
@@ -187,7 +188,7 @@
         }).enter().append("path").attr("d", pie_arc).attr("fill", function(d) {
           return clustered_color(d.data.display_name);
         }).attr("stroke", "white").attr("stroke-width", 2).on("mouseover", mouseover_pie).on("mouseout", mouseout_pie);
-        chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
+        return chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
           return "translate( " + (pie_arc.centroid(d)) + " )";
         }).append("tspan").attr("class", "pie_slice_name").attr("dy", 20).text(function(d) {
           return d.data.display_name;
@@ -210,9 +211,8 @@
         }).on("mousemove", treemap_mousemove).on("mouseout", treemap_mouseout);
         pie_notes = svg.append("text").attr("id", "pie_notes").attr("text-anchor", "start").attr("x", 0).attr("y", svg.attr("height") - 40);
         pie_notes.append("tspan").attr("dy", 0).text("The area of each box represents the number of jobs in each category.");
-        pie_notes.append("tspan").attr("dy", 10).text("Colors indicate top-level categories (e.g., Total Government Jobs).").attr("x", 0);
+        return pie_notes.append("tspan").attr("dy", 10).text("Colors indicate top-level categories (e.g., Total Government Jobs).").attr("x", 0);
       }
-      return d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series.parent").first().next()).datum().units + ")");
     }
   };
 
