@@ -707,6 +707,9 @@ g#pie_chart_area rect {
 #frequency_controls span.enabled:hover {
   border-bottom: 2px solid #03627f; }
 
+#frequency_controls span.disabled {
+  visibility: hidden; }
+
 #frequency_controls span.selected {
   padding: 2px 5px;
   color: #03627f;
