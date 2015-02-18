@@ -261,7 +261,9 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #frequency_controls span.enabled:hover {
     border-bottom: 2px solid $uhero_blue;
 }
-#frequency_controls span.disabled {
+.disabled { 
+// made this top level class to be multipurpose instead of targeting specifically
+// span in fred_controls
     visibility: hidden;
 }
 #frequency_controls span.selected {
@@ -408,7 +410,7 @@ a, a:active, a:visited, a:hover {
 }
 
 /* Table Footnotes */
-// hierarchy: div id footnotes -> div class footnote, div id footnote_#
+// hierarchy: div id footnotes -> div class footnote, div id fn_[name]
 #footnotes {
   font-size: $smallest-font-size;
   padding: 10px 20px 0px;

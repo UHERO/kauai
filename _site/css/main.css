@@ -707,7 +707,7 @@ g#pie_chart_area rect {
 #frequency_controls span.enabled:hover {
   border-bottom: 2px solid #03627f; }
 
-#frequency_controls span.disabled {
+.disabled {
   visibility: hidden; }
 
 #frequency_controls span.selected {

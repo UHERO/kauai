@@ -254,6 +254,15 @@ load_page = (data_category, use_default_freq) ->
     freq_m_pipe.removeClass("disabled")
     freq_q_pipe.removeClass("disabled")
 
+  #to add footnotes based on page
+  #at this point only affordability index shows selectively
+  fn_affordability = $("#fn_affordability")
+
+  if data_category.title == "Construction"
+    fn_affordability.removeClass("disabled")
+  else
+    fn_affordability.addClass("disabled")
+
   #to add data sources based on page. Hides div unless on target page.
   #There's prob a better way to do this
   d3.selectAll("#data_sources").selectAll("div").style("visibility","hidden").style("height",0)
