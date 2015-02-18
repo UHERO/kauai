@@ -236,6 +236,8 @@ load_page = (data_category, use_default_freq) ->
   freq_q = $("#freq_q")
   freq_q_pipe = $("#freq_q_pipe")
 
+  #class disabled causes visibility of element to be hidden;
+    # toggling it toggles visibility
   if data_category.title == "Personal Income" || data_category.title == "County Budget" || data_category.title == "Major Indicators"
     freq_m.removeClass("enabled").addClass("disabled")
     freq_q.removeClass("enabled").addClass("disabled")
@@ -244,6 +246,8 @@ load_page = (data_category, use_default_freq) ->
   else if data_category.title == "Construction"
     freq_m.removeClass("enabled").addClass("disabled")
     freq_m_pipe.removeClass("enabled").addClass("disabled")
+    freq_q.removeClass("disabled")
+    freq_q_pipe.removeClass("disabled")
   else
     freq_m.removeClass("disabled").addClass("enabled")
     freq_q.removeClass("disabled").addClass("enabled")
