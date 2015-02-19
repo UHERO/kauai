@@ -247,7 +247,10 @@ treemap_mousemove = (d) ->
         else d.display_name
   d3.select("#treemap_tooltip #treemap_tooltip_percentage")
     .text () ->
-      "YOY: " + d[freq].yoy[slider_val].toFixed(1) + "%"
+      if d[freq].yoy[slider_val]?
+        "YOY: " + d[freq].yoy[slider_val].toFixed(1) + "%"
+      else
+        "YOY: missing"
   d3.select("#treemap_tooltip #treemap_tooltip_value")
     .text(d.value.toFixed(3))
   d3.select("#treemap_tooltip").classed "hidden", false

@@ -230,7 +230,11 @@
       }
     });
     d3.select("#treemap_tooltip #treemap_tooltip_percentage").text(function() {
-      return "YOY: " + d[freq].yoy[slider_val].toFixed(1) + "%";
+      if (d[freq].yoy[slider_val] != null) {
+        return "YOY: " + d[freq].yoy[slider_val].toFixed(1) + "%";
+      } else {
+        return "YOY: missing";
+      }
     });
     d3.select("#treemap_tooltip #treemap_tooltip_value").text(d.value.toFixed(3));
     return d3.select("#treemap_tooltip").classed("hidden", false);
