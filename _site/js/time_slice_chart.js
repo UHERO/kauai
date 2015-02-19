@@ -222,9 +222,9 @@
     d3.select("#treemap_tooltip #treemap_tooltip_heading").text(function() {
       switch (d.depth) {
         case 2:
-          return d.display_name + " (" + d.parent.display_name + ")";
+          return "" + d.display_name + " (" + d.parent.display_name + ")";
         case 3:
-          return d.display_name + " (" + d.parent.display_name + " - " + d.parent.parent.display_name + ")";
+          return "" + d.display_name + " (" + d.parent.display_name + " - " + d.parent.parent.display_name + ")";
         default:
           return d.display_name;
       }
@@ -328,10 +328,10 @@
 
     /*
       .append("text")
-      #.attr("transform", "translate(-10, 0)")
-      #.attr("transform", "rotate(-90), translate(0, 30)")
+       *.attr("transform", "translate(-10, 0)")
+       *.attr("transform", "rotate(-90), translate(0, 30)")
       .attr("y", 20)
-      #.attr("dy", ".71em")
+       *.attr("dy", ".71em")
       .attr("x",-(width/2))
       .attr("id","cluster_heading")
       .style("text-anchor", "middle") #text-align
