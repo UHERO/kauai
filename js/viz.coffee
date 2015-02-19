@@ -136,10 +136,15 @@ render_page = (page_data, page_slug) ->
       make_slice = true if series_group.series_list[0].children?
   
   #console.log(page_slug)
-  if page_slug in ['major', 'income', 'county_rev']
+  if page_slug in ['major']
     #console.log 'major page here'
     make_slice = true
   
+  # set these explicitly to not show a slice
+  # this became necessary due to a change in the nesting structures
+  if page_slug in ['income', 'county_rev']
+    make_slice = false
+
   if make_slice
     # include pie_chart
     d3.select("#time_slice_slider_container").style("float", "left").style("margin-right", 0).style("margin-bottom", 0)
