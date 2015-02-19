@@ -6,37 +6,8 @@
 </description>
     <link>http://uhero.github.io/</link>
     <atom:link href="http://uhero.github.io/feed.xml" rel="self" type="application/rss+xml" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <pubDate>Thu, 19 Feb 2015 14:31:00 -1000</pubDate>
-    <lastBuildDate>Thu, 19 Feb 2015 14:31:00 -1000</lastBuildDate>
-=======
-    <pubDate>Thu, 19 Feb 2015 13:48:39 -1000</pubDate>
-    <lastBuildDate>Thu, 19 Feb 2015 13:48:39 -1000</lastBuildDate>
->>>>>>> assets
-=======
-    <pubDate>Thu, 19 Feb 2015 13:49:17 -1000</pubDate>
-    <lastBuildDate>Thu, 19 Feb 2015 13:49:17 -1000</lastBuildDate>
->>>>>>> removed pies for income and county_rev
-=======
-    <pubDate>Thu, 19 Feb 2015 13:49:33 -1000</pubDate>
-    <lastBuildDate>Thu, 19 Feb 2015 13:49:33 -1000</lastBuildDate>
->>>>>>> sizing and abbreviation in table header
-=======
-    <pubDate>Thu, 19 Feb 2015 13:49:33 -1000</pubDate>
-    <lastBuildDate>Thu, 19 Feb 2015 13:49:33 -1000</lastBuildDate>
-=======
-    <pubDate>Thu, 19 Feb 2015 13:16:18 -1000</pubDate>
-    <lastBuildDate>Thu, 19 Feb 2015 13:16:18 -1000</lastBuildDate>
->>>>>>> JP fix for missing treemap tooltips
->>>>>>> JP fix for missing treemap tooltips
-=======
-    <pubDate>Thu, 19 Feb 2015 13:49:51 -1000</pubDate>
-    <lastBuildDate>Thu, 19 Feb 2015 13:49:51 -1000</lastBuildDate>
->>>>>>> unbolded pie chart labels
+    <pubDate>Thu, 19 Feb 2015 14:31:23 -1000</pubDate>
+    <lastBuildDate>Thu, 19 Feb 2015 14:31:23 -1000</lastBuildDate>
     <generator>Jekyll v2.3.0</generator>
     
       <item>
