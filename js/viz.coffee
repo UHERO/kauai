@@ -256,8 +256,8 @@ load_page = (data_category, use_default_freq) ->
   else
     freq_m.removeClass("disabled").addClass("enabled")
     freq_q.removeClass("disabled").addClass("enabled")
-    freq_m_pipe.removeClass("disabled")
-    freq_q_pipe.removeClass("disabled")
+    freq_m_pipe.removeClass("disabled").removeClass("enabled")
+    freq_q_pipe.removeClass("disabled").removeClass("enabled")
 
   #to add footnotes based on page
   #at this point only affordability index shows selectively
@@ -284,8 +284,8 @@ set_up_nav()
 load_page(data_categories["major indicators"], true)
 $("#frequency_controls span").addClass("enabled")
 $("#freq_a").removeClass("enabled").addClass("selected")
-$("#freq_q_pipe").removeClass("enabled")
-$("#freq_m_pipe").removeClass("enabled")
+#$("#freq_q_pipe").removeClass("enabled")
+#$("#freq_m_pipe").removeClass("enabled")
 #$("#freq_q").removeClass("enabled")
 #$("#freq_m").removeClass("enabled")
 
@@ -301,6 +301,7 @@ $("#frequency_controls span").on("click", () ->
       $(this).removeClass("enabled")
       $(this).addClass("selected")
 
+      console.log "switch"
       #force pipes not to be enabled when switching frequencies
       $("#freq_q_pipe").removeClass("enabled")
       $("#freq_m_pipe").removeClass("enabled")
