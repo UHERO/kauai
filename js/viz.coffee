@@ -256,6 +256,7 @@ load_page = (data_category, use_default_freq) ->
 
   #to add footnotes based on page
   #at this point only affordability index shows selectively
+  #also it's a little faster to load than the actual page so footnote shows up early
   fn_affordability = $("#fn_affordability")
 
   if data_category.title == "Construction"
@@ -281,8 +282,8 @@ $("#frequency_controls span").addClass("enabled")
 $("#freq_a").removeClass("enabled").addClass("selected")
 $("#freq_q_pipe").removeClass("enabled")
 $("#freq_m_pipe").removeClass("enabled")
-#$("#freq_q").removeClass("enabled")
-#$("#freq_m").removeClass("enabled")
+$("#freq_q").removeClass("enabled")
+$("#freq_m").removeClass("enabled")
 
 # event listener for switching frequency
 $("#frequency_controls span").on("click", () ->
