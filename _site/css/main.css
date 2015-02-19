@@ -854,9 +854,6 @@ g#pie_chart_area rect {
   font-size: 10px;
   text-transform: uppercase; }
 
-.pct_change {
-  font-size: 8px; }
-
 #series_display h3 {
   position: relative;
   bottom: 40px; }
@@ -910,6 +907,9 @@ g#pie_chart_area rect {
   fill: #03627f;
   text-transform: uppercase;
   font-size: 10.4px; }
+
+.ytd_cell span.last_obs, .data_cols span.cell_value {
+  padding-top: 2px; }
 
 /****** Regular link recoloring (for footer items mainly) ********/
 a, a:active, a:visited, a:hover {

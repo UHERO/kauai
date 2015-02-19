@@ -383,7 +383,6 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 
 #sparkline_header {font-weight:bold; font-size:11px;}
 #table_header { height: 48px; text-align:center; font-size:10px; text-transform: uppercase;}
-.pct_change {font-size: 8px;} // %change labels in table header
 
 #series_display h3{position: relative; bottom:40px}
 #buttons a { text-decoration:none;}
@@ -406,6 +405,13 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
   fill: $uhero_blue;
   text-transform: uppercase;
   font-size: $smallest-font-size;
+}
+
+// fixing "overlap" on flextable cells
+
+.ytd_cell span.last_obs, .data_cols span.cell_value {
+  //border: 1px solid black;
+  padding-top: 2px; // fix overlap
 }
 
 /****** Regular link recoloring (for footer items mainly) ********/
