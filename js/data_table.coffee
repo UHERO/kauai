@@ -402,8 +402,6 @@ series_row_class = (d)->
   "series" + child_class + parent_class
     
 create_series_rows = (cat_divs)->
-  console.log "CAT_DIVS"
-  console.log cat_divs
   cat_series = cat_divs
     .selectAll("div.series")
     .data((d) -> flatten(d.series_list))
