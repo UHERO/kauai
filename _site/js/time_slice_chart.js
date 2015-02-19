@@ -1,5 +1,5 @@
 (function() {
-  var all_dates, chart_area, color, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_date, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props, uhero_color10, uhero_color5;
+  var all_clustered_data, all_dates, chart_area, clustered_color, clustered_color3, dates_extent, get_common_dates, get_data_index_extent, max_pie, mouseout_pie, mouseover_pie, pie_arc, pie_layout, selected_data, selected_date, selected_dates, set_date_shown, set_slider_dates, slider_val, svg, treemap_mousemove, treemap_mouseout, treemap_position, treemap_props, uhero_color10, uhero_color5, x, x0, x1, y;
 
   window.slice_type = "pie";
 
@@ -11,16 +11,26 @@
 
   max_pie = null;
 
+  all_clustered_data = {};
+
+  x0 = {};
+
+  x1 = {};
+
+  y = {};
+
   treemap_props = {
     width: null,
     height: null
   };
 
-  color = d3.scale.category20c();
-
   uhero_color5 = d3.scale.ordinal().range(["#0e5a70", "#1e748d", "#368399", "#579fb3", "#88c2d3"]);
 
   uhero_color10 = d3.scale.ordinal().range(["#03627F", "#1C718B", "#358198", "#4E91A5", "#67A0B2", "#81B0BF", "#9AC0CB", "#B3CFD8", "#CCDFE5", "#E5EFF2"]);
+
+  clustered_color = uhero_color5;
+
+  clustered_color3 = d3.scale.ordinal().range(["#0e5a70", "#4E91A5", "#9AC0CB"]);
 
   window.treemap_layout = d3.layout.treemap().size([300, 200]).sticky(true).value(function(d) {
     return d[freq].data[slider_val];
@@ -45,7 +55,13 @@
   };
 
   set_date_shown = function() {
-    return d3.select("#slice_slider_selection").text(selected_date());
+    var slider_selection;
+    slider_selection = d3.select("#slice_slider_selection").text(selected_date());
+    if (window.slice_type === 'clustered') {
+      return slider_selection.style("visibility", "hidden");
+    } else {
+      return slider_selection.style("visibility", "visible");
+    }
   };
 
   window.redraw_slice = function(event, ui) {
@@ -74,7 +90,11 @@
           return d.value.toFixed(1);
         });
       } else {
-        return window.node.data(treemap_layout.nodes).call(treemap_position);
+        if (window.slice_type === 'treemap') {
+          return window.node.data(treemap_layout.nodes).call(treemap_position);
+        } else {
+          return window.update_clustered_chart(slider_val);
+        }
       }
     }
   };
@@ -135,52 +155,63 @@
     return set_date_shown();
   };
 
-  window.pie_these_series = function(series_data) {
+  window.pie_these_series = function(series_data, cluster) {
     var data_extent, pie_notes, sorted_array;
-    if (series_data[0].display_name === "Construction & Mining") {
-      window.slice_type = "treemap";
+    if (cluster == null) {
+      cluster = false;
+    }
+    if (cluster) {
+      window.slice_type = "clustered";
     } else {
-      window.slice_type = "pie";
+      if (series_data[0].display_name === "Construction & Mining") {
+        window.slice_type = "treemap";
+      } else {
+        window.slice_type = "pie";
+      }
     }
     data_extent = get_common_dates(series_data);
     set_slider_dates(data_extent);
     chart_area.selectAll("path").remove();
-    sorted_array = pie_layout(series_data).sort(function(a, b) {
-      return a.value - b.value;
-    });
-    if (window.slice_type === "pie") {
-      max_pie = sorted_array.pop();
-      chart_area.selectAll("path").data(pie_layout(series_data), function(d) {
-        return d.data.display_name;
-      }).enter().append("path").attr("d", pie_arc).attr("fill", function(d) {
-        return uhero_color5(d.data.display_name);
-      }).attr("stroke", "white").attr("stroke-width", 2).on("mouseover", mouseover_pie).on("mouseout", mouseout_pie);
-      chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
-        return "translate( " + (pie_arc.centroid(d)) + " )";
-      }).append("tspan").attr("class", "pie_slice_name").attr("dy", 20).text(function(d) {
-        return d.data.display_name;
-      }).append("tspan").attr("class", "pie_slice_value").attr("dy", 20).attr("x", 0).text(function(d) {
-        return d.value.toFixed(1);
-      });
+    if (cluster) {
+      return window.cluster_these_series(series_data);
     } else {
-      chart_area.attr("transform", "translate(0,50)");
-      window.node = chart_area.datum({
-        children: series_data
-      }).selectAll("rect").data(treemap_layout.nodes).enter().append("rect").call(treemap_position).attr("fill", function(d) {
-        switch (d.depth) {
-          case 2:
-            return uhero_color10(d.parent.display_name);
-          case 3:
-            return uhero_color10(d.parent.parent.display_name);
-          default:
-            return uhero_color10(d.display_name);
-        }
-      }).on("mousemove", treemap_mousemove).on("mouseout", treemap_mouseout);
-      pie_notes = svg.append("text").attr("id", "pie_notes").attr("text-anchor", "start").attr("x", 0).attr("y", svg.attr("height") - 40);
-      pie_notes.append("tspan").attr("dy", 0).text("The area of each box represents the number of jobs in each category.");
-      pie_notes.append("tspan").attr("dy", 10).text("Colors indicate top-level categories (e.g., Total Government Jobs).").attr("x", 0);
+      sorted_array = pie_layout(series_data).sort(function(a, b) {
+        return a.value - b.value;
+      });
+      d3.select("#pie_heading").text($(".series").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series").first().next()).datum().units + ")");
+      if (window.slice_type === "pie") {
+        max_pie = sorted_array.pop();
+        chart_area.selectAll("path").data(pie_layout(series_data), function(d) {
+          return d.data.display_name;
+        }).enter().append("path").attr("d", pie_arc).attr("fill", function(d) {
+          return clustered_color(d.data.display_name);
+        }).attr("stroke", "white").attr("stroke-width", 2).on("mouseover", mouseover_pie).on("mouseout", mouseout_pie);
+        return chart_area.selectAll("text").data([max_pie]).enter().append("text").attr("class", "in_pie_label").attr("text-anchor", "middle").attr("transform", function(d) {
+          return "translate( " + (pie_arc.centroid(d)) + " )";
+        }).append("tspan").attr("class", "pie_slice_name").attr("dy", 20).text(function(d) {
+          return d.data.display_name;
+        }).append("tspan").attr("class", "pie_slice_value").attr("dy", 20).attr("x", 0).text(function(d) {
+          return d.value.toFixed(1);
+        });
+      } else {
+        chart_area.attr("transform", "translate(0,50)");
+        window.node = chart_area.datum({
+          children: series_data
+        }).selectAll("rect").data(treemap_layout.nodes).enter().append("rect").call(treemap_position).attr("fill", function(d) {
+          switch (d.depth) {
+            case 2:
+              return uhero_color10(d.parent.display_name);
+            case 3:
+              return uhero_color10(d.parent.parent.display_name);
+            default:
+              return uhero_color10(d.display_name);
+          }
+        }).on("mousemove", treemap_mousemove).on("mouseout", treemap_mouseout);
+        pie_notes = svg.append("text").attr("id", "pie_notes").attr("text-anchor", "start").attr("x", 0).attr("y", svg.attr("height") - 40);
+        pie_notes.append("tspan").attr("dy", 0).text("The area of each box represents the number of jobs in each category.");
+        return pie_notes.append("tspan").attr("dy", 10).text("Colors indicate top-level categories (e.g., Total Government Jobs).").attr("x", 0);
+      }
     }
-    return d3.select("#pie_heading").text($(".series.parent").first().prev().text().trim().replace("Total", "") + " (" + d3.selectAll($(".series.parent").first().next()).datum().units + ")");
   };
 
   treemap_mousemove = function(d) {
@@ -237,6 +268,133 @@
     svg.append("text").attr("id", "pie_heading").attr("text-anchor", "middle").attr("x", center_x).attr("y", 20);
     chart_area = svg.append("g").attr("id", "pie_chart_area").attr("transform", "translate(" + center_x + "," + center_y + ")");
     return svg.append("text").attr("id", "slice_slider_selection").attr("text-anchor", "middle").attr("x", center_x).attr("y", svg.attr("height") - 10).text("2013");
+  };
+
+  x = d3.scale.linear().clamp(true).range([0, 15]);
+
+  y = d3.scale.linear();
+
+  x0 = d3.scale.ordinal();
+
+  selected_dates = function() {
+    return all_dates().slice(slider_val - 4, +slider_val + 1 || 9e9);
+  };
+
+  selected_data = function(d) {
+    var _i, _ref, _results;
+    return (function() {
+      _results = [];
+      for (var _i = _ref = slider_val - 4; _ref <= slider_val ? _i <= slider_val : _i >= slider_val; _ref <= slider_val ? _i++ : _i--){ _results.push(_i); }
+      return _results;
+    }).apply(this).map(function(index) {
+      var period;
+      period = {
+        period: all_dates()[index]
+      };
+      period.series = d.map(function(series) {
+        return {
+          name: series.display_name,
+          value: +series[freq].yoy[index]
+        };
+      });
+      return period;
+    });
+  };
+
+  window.cluster_these_series = function(series_data) {
+    var data, height, legend, period, seriesNames, width, xAxis, yAxis;
+    all_clustered_data = series_data;
+    width = svg.attr('width');
+    height = svg.attr('height') - 30;
+    x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.2);
+    x1 = d3.scale.ordinal();
+    y = d3.scale.linear().range([height, 0]);
+    xAxis = d3.svg.axis().scale(x0).orient("bottom");
+    yAxis = d3.svg.axis().scale(y).orient("right").tickFormat(d3.format(".2s"));
+    data = selected_data(series_data);
+    seriesNames = ["Real Personal Income", "Total Visitor Days", "Total Non-farm Payrolls"];
+    x0.domain(data.map(function(d) {
+      return d.period;
+    }));
+    x1.domain(seriesNames).rangeRoundBands([0, x0.rangeBand()]);
+    y.domain([-20, 20]);
+    svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + (height + 30) + ")").call(xAxis);
+    svg.append("text").text("Growth Rate").attr("y", 20).attr("x", width / 2).attr("id", "cluster_heading").style("text-anchor", "middle");
+    svg.append("g").attr("class", "y axis").attr("transform", "translate(" + width + ", 30)").call(yAxis);
+
+    /*
+      .append("text")
+       *.attr("transform", "translate(-10, 0)")
+       *.attr("transform", "rotate(-90), translate(0, 30)")
+      .attr("y", 20)
+       *.attr("dy", ".71em")
+      .attr("x",-(width/2))
+      .attr("id","cluster_heading")
+      .style("text-anchor", "middle") #text-align
+      .text("Growth Rate")
+     */
+    period = svg.selectAll(".period").data(data).enter().append("g").attr("class", "g").attr("transform", function(d) {
+      return "translate(" + x0(d.period) + ",30)";
+    });
+    period.selectAll("rect").data(function(d) {
+      return d.series;
+    }).enter().append("rect").classed("series_bars", true).attr("width", x1.rangeBand()).attr("x", function(d) {
+      return x1(d.name);
+    }).attr("y", function(d) {
+      return y(d3.max([0, d3.min([20, d.value])]));
+    }).attr("height", function(d) {
+      return y(0) - y(d3.min([20, Math.abs(d.value)]));
+    }).style("fill", function(d) {
+      return clustered_color3(d.name);
+    });
+    legend = svg.selectAll(".legend").data(seriesNames.slice()).enter().append("g").attr("class", "legend").attr("transform", function(d, i) {
+      return "translate(-10," + i * 20 + ")";
+    });
+    legend.append("rect").attr("x", width - 18).attr("y", 39).attr("width", 18).attr("height", 18).style("fill", clustered_color3);
+    return legend.append("text").attr("x", width - 24).attr("y", 47).attr("dy", ".35em").classed("clustered_bar_legend", true).style("text-anchor", "end").text(function(d) {
+      return d;
+    });
+  };
+
+  window.update_clustered_chart = function(slider_val) {
+    var data, height, legend, period, series, seriesNames, width, xAxis;
+    seriesNames = ["Real Personal Income", "Total Visitor Days", "Total Non-farm Payrolls"];
+    data = selected_data(all_clustered_data);
+    width = svg.attr('width');
+    height = svg.attr('height');
+    x0 = d3.scale.ordinal().rangeRoundBands([0, width], 0.1);
+    x0.domain(data.map(function(d) {
+      return d.period;
+    }));
+    xAxis = d3.svg.axis().scale(x0).orient("bottom");
+    svg.selectAll(".x.axis").attr("transform", "translate(0," + height + ")").call(xAxis);
+    svg.selectAll("rect.series_bars").remove();
+    period = svg.selectAll(".period").data(data);
+    period.enter().append("g").attr("transform", function(d) {
+      return "translate(" + x0(d.period) + ",30)";
+    });
+    series = period.selectAll("rect").data(function(d) {
+      return d.series;
+    });
+    series.remove();
+    series.enter().append("rect").classed("series_bars", true).attr("width", x1.rangeBand()).attr("x", function(d) {
+      return x1(d.name);
+    }).attr("y", function(d) {
+      return y(d3.max([0, d3.min([20, d.value])]));
+    }).attr("height", function(d) {
+      return y(0) - y(d3.min([20, Math.abs(d.value)]));
+    }).style("fill", function(d) {
+      return clustered_color3(d.name);
+    });
+    series.exit().remove();
+    svg.selectAll(".legend").remove();
+    legend = svg.selectAll(".legend").data(seriesNames.slice()).enter().append("g").attr("class", "legend").attr("transform", function(d, i) {
+      return "translate(-10," + i * 20 + ")";
+    });
+    legend.append("rect").attr("x", width - 18).attr("y", 39).attr("width", 18).attr("height", 18).style("fill", clustered_color3);
+    return legend.append("text").attr("x", width - 24).attr("y", 47).attr("dy", ".35em").classed("clustered_bar_legend", true).style("text-anchor", "end").text(function(d) {
+      return d;
+    });
   };
 
 }).call(this);

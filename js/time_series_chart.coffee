@@ -52,10 +52,7 @@ all_dates = ->
   d3.select("#line_chart_slider_div").datum()
     
 dates_extent = (extent) ->
-  # debugging an issue with the line_chart not updating
-  #console.log extent
   date_extent = all_dates().slice(parseInt(parseInt(extent[0])), parseInt(extent[1])+1)
-  #console.log "date_extent -> #{JSON.stringify date_extent}"
   date_extent
 
 slider_dates = ->
@@ -213,20 +210,10 @@ redraw_line_chart = (extent, duration = 0) ->
   r_paths = d3.selectAll("g#chart_area path.s_right")
     .attr("d", (d) -> regenerate_path(d, extent, "right") )
     
-# change this
-#window.trim_time_series = (event, ui) ->
 window.trim_time_series = (event) ->
   slider_extent =  $("#line_chart_slider_div").val().map (value) -> +value
   d3.select("h3#date_line_left").text(all_dates()[slider_extent[0]])
   d3.select("h3#date_line_right").text(all_dates()[slider_extent[1]])
-  #if d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") == "left"
-    #text = d3.select("#line_chart_slider_container a.ui-state-focus").style("left").split("px")
-    ##console.log(text)
-    #d3.select("h3#date_line_left").style("left", (parseInt(text[0]) + 480) + "px")
-  
-  #if d3.select("#line_chart_slider_container a.ui-state-focus").attr("slider") == "right"
-    #text = d3.select("#line_chart_slider_container a.ui-state-focus").style("left").split("px")
-    #d3.select("h3#date_line_right").style("left", (parseInt(text[0]) + 480) + "px")
     
   switch window.mode
     when "multi_line" then redraw_line_chart(slider_extent)
@@ -241,8 +228,6 @@ window.line_and_bar_to_multi_line = (d) ->
     .classed("s_left", true)
   
   add_to_line_chart(d,"right")
-  #console.log "line and bar to multi"
-  #console.log d
   window.mode = "multi_line"
   
 window.multi_line_to_line_and_bar = (d) ->
@@ -257,15 +242,11 @@ window.multi_line_to_line_and_bar = (d) ->
   window.mode = "line_bar"
 
   # update right axis label
-  d3.select("#right_axis_label").text("YOY%")
+  d3.select("#right_axis_label").text("%Change")
     
 window.clear_from_line_chart = (d) ->
   path = s_path d.udaman_name
   axis = if path.classed("s_left") then "left" else "right"
-  #console.log "Remove from #{axis} axis:"
-  #console.log(d.udaman_name)
-  #console.log(path.classed("s_left"))
-  #console.log(path.classed("s_right"))
   remove_from_line_chart(d,axis)
   
 window.clear_line_and_bar_chart = (d) ->
@@ -291,21 +272,18 @@ window.display_line_and_bar_chart = (d) ->
     .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
 
   path
-    #.transition()
-    #.duration(duration)
     .attr("d", (d) -> y["left"].path(d[freq].trimmed_data))
     
   show_bars(d, slider_extent)
 
-  #console.log(d)
   # update left and right axis labels
   d3.select("#left_axis_label").text("#{d.display_name} (#{d.units})")
-  d3.select("#right_axis_label").text("YOY%")
+  d3.select("#right_axis_label").text("%Change")
     
 window.add_to_line_chart = (d, axis) ->
   duration = 500
   trim_d d[freq], slider_extent
-  domain = chart_extent(d[freq].data)  
+  domain = chart_extent(d[freq].data)
   path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
 
   update_y_domain_with_new(axis, domain, duration)
@@ -315,14 +293,10 @@ window.add_to_line_chart = (d, axis) ->
     .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
     
   d3.selectAll("g#chart_area path.#{y[axis].class}")
-    #.transition()
-    #.duration(duration)
     .attr("d", (d) -> y[axis].path(d[freq].trimmed_data))
   
-  #toggle_axis_button(d.udaman_name, axis)
 
   # update axis label
-  #console.log d.display_name
   d3.select("#" + axis + "_axis_label").text("#{d.display_name} (#{d.units})")
 
 
@@ -330,25 +304,15 @@ window.remove_from_line_chart = (d, axis) ->
   duration = 500
   chart_area = d3.select("g#chart_area")
   path = d3.select("g#chart_area #path_#{window.series_to_class(d.udaman_name)}")
-  #console.log(path)
 
   path.classed("s_#{axis}", false)
-  #console.log("dummy path:")
-  #console.log(dummy_path(d[freq].trimmed_data))
   path
     .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
-    #.transition()
-    #.duration(500)
     
   update_domain(axis, duration)
 
   chart_area.selectAll("path.#{y[axis].class}")
-    #.transition()
-    #.duration(duration)
     .attr("d", (d) -> y[axis].path(d[freq].trimmed_data))
-
-  #toggle_axis_button(d.udaman_name, axis)
-
 
 window.set_up_line_chart_paths = (data) ->
   d3.select("g#chart_area")

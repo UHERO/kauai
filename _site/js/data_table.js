@@ -144,13 +144,23 @@
    */
 
   set_primary_series = function(series) {
-    var new_series, old_series;
+    var array_length, first_value_index, new_series, old_series;
     new_series = series.datum();
     old_series = d3.select(".series.selected").datum();
     if (new_series.udaman_name !== old_series.udaman_name && !d3.select("g#chart_area #path_" + (window.series_to_class(new_series.udaman_name))).classed("s_right")) {
       if (window.mode === "line_bar") {
         unhighlight_series_row(old_series);
         highlight_series_row(new_series);
+        first_value_index = 0;
+        array_length = new_series[window.freq].data.length;
+        while (first_value_index < array_length && (new_series[window.freq].data[first_value_index] == null)) {
+          first_value_index++;
+        }
+        console.log(first_value_index);
+        $("#line_chart_slider_div").val(first_value_index, array_length - 1);
+        window.trim_sparklines();
+        window.trim_time_series();
+        window.update_ytd_column();
         clear_line_and_bar_chart(old_series);
         return display_line_and_bar_chart(new_series);
       } else {
@@ -167,9 +177,7 @@
     window.secondary_series = series;
     new_secondary_series = series.datum();
     primary_series = d3.select(".series.selected").datum();
-    if (new_secondary_series.udaman_name === primary_series.udaman_name) {
-
-    } else {
+    if (new_secondary_series.udaman_name !== primary_series.udaman_name) {
       on_toggle = d3.select(".right_toggle.on").node();
       if (on_toggle != null) {
         old_secondary_series = d3.select(on_toggle.parentNode).datum();
@@ -331,7 +339,7 @@
     dates = d3.select("#datatable_header").selectAll(".header_cell").data(data);
     dates.enter().append("div").attr("class", "header_cell");
     dates.html(function(d) {
-      return "" + d + "<br/>YOY%";
+      return "" + d + "<br/><span class=\"pct_change\">%Chg</a>";
     });
     return dates.exit().remove();
   };
@@ -471,7 +479,7 @@
     }).attr("state", "expanded").html(function(d) {
       return "<span class='glyphicon glyphicon-minus'></span> " + (d.group_name.replace('Total ', ''));
     }).on("mouseover", function(d) {
-      return d3.select(this).style("background-color", "#999");
+      return d3.select(this).style("background-color", "#ecffc7");
     }).on("mouseout", function(d) {
       return d3.selectAll('.cat_label').style("background-color", "#FFF");
     }).on("click", click_cat);

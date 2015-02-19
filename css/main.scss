@@ -11,7 +11,7 @@ $base-font-size:   16px;
 $small-font-size:  $base-font-size * 0.875; // used for bootstrap resets (?)
 $smaller-font-size:$base-font-size * 0.75;
 $smallest-font-size:$base-font-size* 0.65; // p much used for pie_label's only
-$figure_label_font_size: 12px;
+$figure_label_font_size: $smallest-font-size;
 $base-line-height: 1.5;
 
 $spacing-unit:     30px;
@@ -51,6 +51,10 @@ $neon_green:        #ecffc7;
         "layout",
         "syntax-highlighting"
 ;
+
+#content { // try to fix page squish
+  min-width: 740px;
+}
 
 .site-footer{ position:relative; top:50px}
 #county_revenue.nav_link { margin:0 }
@@ -107,21 +111,21 @@ g.tick text { font-size: 10px; fill: #777}
 g.tick line {stroke: #777; stroke-width:1 }
 path.line_chart_path { fill:none; stroke-width:2}
 #left_axis_label { 
-  fill: rgb(255, 152, 71); 
-  stroke: rgb(255, 152, 71); 
+  fill: $uhero_orange; 
+  //stroke: rgb(255, 152, 71); this makes it bold
   text-transform: uppercase;
-  font-weight: bolder;
-  font-size: $small-font-size;
+  font-weight: normal;
+  font-size: $smallest-font-size;
   } // can use var here?
-.s_left, path.line_chart_path.with_bar{ stroke: rgb(255, 152, 71) }
+.s_left, path.line_chart_path.with_bar{ stroke: $uhero_orange }
 #right_axis_label { 
   fill: $uhero_blue; 
-  stroke: $uhero_blue;
+  //stroke: $uhero_blue; this makes it bold
   text-transform: uppercase;
-  font-weight: bolder;
-  font-size: $small-font-size;
+  font-weight: normal;
+  font-size: $smallest-font-size;
 }
-.s_right { stroke: rgb(49, 130, 189) } //dt what is this
+.s_right { stroke: $uhero_blue; } // additional line graph paths
 .yoy { 
   stroke: $uhero_blue; //rgb(49, 130, 189); 
   fill: $uhero_blue; //rgb(49, 130, 189);
@@ -261,6 +265,11 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #frequency_controls span.enabled:hover {
     border-bottom: 2px solid $uhero_blue;
 }
+.disabled { 
+// made this top level class to be multipurpose instead of targeting specifically
+// span in fred_controls
+    visibility: hidden;
+}
 #frequency_controls span.selected {
     padding: 2px 5px;
     color: $uhero_blue;
@@ -355,12 +364,10 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #line_left_header { width: 60px;}
 #ytd_header { width: 70px }
 #pie_header { width: 40px }
-#pie_heading { //dt had to add this, might need to change to "pie_header" in d3 code
-  fill: $uhero_blue; 
-  stroke: $uhero_blue; 
+#pie_heading {
+  fill: $uhero_blue;
   text-transform: uppercase;
-  font-weight: bolder;
-  font-size: $small-font-size;
+  font-size: $smallest-font-size;
 }
 .left_toggle, .right_toggle { 
     width: 40px; 
@@ -376,6 +383,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 
 #sparkline_header {font-weight:bold; font-size:11px;}
 #table_header { height: 48px; text-align:center; font-size:10px; text-transform: uppercase;}
+.pct_change {font-size: 8px;} // %change labels in table header
 
 #series_display h3{position: relative; bottom:40px}
 #buttons a { text-decoration:none;}
@@ -385,10 +393,35 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 #date_series_left{ font-size:12px; position:absolute; top:-20px; left:-20px} // exists?
 #date_series_right{font-size:12px; position:absolute; top:-20px; left:345px} // exists?
 #date_table{font-size:12px; position:absolute; top:-20px; left:700px}
+
 #date_line_left{ font-size: $figure_label_font_size; position:relative; float:left}
 #date_line_right{font-size: $figure_label_font_size; position:relative; float:right}
+
+/* Clustered bar chart */
+.clustered_bar_legend {
+  font-size: $smallest-font-size;
+}
+
+#cluster_heading {
+  fill: $uhero_blue;
+  text-transform: uppercase;
+  font-size: $smallest-font-size;
+}
 
 /****** Regular link recoloring (for footer items mainly) ********/
 a, a:active, a:visited, a:hover {
   color: $uhero_blue;
+}
+
+/* Table Footnotes */
+// hierarchy: div id footnotes -> div class footnote, div id fn_[name]
+#footnotes {
+  font-size: $smallest-font-size;
+  padding: 10px 20px 0px;
+  border-top: 2px solid $uhero_blue;
+  clear: both;
+}
+
+#footnotes a {
+  color: $uhero_orange;
 }

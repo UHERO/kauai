@@ -25,7 +25,12 @@ layout: default
 			</div>
             <div id="secondary_controls">
                 <div id="frequency_controls">
-                    Frequency: <span id="freq_a">A</span> | <span id="freq_q">Q</span> | <span id="freq_m">M</span>
+                    Frequency: 
+                    <span id="freq_a">A</span>
+                    <span id="freq_q_pipe"> | </span>
+                    <span id="freq_q">Q</span>
+                    <span id="freq_m_pipe"> | </span>
+                    <span id="freq_m">M</span>
                 </div>
                 <span id="reset">Reset</span> <span id="export">Export</span>
             </div>
@@ -35,10 +40,15 @@ layout: default
 				<div id="series_header">&nbsp;</div>
 				<div id="sparkline_header">&nbsp;</div>
                 <div id="line_left_header"><br/>Compare</div>
-                <div id="ytd_header">Last Obs<br/>Date<br/>YTD %Change</div>
+                <div id="ytd_header">Last Obs<br/>YTD %Change</div>
                 <div id="datatable_header"><br/></div>
 			</div>
 		</div>
+	</div>
+
+	<div id="footnotes">
+		<div class="footnote" id="fn_pct_chg">1. %Change indicates the percentage change from the same period of the previous year.</div>
+		<div class="footnote" id="fn_affordability">2. About the <a href="http://www.uhero.hawaii.edu/105/real-estate-indicators" target="_blank">affordability index</a></div>
 	</div>
 
   <div id="treemap_tooltip" class="hidden">
@@ -48,6 +58,14 @@ layout: default
   </div>
 	
 	<div id="source_links">
-		Designed by Adele Balderston, Ben Trevino, and David Wang
+		Designed by Adele Balderston, Ben Trevino, Jonathan Page, and Diliaur Tellei
+		<div id="data_sources">
+			<div id="data_source_maj">Data Sources: <a href="https://www.hiwi.org/vosnet/Default.aspx" target="_blank">DLIR</a>, <a href="http://bea.gov" target="_blank">BEA</a>, <a href="http://www.bls.gov/data/" target="_blank">BLS</a>, <a href="http://www.census.gov/data.html" target="_blank">Census</a>, <a href="http://www.hawaiitourismauthority.org/research/" target="_blank">HTA</a>, <a href="http://dbedt.hawaii.gov/" target="_blank">State of Hawaii DBEDT</a></div>
+			<div id="data_source_vis">Data Sources: <a href="http://www.hawaiitourismauthority.org/research/" target="_blank">HTA</a>, <a href="http://www.hospitalityadvisors.com/" target="_blank">Hospitality Advisors LLC</a></div>
+			<div id="data_source_lab">Data Source: <a href="https://www.hiwi.org/vosnet/Default.aspx" target="_blank">DLIR</a></div>
+			<div id="data_source_per">Data Sources: <a href="http://bea.gov" target="_blank">BEA</a>, <a href="http://www.bls.gov/data/" target="_blank">BLS</a>, <a href="http://www.census.gov/data.html" target="_blank">Census</a></div>
+			<div id="data_source_con">Data Sources: <a href="https://www.hiwi.org/vosnet/Default.aspx" target="_blank">DLIR</a>, <a href="http://hbrhawaii.com/" target="_blank">HBR</a>, <a href="https://www.locationsllc.com/" target="_blank">Locations LLC</a>, <a href="http://dbedt.hawaii.gov/" target="_blank">DBEDT</a>, <a href="http://uhero.hawaii.edu" target="_blank">UHERO</a></div>
+			<div id="data_source_bud">Data Source: <a href="http://www.kauai.gov/" target="_blank">County of Kauai CAFR</a></div>
+		</div>
 	</div>
 </div>

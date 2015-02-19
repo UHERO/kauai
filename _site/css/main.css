@@ -455,6 +455,9 @@ pre {
   .highlight .il {
     color: #099; }
 
+#content {
+  min-width: 740px; }
+
 .site-footer {
   position: relative;
   top: 50px; }
@@ -527,23 +530,21 @@ path.line_chart_path {
 
 #left_axis_label {
   fill: #ff9847;
-  stroke: #ff9847;
   text-transform: uppercase;
-  font-weight: bolder;
-  font-size: 14px; }
+  font-weight: normal;
+  font-size: 10.4px; }
 
 .s_left, path.line_chart_path.with_bar {
   stroke: #ff9847; }
 
 #right_axis_label {
   fill: #03627f;
-  stroke: #03627f;
   text-transform: uppercase;
-  font-weight: bolder;
-  font-size: 14px; }
+  font-weight: normal;
+  font-size: 10.4px; }
 
 .s_right {
-  stroke: #3182bd; }
+  stroke: #03627f; }
 
 .yoy {
   stroke: #03627f;
@@ -563,7 +564,7 @@ g#pie_chart_area text {
   font-weight: 300; }
 
 text#slice_slider_selection {
-  font-size: 12px;
+  font-size: 10.4px;
   padding-top: 50px;
   border: 1px solid blue; }
 
@@ -709,6 +710,9 @@ g#pie_chart_area rect {
 #frequency_controls span.enabled:hover {
   border-bottom: 2px solid #03627f; }
 
+.disabled {
+  visibility: hidden; }
+
 #frequency_controls span.selected {
   padding: 2px 5px;
   color: #03627f;
@@ -826,10 +830,8 @@ g#pie_chart_area rect {
 
 #pie_heading {
   fill: #03627f;
-  stroke: #03627f;
   text-transform: uppercase;
-  font-weight: bolder;
-  font-size: 14px; }
+  font-size: 10.4px; }
 
 .left_toggle, .right_toggle {
   width: 40px;
@@ -851,6 +853,9 @@ g#pie_chart_area rect {
   text-align: center;
   font-size: 10px;
   text-transform: uppercase; }
+
+.pct_change {
+  font-size: 8px; }
 
 #series_display h3 {
   position: relative;
@@ -888,15 +893,34 @@ g#pie_chart_area rect {
   left: 700px; }
 
 #date_line_left {
-  font-size: 12px;
+  font-size: 10.4px;
   position: relative;
   float: left; }
 
 #date_line_right {
-  font-size: 12px;
+  font-size: 10.4px;
   position: relative;
   float: right; }
+
+/* Clustered bar chart */
+.clustered_bar_legend {
+  font-size: 10.4px; }
+
+#cluster_heading {
+  fill: #03627f;
+  text-transform: uppercase;
+  font-size: 10.4px; }
 
 /****** Regular link recoloring (for footer items mainly) ********/
 a, a:active, a:visited, a:hover {
   color: #03627f; }
+
+/* Table Footnotes */
+#footnotes {
+  font-size: 10.4px;
+  padding: 10px 20px 0px;
+  border-top: 2px solid #03627f;
+  clear: both; }
+
+#footnotes a {
+  color: #ff9847; }

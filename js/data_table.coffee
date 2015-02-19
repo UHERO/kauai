@@ -17,9 +17,10 @@ selected_dates = ->
 
 # new implementation
 selected_data = (d) ->
-    yoy = d[freq].yoy[(slider_val-4)..slider_val]
-    d[freq].data[(slider_val-4)..slider_val].map (d, i) ->
-      {data: d, yoy: yoy[i]}
+  #console.log(d)
+  yoy = d[freq].yoy[(slider_val-4)..slider_val]
+  d[freq].data[(slider_val-4)..slider_val].map (d, i) ->
+    {data: d, yoy: yoy[i]}
   
 spark_line = d3.svg.line()
   .x((d, i) -> x i)
@@ -117,10 +118,7 @@ window.unhighlight_series_row = (d) ->
 # a separate button will allow them to select 
 # at most one series on the right axis
 ###
-#window.set_primary_series = (series) ->
-    #set_primary_series(series)
 set_primary_series = (series) ->
-  #window.primary_series = series
   new_series = series.datum()
   old_series = d3.select(".series.selected").datum()
   # only do stuff if this is not already the primary series and if it is not the secondary series
@@ -130,8 +128,22 @@ set_primary_series = (series) ->
     if (window.mode == "line_bar")
       unhighlight_series_row(old_series)
       highlight_series_row(new_series)
+
+      first_value_index = 0
+      array_length = new_series[window.freq].data.length
+      while first_value_index < array_length and not new_series[window.freq].data[first_value_index]?
+        first_value_index++
+      console.log(first_value_index)
+      #set_slider_in_div "line_chart_slider_div", first_series[window.freq].date, first_value_index, array_length-1, left_slider_func
+      $("#line_chart_slider_div").val(first_value_index, array_length - 1)
+      window.trim_sparklines()
+      window.trim_time_series()
+      window.update_ytd_column()
       clear_line_and_bar_chart(old_series)
       display_line_and_bar_chart(new_series)
+
+      #clear_line_and_bar_chart(old_series)
+      #display_line_and_bar_chart(new_series)
     # if we are in multi_line, should call add_to_line_chart and clear_from_line_chart
     else
       unhighlight_series_row(old_series)
@@ -139,31 +151,11 @@ set_primary_series = (series) ->
       window.add_to_line_chart(new_series, "left")
       window.clear_from_line_chart(old_series)
 
-
-
-  # remove selected class from all series
-  #d3.selectAll(".series").classed("selected", false)
-  #series.classed("selected", true);
-  #series_to_remove = d3.selectAll(".series:not(.selected)")
-  #series_to_remove.each((d) -> unhighlight_series_row(d))
-
-  ##highlight_series_row(d) # redundant next function calls this
-  #line_and_bar_to_multi_line(d)
-  #series_to_remove.each((d) -> multi_line_to_line_and_bar(d))
-  #series_to_remove.each((d) -> clear_line_and_bar_chart(d))
-
-#window.set_secondary_series = (series) ->
-    #set_secondary_series(series)
-
 window.set_secondary_series = (series) ->
   window.secondary_series = series
-  #window.secondary_series = series
   new_secondary_series = series.datum()
-  # make sure secondary is not the same as primary, if it is, do nothing here
   primary_series = d3.select(".series.selected").datum()
-  if new_secondary_series.udaman_name == primary_series.udaman_name
-    # do nothine
-  else
+  if new_secondary_series.udaman_name != primary_series.udaman_name
     # this crazy line seems necessary due to lack of a parent selector in css
     on_toggle = d3.select(".right_toggle.on").node()
     if on_toggle?
@@ -172,7 +164,7 @@ window.set_secondary_series = (series) ->
       # add the new series and remove the old
       add_to_line_chart(new_secondary_series, "right")
       clear_from_line_chart(old_secondary_series)
-      #
+      
       # uncheck the old series
       d3.select(on_toggle).classed({"off": true, "on": false, "glyphicon-unchecked": true, "glyphicon-check": false})
     else
@@ -248,8 +240,6 @@ draw_sparklines = (extent, duration) ->
   dates = d3.select("#line_chart_slider_div").datum()
   trimmed_dates = dates.slice(start_i, end_i + 1)
 
-  #d3.select("#sparkline_header").text trimmed_dates[end_i - start_i]
-  #d3.select("#sparkline_header").html "&nbsp;"
   svg = cat_series.select("svg").datum((d) ->
     trimmed_data_object d[freq], start_i, end_i
   )
@@ -290,8 +280,6 @@ draw_spark_area = (svg, duration) ->
     .attr "d", spark_area_path
     
 window.slide_table = (event, ui) ->
-  #text = d3.select("#datatable_slider_div a").style("left").split("px")
-  #d3.select("h3#date_table").text(all_dates()[ui.value]).style("left", (parseInt(text) + 400) + "px")
 
   # new implementation
   slider_val = +$("#time_slice_slider_div").val()
@@ -301,8 +289,6 @@ window.slide_table = (event, ui) ->
   offset_val = +$("#time_slice_slider_div").val() + 1
   offset= -(offset_val * cell_width - datatable_width)
   d3.selectAll(".container")
-    #.transition()
-    #.duration(200)
     .style("margin-left", offset+"px")
 
 populate_dates = ->
@@ -311,13 +297,12 @@ populate_dates = ->
   dates.enter()
     .append("div")
     .attr("class", "header_cell")
-  dates.html((d) -> "#{d}<br/>YOY%")
+  dates.html((d) -> "#{d}<br/><span class=\"pct_change\">%Chg</a>") #added span
   dates.exit().remove()
     
 create_ytd_column = (cat_series) ->
     container = cat_series.append("div").attr("class", "ytd_cell")
       .html((d) ->
-        #console.log d
         last_obs = if d[freq].last? then (+d[freq].last).toFixed(3) else ""
         last_date = if d[freq].last? then d[freq].date[d[freq].last_i] else ""
         last_ytd_change_num = +d[freq].ytd_change[d[freq].last_i]
@@ -337,9 +322,6 @@ window.update_ytd_column = (event) ->
         else
           last_ytd_change = (+d[freq].ytd_change[last_index]).toFixed(2) + "%"
           sign = if +d[freq].ytd_change[last_index] > 0 then " pos" else " neg"
-        #last_ytd_change_num = if d[freq].ytd_change[last_index]? then +
-        #last_ytd_change = (last_ytd_change_num).toFixed(2) + "%"
-        #sign = if last_ytd_change_num > 0 then " pos" else " neg"
         "<span class=\"last_obs\">#{last_obs}</span><span class=\"last_date\">#{last_date}</span><span class=\"ytd_change#{sign}\">#{last_ytd_change}</span>"
     )
     
@@ -347,10 +329,6 @@ window.update_ytd_column = (event) ->
 create_data_columns = (cat_series) ->
   container = cat_series.append("div")
     .attr("class", "data_cols")
-    #.append("div")
-    #.attr("class", "container")
-    #.style("width", (d) -> (d[freq].data.length*cell_width)+"px")
-    #.style("margin-left", (d) -> -(d[freq].data.length*cell_width-datatable_width)+"px")
     
   container.selectAll("div.cell")
     .data((d) ->
@@ -372,40 +350,22 @@ update_data_columns = () ->
     cells = container.selectAll("div.cell")
       .data (d) -> selected_data(d)
     cells.enter().append("div").attr("class", "cell")
-    #cells.text (d) -> if d? then (+d).toFixed(3) else ""
     cells.html (d) ->
       data = if d.data? then (+d.data).toFixed(3) else ""
       yoy = if d.yoy? then (+d.yoy).toFixed(2) + "%" else ""
       yoy = if d.yoy > 0 then "+#{yoy}" else yoy
       sign = if d.yoy > 0 then " pos" else (if d.yoy < 0 then " neg" else "")
       "<span class=\"cell_value\">#{data}</span><span class=\"cell_yoy#{sign}\">#{yoy}</span>"
-    #d3.selectAll("div.series").selectAll('.cell').data()
-    #data = selected_data cat_series.data()
-    #container = cat_series.selectAll(".data_cols")
-    #cells = container.selectAll("div.data_cell")
-      #.data data
-    #cells.enter()
-      #.append("div")
-      #.attr("class", "cell")
-    #cells.text((d) ->
-      #if d? then (+d).toFixed(3) else "")
-    #cells.exit().remove()
       
 create_axis_control = (cat_series, axis) ->
-  #cat_series.append("div")
   cat_series.append("span")
     .attr("class", "#{axis}_toggle off glyphicon glyphicon-unchecked")
-    #.text(".")
-    #.text("+")
-    .on("click", (d) -> 
+    .on("click", (d) ->
       d3.event.stopPropagation()
       button = d3.select(this)
       if (button.classed("off"))
-        #button.classed({"off": false, "on": true, "glyphicon-unchecked": false, "glyphicon-check": true})
         set_secondary_series(d3.select(button.node().parentNode))
-        #add_to_line_chart(d, axis)
       else
-        #remove_from_line_chart(d, axis)
         button.classed({"off": true, "on": false, "glyphicon-unchecked": true, "glyphicon-check": false})
         remove_secondary_series(d3.select(button.node().parentNode))
 
@@ -413,7 +373,6 @@ create_axis_control = (cat_series, axis) ->
 
 create_axis_controls = (cat_series) ->
   cat_series
-    #.call(create_axis_control, "left")
     .call(create_axis_control, "right")
 
 create_sparklines = (cat_series) ->
@@ -429,14 +388,7 @@ create_sparklines = (cat_series) ->
 create_series_label = (cat_series) ->
   label = cat_series.append("div")
     .attr("class", "series_label")
-    #.style("line-height", series_height + "px")
 
-  #parents = label.filter((d) -> d.children_sum)
-    #.append("a")
-    #.attr("href", "javascript:;")
-    #.html("&nbsp; + ")
-    #.on("click", click_expander)
-    
   label
     .append("span")
     .text((d) -> d.display_name)
@@ -485,10 +437,9 @@ window.create_data_table = (page_data)->
     .attr("class", "cat_label")
     .attr("id",(d)->"cat_#{window.series_to_class(d.group_name)}")
     .attr("state", "expanded")
-    .html((d) -> 
+    .html((d) ->
       "<span class='glyphicon glyphicon-minus'></span> #{d.group_name.replace('Total ','')}")
-    #.text((d) -> d.group_name)
-    .on("mouseover", (d) -> d3.select(this).style "background-color", "#999")
+    .on("mouseover", (d) -> d3.select(this).style "background-color", "#ecffc7")
     .on("mouseout", (d) -> d3.selectAll('.cat_label').style "background-color", "#FFF")
     .on("click", click_cat)
      
