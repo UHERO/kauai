@@ -710,7 +710,8 @@ g#pie_chart_area rect {
   border-bottom: 2px solid #03627f; }
 
 .disabled {
-  visibility: hidden; }
+  visibility: hidden;
+  height: 0px; }
 
 #frequency_controls span.selected {
   padding: 2px 5px;

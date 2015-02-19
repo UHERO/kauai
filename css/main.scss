@@ -269,6 +269,7 @@ g#pie_chart_area rect { stroke: white; stroke-width: 1}
 // made this top level class to be multipurpose instead of targeting specifically
 // span in fred_controls
     visibility: hidden;
+    height: 0px; // does nothing
 }
 #frequency_controls span.selected {
     padding: 2px 5px;
