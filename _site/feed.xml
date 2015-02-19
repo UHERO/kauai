@@ -6,8 +6,13 @@
 </description>
     <link>http://uhero.github.io/</link>
     <atom:link href="http://uhero.github.io/feed.xml" rel="self" type="application/rss+xml" />
+<<<<<<< HEAD
     <pubDate>Thu, 19 Feb 2015 14:30:31 -1000</pubDate>
     <lastBuildDate>Thu, 19 Feb 2015 14:30:31 -1000</lastBuildDate>
+=======
+    <pubDate>Wed, 18 Feb 2015 15:09:58 -1000</pubDate>
+    <lastBuildDate>Wed, 18 Feb 2015 15:09:58 -1000</lastBuildDate>
+>>>>>>> JP fix for missing treemap tooltips
     <generator>Jekyll v2.3.0</generator>
     
       <item>
