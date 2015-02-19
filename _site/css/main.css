@@ -555,8 +555,7 @@ path.line_chart_path {
   overflow: visible; }
 
 g#pie_chart_area text {
-  pointer-events: none;
-  stroke: black; }
+  pointer-events: none; }
 
 .in_pie_label, .pie_label {
   text-transform: uppercase;
