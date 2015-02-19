@@ -461,6 +461,8 @@
 
   create_series_rows = function(cat_divs) {
     var cat_series;
+    console.log("CAT_DIVS");
+    console.log(cat_divs);
     cat_series = cat_divs.selectAll("div.series").data(function(d) {
       return flatten(d.series_list);
     }).enter().append("div").attr("id", function(d) {
