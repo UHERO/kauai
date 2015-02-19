@@ -52,6 +52,10 @@ $neon_green:        #ecffc7;
         "syntax-highlighting"
 ;
 
+#content { // try to fix page squish
+  min-width: 740px;
+}
+
 .site-footer{ position:relative; top:50px}
 #county_revenue.nav_link { margin:0 }
 

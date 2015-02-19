@@ -455,6 +455,9 @@ pre {
   .highlight .il {
     color: #099; }
 
+#content {
+  min-width: 740px; }
+
 .site-footer {
   position: relative;
   top: 50px; }

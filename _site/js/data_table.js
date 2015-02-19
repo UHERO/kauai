@@ -339,7 +339,7 @@
     dates = d3.select("#datatable_header").selectAll(".header_cell").data(data);
     dates.enter().append("div").attr("class", "header_cell");
     dates.html(function(d) {
-      return "" + d + "<br/><span class=\"pct_change\">%Change</a>";
+      return "" + d + "<br/><span class=\"pct_change\">%Chg</a>";
     });
     return dates.exit().remove();
   };
