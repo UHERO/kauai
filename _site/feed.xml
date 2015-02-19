@@ -8,11 +8,14 @@
     <atom:link href="http://uhero.github.io/feed.xml" rel="self" type="application/rss+xml" />
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <pubDate>Thu, 19 Feb 2015 14:35:38 -1000</pubDate>
     <lastBuildDate>Thu, 19 Feb 2015 14:35:38 -1000</lastBuildDate>
 =======
 =======
 >>>>>>> JP fix for missing treemap tooltips
+=======
+>>>>>>> unbolded pie chart labels
 <<<<<<< HEAD
     <pubDate>Thu, 19 Feb 2015 14:24:12 -1000</pubDate>
     <lastBuildDate>Thu, 19 Feb 2015 14:24:12 -1000</lastBuildDate>
@@ -31,7 +34,14 @@
     <lastBuildDate>Wed, 18 Feb 2015 15:09:58 -1000</lastBuildDate>
 >>>>>>> JP fix for missing treemap tooltips
 >>>>>>> JP fix for missing treemap tooltips
+<<<<<<< HEAD
 >>>>>>> JP fix for missing treemap tooltips
+=======
+=======
+    <pubDate>Thu, 19 Feb 2015 14:13:41 -1000</pubDate>
+    <lastBuildDate>Thu, 19 Feb 2015 14:13:41 -1000</lastBuildDate>
+>>>>>>> unbolded pie chart labels
+>>>>>>> unbolded pie chart labels
     <generator>Jekyll v2.3.0</generator>
     
       <item>
