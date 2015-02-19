@@ -6,13 +6,8 @@
 </description>
     <link>http://uhero.github.io/</link>
     <atom:link href="http://uhero.github.io/feed.xml" rel="self" type="application/rss+xml" />
-<<<<<<< HEAD
-    <pubDate>Thu, 19 Feb 2015 14:31:27 -1000</pubDate>
-    <lastBuildDate>Thu, 19 Feb 2015 14:31:27 -1000</lastBuildDate>
-=======
-    <pubDate>Thu, 19 Feb 2015 13:50:05 -1000</pubDate>
-    <lastBuildDate>Thu, 19 Feb 2015 13:50:05 -1000</lastBuildDate>
->>>>>>> changed sparkline y scale for visibility
+    <pubDate>Thu, 19 Feb 2015 14:31:33 -1000</pubDate>
+    <lastBuildDate>Thu, 19 Feb 2015 14:31:33 -1000</lastBuildDate>
     <generator>Jekyll v2.3.0</generator>
     
       <item>
