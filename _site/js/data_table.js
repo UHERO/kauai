@@ -9,7 +9,7 @@
 
   x = d3.scale.linear().clamp(true).range([0, 145]);
 
-  y = d3.scale.linear().range([series_height, 5]);
+  y = d3.scale.linear().range([series_height - 10, 5]);
 
   window.mode = "line_bar";
 
@@ -461,6 +461,8 @@
 
   create_series_rows = function(cat_divs) {
     var cat_series;
+    console.log("CAT_DIVS");
+    console.log(cat_divs);
     cat_series = cat_divs.selectAll("div.series").data(function(d) {
       return flatten(d.series_list);
     }).enter().append("div").attr("id", function(d) {
