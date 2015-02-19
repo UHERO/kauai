@@ -9,7 +9,7 @@
 
   x = d3.scale.linear().clamp(true).range([0, 145]);
 
-  y = d3.scale.linear().range([series_height, 5]);
+  y = d3.scale.linear().range([series_height - 10, 5]);
 
   window.mode = "line_bar";
 
