@@ -305,7 +305,6 @@ $("#frequency_controls span").on("click", () ->
       $(this).removeClass("enabled")
       $(this).addClass("selected")
 
-      console.log "switch"
       #force pipes not to be enabled when switching frequencies
       $("#freq_q_pipe").removeClass("enabled")
       $("#freq_m_pipe").removeClass("enabled")
