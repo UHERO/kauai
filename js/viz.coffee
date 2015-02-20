@@ -252,7 +252,7 @@ load_page = (data_category, use_default_freq) ->
     freq_m.removeClass("enabled").addClass("disabled")
     freq_m_pipe.removeClass("enabled").addClass("disabled")
     freq_q.removeClass("disabled")
-    freq_q_pipe.removeClass("disabled")
+    freq_q_pipe.removeClass("disabled").removeClass("enabled")
   else
     freq_m.removeClass("disabled").addClass("enabled")
     freq_q.removeClass("disabled").addClass("enabled")
