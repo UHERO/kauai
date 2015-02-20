@@ -261,12 +261,16 @@ load_page = (data_category, use_default_freq) ->
 
   #to add footnotes based on page
   #at this point only affordability index shows selectively
-  fn_affordability = $("#fn_affordability")
+  fn_affordability = $("#fn_affordability").addClass("disabled")
+  fn_budget = $("#fn_budget").addClass("disabled")
 
   if data_category.title == "Construction"
     fn_affordability.removeClass("disabled")
+  else if data_category.title == "County Budget"
+    fn_budget.removeClass("disabled")
   else
     fn_affordability.addClass("disabled")
+    fn_budget.addClass("disabled")
 
   #to add data sources based on page. Hides div unless on target page.
   #There's prob a better way to do this
