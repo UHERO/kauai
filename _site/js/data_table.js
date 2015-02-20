@@ -3,7 +3,7 @@
 
   cell_width = 50;
 
-  series_height = 45;
+  series_height = 50;
 
   datatable_width = 300;
 

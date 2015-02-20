@@ -1,7 +1,7 @@
 ---
 ---
 cell_width = 50
-series_height = 45
+series_height = 50
 datatable_width= 300
 x = d3.scale.linear().clamp(true).range([ 0, 145 ])
 y = d3.scale.linear().range([ series_height - 10, 5 ])
