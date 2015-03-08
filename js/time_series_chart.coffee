@@ -277,7 +277,7 @@ window.display_line_and_bar_chart = (d) ->
   show_bars(d, slider_extent)
 
   # update left and right axis labels
-  d3.select("#left_axis_label").text("#{d.display_name} (#{d.units})")
+  d3.select("#left_axis_label").text(if d.axis_name? then "#{d.axis_name} (#{d.units})" else "#{d.display_name} (#{d.units})")
   d3.select("#right_axis_label").text("%Change")
     
 window.add_to_line_chart = (d, axis) ->
