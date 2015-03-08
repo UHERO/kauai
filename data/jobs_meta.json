@@ -16,8 +16,8 @@
     "children" : [
       {"display_name": "Construction & Mining", "udaman_name": "ECT@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
       {"display_name": "Manufacturing", "udaman_name": "EMN@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
-      {"display_name": "Trade, Transport, & Utility", "udaman_name": "E_TTU@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children" : [
-        {"display_name": "Transportation & Utilities", "udaman_name": "E_TU@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
+      {"display_name": "Trade, Transport, & Utility", "axis_name": "Trade, Trans, Utility", "udaman_name": "E_TTU@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children" : [
+        {"display_name": "Transportation & Utilities", "axis_name": "Trans & Utility", "udaman_name": "E_TU@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
         {"display_name": "Total Trade Jobs", "udaman_name": "E_TRADE@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children" : [
             {"display_name": "Retail Trade Jobs", "udaman_name": "ERT@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
             {"display_name": "Wholesale Trade Jobs", "udaman_name": "EWT@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
@@ -25,15 +25,15 @@
       ]},
       {"display_name": "Information Jobs", "udaman_name": "EIF@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
       {"display_name": "Financial Activities", "udaman_name": "E_FIR@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children": [
-        {"display_name": "Finance and Insurance Jobs", "udaman_name": "EFI@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
-        {"display_name": "Real Estate & Rental Jobs", "udaman_name": "ERE@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
+        {"display_name": "Finance and Insurance Jobs", "axis_name": "Fin & Ins Jobs", "udaman_name": "EFI@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
+        {"display_name": "Real Estate & Rental Jobs", "axis_name": "Real Estate Jobs", "udaman_name": "ERE@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
       ]},
-      {"display_name": "Professional & Bus Services", "udaman_name": "E_PBS@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children": [
-          {"display_name": "Prof, Sci, and Tech Svc Jobs", "udaman_name": "EPS@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
-          {"display_name": "Mgmt of Companies jobs", "udaman_name": "EMA@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
-          {"display_name": "Admin & Waste Management", "udaman_name": "EAD@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
+      {"display_name": "Professional & Bus Services", "axis_name": "Pro & Bus Services", "udaman_name": "E_PBS@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children": [
+          {"display_name": "Prof, Sci, and Tech Svc Jobs", "axis_name": "Sci Tech Scv Jobs", "udaman_name": "EPS@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
+          {"display_name": "Mgmt of Companies Jobs", "udaman_name": "EMA@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
+          {"display_name": "Admin & Waste Management", "axis_name": "Admin & Waste Mgmt", "udaman_name": "EAD@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
       ]},
-      {"display_name": "Educational & Health Svs", "udaman_name": "E_EDHC@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children": [
+      {"display_name": "Educational & Health Svs", "axis_name": "Ed & Health Svcs", "udaman_name": "E_EDHC@KAU", "a": true, "q": true, "m": true, "units": "Thou", "children": [
            {"display_name": "Educational Services", "udaman_name": "EED@KAU", "a": true, "q": true, "m": true, "units": "Thou"},
            {"display_name": "Healthcare & Social Asst", "udaman_name": "EHC@KAU", "a": true, "q": true, "m": true, "units": "Thou"}
       ]},

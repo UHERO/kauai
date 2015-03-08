@@ -8,10 +8,10 @@
           "a": true, "q": true, "m": true,
           "units": "Thou",
           "children": [
-            { "display_name": "US West Visitor Arrivals" , "udaman_name": "VISUSW@KAU" , "a": true , "q": true , "m": true, "units": "Thou"},
-            { "display_name": "US East Visitor Arrivals" , "udaman_name": "VISUSE@KAU" , "a": true , "q": true , "m": true, "units": "Thou"},
-            { "display_name": "Japan Visitor Arrivals" , "udaman_name": "VISJP@KAU" , "a": true , "q": true , "m": true, "units": "Thou"},
-            { "display_name": "Other Visitor Arrivals" , "udaman_name": "VISRES@KAU" , "a": true , "q": true , "m": true, "units": "Thou"}
+            { "display_name": "US West Visitor Arrivals", "axis_name": "US West Vis Arrivals",  "udaman_name": "VISUSW@KAU" , "a": true , "q": true , "m": true, "units": "Thou"},
+            { "display_name": "US East Visitor Arrivals", "axis_name": "US East Vis Arrivals", "udaman_name": "VISUSE@KAU" , "a": true , "q": true , "m": true, "units": "Thou"},
+            { "display_name": "Japan Visitor Arrivals", "udaman_name": "VISJP@KAU" , "a": true , "q": true , "m": true, "units": "Thou"},
+            { "display_name": "Other Visitor Arrivals", "udaman_name": "VISRES@KAU" , "a": true , "q": true , "m": true, "units": "Thou"}
           ] 
         }      
       ]
@@ -20,13 +20,13 @@
       "series_list": [ 
         { "display_name": "Length of Stay", "udaman_name": "VLOS@KAU", "a": true, "q": true, "m": true, "units": "Days"},
         { "display_name": "Visitor Days", "udaman_name": "VDAY@KAU", "a": true, "q": true, "m": true, "units": "Thou" },
-        { "display_name": "Average Daily Room Rate", "udaman_name": "PRM@KAU", "a": true, "q": true, "m": false, "units": "$"},
+        { "display_name": "Average Daily Room Rate", "axis_name": "Avg Daily Room Rate", "udaman_name": "PRM@KAU", "a": true, "q": true, "m": false, "units": "$"},
         { "display_name": "Hotel Occupancy Rate", "udaman_name": "OCUP%@KAU", "a": true, "q": true, "m": false, "units": "%"}
       ]
     }, { 
       "group_name": "Visitor Expenditures", 
       "series_list": [ 
-        { "display_name": "Total Visitor Expenditures","udaman_name": "VEXP@KAU", "a": true, "q": true, "m": true, "units": "$Mil"}
+        { "display_name": "Total Visitor Expenditures", "axis_name": "Visitor Expenditures", "udaman_name": "VEXP@KAU", "a": true, "q": true, "m": true, "units": "$Mil"}
       ]
     }
   ]

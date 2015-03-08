@@ -297,7 +297,7 @@ window.add_to_line_chart = (d, axis) ->
   
 
   # update axis label
-  d3.select("#" + axis + "_axis_label").text("#{d.display_name} (#{d.units})")
+  d3.select("#" + axis + "_axis_label").text(if d.axis_name? then "#{d.axis_name} (#{d.units})" else "#{d.display_name} (#{d.units})")
 
 
 window.remove_from_line_chart = (d, axis) ->
