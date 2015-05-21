@@ -285,11 +285,11 @@
   };
 
   selected_data = function(d) {
-    var _i, _ref, _results;
+    var j, ref, results;
     return (function() {
-      _results = [];
-      for (var _i = _ref = slider_val - 4; _ref <= slider_val ? _i <= slider_val : _i >= slider_val; _ref <= slider_val ? _i++ : _i--){ _results.push(_i); }
-      return _results;
+      results = [];
+      for (var j = ref = slider_val - 4; ref <= slider_val ? j <= slider_val : j >= slider_val; ref <= slider_val ? j++ : j--){ results.push(j); }
+      return results;
     }).apply(this).map(function(index) {
       var period;
       period = {

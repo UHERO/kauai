@@ -307,7 +307,12 @@ window.remove_from_line_chart = (d, axis) ->
 
   path.classed("s_#{axis}", false)
   path
-    .attr("d", (d) -> dummy_path(d[freq].trimmed_data))
+    .attr("d", (d) ->
+        console.log d
+        console.log freq
+        if d[window.old_freq].trimmed_data?
+            dummy_path(d[window.old_freq].trimmed_data)
+    )
     
   update_domain(axis, duration)
 

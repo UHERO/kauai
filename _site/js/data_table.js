@@ -245,13 +245,13 @@
   };
 
   flatten_children = function(series_data) {
-    var series, series_list, _i, _len, _ref;
+    var j, len, ref, series, series_list;
     series_list = [];
     series_list.push(add_parent(series_data, ""));
     if (series_data.children != null) {
-      _ref = series_data.children;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        series = _ref[_i];
+      ref = series_data.children;
+      for (j = 0, len = ref.length; j < len; j++) {
+        series = ref[j];
         series_list.push(add_parent(series, series_data.udaman_name));
       }
     }
@@ -259,10 +259,10 @@
   };
 
   flatten = function(series_list) {
-    var new_list, series, _i, _len;
+    var j, len, new_list, series;
     new_list = [];
-    for (_i = 0, _len = series_list.length; _i < _len; _i++) {
-      series = series_list[_i];
+    for (j = 0, len = series_list.length; j < len; j++) {
+      series = series_list[j];
       if (series[window.freq] !== false) {
         new_list = new_list.concat(flatten_children(series));
       }

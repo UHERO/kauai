@@ -218,7 +218,9 @@ render_page = (page_data, page_slug) ->
     #$("#line_chart_slider_div").val(first_value_index, array_length - 1)
   
 load_page = (data_category, use_default_freq) ->
+  window.old_freq = window.freq
   window.remove_secondary_series(window.secondary_series) if window.secondary_series? and window.secondary_series.datum? and window.mode == 'multi_line'
+
   if use_default_freq
     window.freq = data_category.default_freq
     $("#frequency_controls span.selected").removeClass("selected")
