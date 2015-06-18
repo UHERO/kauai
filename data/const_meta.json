@@ -16,9 +16,9 @@
   }, { 
     "group_name": "Construction Costs and Affordability", 
     "series_list": [ 
-      { "display_name": "Honolulu Construction Cost Index", "udaman_name": "PICTSGF@HON", "a": true, "q": true, "m": false, "units": "Index (1992=100)"},
-      { "display_name": "Housing Affordability, Single-family home", "udaman_name": "HAI@KAU", "a": true, "q": false, "m": false, "units": "Index (1992=100)"},
-      { "display_name": "Housing Affordability, Condominium", "udaman_name": "HAICON@KAU", "a": true, "q": false, "m": false, "units": "Index (1992=100)"}
+      { "display_name": "Honolulu Construction Cost Index", "udaman_name": "PICTSGF@HON", "a": true, "q": true, "m": false, "units": "Index"},
+      { "display_name": "Housing Affordability, Single-family home", "udaman_name": "HAI@KAU", "a": true, "q": false, "m": false, "units": "Index"},
+      { "display_name": "Housing Affordability, Condominium", "udaman_name": "HAICON@KAU", "a": true, "q": false, "m": false, "units": "Index"}
     ]
   }
 ]
